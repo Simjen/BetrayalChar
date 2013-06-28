@@ -251,15 +251,15 @@
 
                 <Button
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:onClick="knowlageRoll"
                     android:text="@string/knowlage_roll" />
 
                 <Button
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:onClick="sanityRoll"
                     android:text="@string/sanity_roll" />
             </LinearLayout>

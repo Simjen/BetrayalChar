@@ -5,15 +5,18 @@ import java.util.Timer;
 import com.example.myfirstproject.*;
 
 import android.os.Bundle;
+import android.widget.LinearLayout.*;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
 
 public class Player0 extends Activity {
 	public Player player;
@@ -22,8 +25,10 @@ public class Player0 extends Activity {
 	private TextView speedView;
 	private TextView mightView;
 	private TextView rollText;
+	private LinearLayout layout;
 	private int playerPic;
 	private PopupWindow rollResult;
+	private LayoutParams parms;
 	private Timer t = new Timer();
 
 	public Player0(int number, int i){
@@ -43,10 +48,13 @@ public class Player0 extends Activity {
 		speedView.setText(player.getSpeedTxt());
 		knowlageView.setText(player.getKnowlageTxt());
 		sanityView.setText(player.getSanityTxt());
-		rollText = new TextView(getApplicationContext());
-		rollResult = new PopupWindow(rollText);
-		rollResult.setHeight(100);
-		rollResult.setWidth(100);
+		layout = new LinearLayout(this);
+		parms = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		rollText = new TextView(this);
+		rollText.setGravity(Gravity.CENTER);
+		layout.addView(rollText, parms);
+		rollResult = new PopupWindow(this);
+		rollResult.setContentView(layout);
 		ImageView ll = (ImageView) findViewById(R.id.player_img);
 		ll.setImageDrawable(res.getDrawable(playerPic));
 	}
@@ -97,7 +105,7 @@ public class Player0 extends Activity {
 
 	public void mightRoll(View v){
 		rollText.setText(Integer.toString(player.doMightRoll()));
-		rollResult.showAsDropDown(v);
+		rollResult.showAtLocation(findViewById(R.id.layout_player), Gravity.CENTER, 0, 0);
 	}
 
 	public void speedRoll(View v){
