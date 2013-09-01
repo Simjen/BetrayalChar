@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+     <item android:title="@string/bloddagger"/>
+	<item android:title="@string/sacrificialdagger" />
+    <item android:title="@string/axe"/>
+    <item android:title="@string/spear" />
+
+	
+</menu>

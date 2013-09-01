@@ -1,0 +1,25 @@
+package com.betrayal.betrayalchar;
+
+import android.annotation.TargetApi;
+import android.os.Build;
+import android.view.MenuItem;
+import android.widget.PopupMenu.OnMenuItemClickListener;
+
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+public class DropListner implements OnMenuItemClickListener {
+	
+	Player0 p;
+	public DropListner(Player0 p){
+		this.p = p;
+	}
+	
+	@Override
+	public boolean onMenuItemClick(MenuItem item) {
+		int i = Integer.parseInt(((String) item.getTitle()).substring(0, 1));
+		p.inventory.remove(i);
+		
+		return true;
+	}
+}
+
+

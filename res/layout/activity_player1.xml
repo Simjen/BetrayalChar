@@ -4,6 +4,7 @@
     android:background="@android:color/background_dark" >
 
     <LinearLayout
+        android:id="@+id/main_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -11,19 +12,105 @@
         android:orientation="vertical" >
 
         <LinearLayout
-            android:id="@+id/layout_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:orientation="vertical" >
 
-            <ImageView
-                android:id="@+id/player_img"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:maxHeight="50dp"
-                android:maxWidth="50dp"
-                android:src="@drawable/char_brandon_jaspers" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <ImageButton
+                    android:id="@+id/dice3"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/dice2"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/dice1"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/dice4"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <ImageButton
+                    android:id="@+id/dice7"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/dice6"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/dice5"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/dice8"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:baselineAligned="true"
+            android:onClick="hideRoll"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/roll_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/roll_text"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/roll_layout_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                android:visibility="invisible" />
         </LinearLayout>
 
         <LinearLayout
@@ -45,15 +132,18 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="@string/might" />
+                    android:text="@string/might"
+                    android:textColor="@android:color/white" />
 
                 <Button
+                    android:id="@+id/mightbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:onClick="upMight"
                     android:text="@string/plus"
-                    android:textSize="30sp" />
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -68,7 +158,7 @@
                         android:gravity="center"
                         android:text="@string/nul"
                         android:textColor="@android:color/background_light"
-                        android:textSize="30sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <Button
@@ -77,7 +167,8 @@
                     android:layout_gravity="center"
                     android:onClick="downMight"
                     android:text="@string/minus"
-                    android:textSize="30sp" />
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -91,7 +182,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="@string/speed" />
+                    android:text="@string/speed"
+                    android:textColor="@android:color/white" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -99,7 +191,8 @@
                     android:layout_gravity="center"
                     android:onClick="upSpeed"
                     android:text="@string/plus"
-                    android:textSize="30sp" />
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -114,7 +207,7 @@
                         android:gravity="center"
                         android:text="@string/nul"
                         android:textColor="@android:color/background_light"
-                        android:textSize="30sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <Button
@@ -123,7 +216,8 @@
                     android:layout_gravity="center"
                     android:onClick="downSpeed"
                     android:text="@string/minus"
-                    android:textSize="30sp" />
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -137,7 +231,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="@string/knowlage" />
+                    android:text="@string/knowlage"
+                    android:textColor="@android:color/white" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -145,7 +240,8 @@
                     android:layout_gravity="center"
                     android:onClick="upKnowlage"
                     android:text="@string/plus"
-                    android:textSize="30sp" />
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -160,7 +256,7 @@
                         android:gravity="center"
                         android:text="@string/nul"
                         android:textColor="@android:color/background_light"
-                        android:textSize="30sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <Button
@@ -169,7 +265,8 @@
                     android:layout_gravity="center"
                     android:onClick="downKnowlage"
                     android:text="@string/minus"
-                    android:textSize="30sp" />
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -183,7 +280,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="@string/sanity" />
+                    android:text="@string/sanity"
+                    android:textColor="@android:color/white" />
 
                 <Button
                     android:layout_width="wrap_content"
@@ -191,7 +289,8 @@
                     android:layout_gravity="center"
                     android:onClick="upSanity"
                     android:text="@string/plus"
-                    android:textSize="30sp" />
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -206,7 +305,7 @@
                         android:gravity="center"
                         android:text="@string/nul"
                         android:textColor="@android:color/background_light"
-                        android:textSize="30sp" />
+                        android:textSize="15sp" />
                 </LinearLayout>
 
                 <Button
@@ -215,14 +314,16 @@
                     android:layout_gravity="center"
                     android:onClick="downSanity"
                     android:text="@string/minus"
-                    android:textSize="30sp" />
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            android:layout_marginBottom="20dp">
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -230,18 +331,29 @@
                 android:orientation="horizontal" >
 
                 <Button
+                    android:id="@+id/attack"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:onClick="mightRoll"
-                    android:text="@string/might_roll" />
+                    android:onClick="mightAttackBtn"
+                    android:text="@string/might_att"
+                    android:textColor="@android:color/white" />
 
                 <Button
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:layout_weight="1"
+                    android:onClick="mightDefence"
+                    android:text="@string/might_def"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="2"
                     android:onClick="speedRoll"
-                    android:text="@string/speed_roll" />
+                    android:text="@string/speed_roll"
+                    android:textColor="@android:color/white" />
             </LinearLayout>
 
             <LinearLayout
@@ -254,14 +366,96 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="knowlageRoll"
-                    android:text="@string/knowlage_roll" />
+                    android:text="@string/knowlage_roll"
+                    android:textColor="@android:color/white" />
 
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="sanityRoll"
-                    android:text="@string/sanity_roll" />
+                    android:text="@string/sanity_roll"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_player"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" >
+
+                <Button
+                    android:id="@+id/pickup"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:layout_gravity="bottom"
+                    android:onClick="pickUp"
+                    android:text="@string/pickup"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/drop"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.5"
+                    android:layout_gravity="bottom"
+                    android:onClick="drop"
+                    android:text="@string/drop"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/reset_knowlage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:layout_gravity="bottom"
+                    android:onClick="resetKnowlage"
+                    android:text="@string/resetKnowlage"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" >
+
+                <Button
+                    android:id="@+id/reset_speed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="bottom"
+                    android:onClick="resetSpeed"
+                    android:text="@string/resetSpeed"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/reset_might"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="bottom"
+                    android:onClick="resetMight"
+                    android:text="@string/resetMight"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/reset_sanity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="bottom"
+                    android:onClick="resetSanity"
+                    android:text="@string/resetSanity"
+                    android:textColor="@android:color/white" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

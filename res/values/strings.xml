@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <string name="app_name">BetrayalChar</string>
     <string name="action_settings">Settings</string>
@@ -27,9 +27,21 @@
     <string name="knowlage">Knowlage</string>
     <string name="sanity">Sanity</string>
     <string name="player_img">Player Card Image</string>
-    <string name="might_roll">Might Roll</string>
+    <string name="might_att">Might Att</string>
     <string name="speed_roll">Speed Roll</string>
     <string name="knowlage_roll">Knowlage Roll</string>
     <string name="sanity_roll">Sanity Roll</string>
+    <string name="roll_text">Your Roll Is: </string>
+    <string name="might_def">Might Def</string>
+    <string name="pickup">PickUp</string>
+    <string name="axe">2 Axe</string>
+    <string name="spear">3 Spear</string>
+    <string name="bloddagger">0 BlodDagger</string>
+    <string name="sacrificialdagger">1 SacrificialDagger</string>
+    <string name="resetMight">Re Might</string>
+    <string name="resetSpeed">Re Speed</string>
+    <string name="resetSanity">Re Sanity</string>
+    <string name="resetKnowlage">Re Knowlage</string>
+    <string name="drop">Drop</string>
 
 </resources>
