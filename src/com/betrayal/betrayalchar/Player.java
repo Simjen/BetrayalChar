@@ -17,133 +17,11 @@ public class Player {
 	public int knowlageTimes;
 	public int sanityTimes;
 	public int omens = 0;
-	private Random rand = new Random();
+	private static Random rand = new Random();
 	private ArrayList<Items> useableItems = new ArrayList<Items>();
 	
-	public Player(int player){
-		if(player == 1){
-			mightTimesInit = mightTimes = Stats.PLAYER1MIGHT.start;
-			speedTimesInit = speedTimes = Stats.PLAYER1SPEED.start;
-			knowlageTimesInit = knowlageTimes = Stats.PLAYER1KNOWLAGE.start;
-			sanityTimesInit = sanityTimes = Stats.PLAYER1SANITY.start;
-			might = Stats.PLAYER1MIGHT;
-			speed = Stats.PLAYER1SPEED;
-			knowlage = Stats.PLAYER1KNOWLAGE;
-			sanity = Stats.PLAYER1SANITY;
-		}
-		else  if(player == 2){
-			mightTimes = Stats.PLAYER2MIGHT.start;
-			speedTimes = Stats.PLAYER2SPEED.start;
-			knowlageTimes = Stats.PLAYER2KNOWLAGE.start;
-			sanityTimes = Stats.PLAYER2SANITY.start;
-			might = Stats.PLAYER2MIGHT;
-			speed = Stats.PLAYER2SPEED;
-			knowlage = Stats.PLAYER2KNOWLAGE;
-			sanity = Stats.PLAYER2SANITY;
-		}
-		else if(player == 3){
-			mightTimes = Stats.PLAYER3MIGHT.start;
-			speedTimes = Stats.PLAYER3SPEED.start;
-			knowlageTimes = Stats.PLAYER3KNOWLAGE.start;
-			sanityTimes = Stats.PLAYER3SANITY.start;
-			might = Stats.PLAYER3MIGHT;
-			speed = Stats.PLAYER3SPEED;
-			knowlage = Stats.PLAYER2KNOWLAGE;
-			sanity = Stats.PLAYER2SANITY;
-		}
-		else if(player == 4){
-			mightTimes = Stats.PLAYER4MIGHT.start;
-			speedTimes = Stats.PLAYER4SPEED.start;
-			knowlageTimes = Stats.PLAYER4KNOWLAGE.start;
-			sanityTimes = Stats.PLAYER4SANITY.start;
-			might = Stats.PLAYER4MIGHT;
-			speed = Stats.PLAYER4SPEED;
-			knowlage = Stats.PLAYER4KNOWLAGE;
-			sanity = Stats.PLAYER4SANITY;
-		}
-		else if(player == 5){
-			mightTimes = Stats.PLAYER5MIGHT.start;
-			speedTimes = Stats.PLAYER5SPEED.start;
-			knowlageTimes = Stats.PLAYER5KNOWLAGE.start;
-			sanityTimes = Stats.PLAYER5SANITY.start;
-			might = Stats.PLAYER5MIGHT;
-			speed = Stats.PLAYER5SPEED;
-			knowlage = Stats.PLAYER5KNOWLAGE;
-			sanity = Stats.PLAYER5SANITY;
-		}
-		else if(player == 6){
-			mightTimes = Stats.PLAYER6MIGHT.start;
-			speedTimes = Stats.PLAYER6SPEED.start;
-			knowlageTimes = Stats.PLAYER6KNOWLAGE.start;
-			sanityTimes = Stats.PLAYER6SANITY.start;
-			might = Stats.PLAYER6MIGHT;
-			speed = Stats.PLAYER6SPEED;
-			knowlage = Stats.PLAYER6KNOWLAGE;
-			sanity = Stats.PLAYER6SANITY;
-		}
-		else if(player == 8){
-			mightTimes = Stats.PLAYER8MIGHT.start;
-			speedTimes = Stats.PLAYER8SPEED.start;
-			knowlageTimes = Stats.PLAYER8KNOWLAGE.start;
-			sanityTimes = Stats.PLAYER8SANITY.start;
-			might = Stats.PLAYER8MIGHT;
-			speed = Stats.PLAYER8SPEED;
-			knowlage = Stats.PLAYER8KNOWLAGE;
-			sanity = Stats.PLAYER8SANITY;
-		}
-		else if(player == 9){
-			mightTimes = Stats.PLAYER9MIGHT.start;
-			speedTimes = Stats.PLAYER9SPEED.start;
-			knowlageTimes = Stats.PLAYER9KNOWLAGE.start;
-			sanityTimes = Stats.PLAYER9SANITY.start;
-			might = Stats.PLAYER9MIGHT;
-			speed = Stats.PLAYER9SPEED;
-			knowlage = Stats.PLAYER9KNOWLAGE;
-			sanity = Stats.PLAYER9SANITY;
-		}
-		else if(player == 10){
-			mightTimes = Stats.PLAYER10MIGHT.start;
-			speedTimes = Stats.PLAYER10SPEED.start;
-			knowlageTimes = Stats.PLAYER10KNOWLAGE.start;
-			sanityTimes = Stats.PLAYER10SANITY.start;
-			might = Stats.PLAYER10MIGHT;
-			speed = Stats.PLAYER10SPEED;
-			knowlage = Stats.PLAYER10KNOWLAGE;
-			sanity = Stats.PLAYER10SANITY;
-		}
-		else if(player == 11){
-			mightTimes = Stats.PLAYER11MIGHT.start;
-			speedTimes = Stats.PLAYER11SPEED.start;
-			knowlageTimes = Stats.PLAYER11KNOWLAGE.start;
-			sanityTimes = Stats.PLAYER11SANITY.start;
-			might = Stats.PLAYER11MIGHT;
-			speed = Stats.PLAYER11SPEED;
-			knowlage = Stats.PLAYER11KNOWLAGE;
-			sanity = Stats.PLAYER11SANITY;
-		}
-		else if(player == 12){
-			mightTimes = Stats.PLAYER12MIGHT.start;
-			speedTimes = Stats.PLAYER12SPEED.start;
-			knowlageTimes = Stats.PLAYER12KNOWLAGE.start;
-			sanityTimes = Stats.PLAYER12SANITY.start;
-			might = Stats.PLAYER12MIGHT;
-			speed = Stats.PLAYER12SPEED;
-			knowlage = Stats.PLAYER12KNOWLAGE;
-			sanity = Stats.PLAYER12SANITY;
-		}
-		else{
-			mightTimes = Stats.PLAYER7MIGHT.start;
-			speedTimes = Stats.PLAYER7SPEED.start;
-			knowlageTimes = Stats.PLAYER7KNOWLAGE.start;
-			sanityTimes = Stats.PLAYER7SANITY.start;
-			might = Stats.PLAYER7MIGHT;
-			speed = Stats.PLAYER7SPEED;
-			knowlage = Stats.PLAYER7KNOWLAGE;
-			sanity = Stats.PLAYER7SANITY;
-		}
-	}
 	
-	public ArrayList<Integer> doRoll(int r){
+	public static ArrayList<Integer> doRoll(int r){
 		ArrayList<Integer> res = new ArrayList<Integer>();
 		if(r >= 8){
 			for(int i=0; i<8; i++){
@@ -159,12 +37,11 @@ public class Player {
 	}
 	
 	public ArrayList<Integer> doMightRoll(){
-		if(mightTimes >= 8){
-			
+		if(mightTimes >= 8){	
 		return doRoll(might.stat[8]);
 		}
 		else{
-			return doRoll(might.stat[mightTimes]);
+			return doRoll(getMight());
 		}
 	}
 	public ArrayList<Integer> doSpeedRoll(){
@@ -174,7 +51,7 @@ public class Player {
 		}
 		else{
 			
-			return doRoll(speed.stat[speedTimes]);
+			return doRoll(getSpeed());
 		}
 	}
 	public ArrayList<Integer> doKnowlageRoll(){
@@ -182,7 +59,7 @@ public class Player {
 			return doRoll(knowlage.stat[8]);
 		}
 		else{
-			return doRoll(knowlage.stat[knowlageTimes]);
+			return doRoll(getKnowlage());
 		}
 	}
 	public ArrayList<Integer> doSanityRoll(){
@@ -190,7 +67,7 @@ public class Player {
 			return doRoll(sanity.stat[8]);
 		}
 		else{
-			return doRoll(sanity.stat[sanityTimes]);
+			return doRoll(getSanity());
 		}
 	}
 
@@ -198,142 +75,178 @@ public class Player {
 		return new ArrayList<Integer>();
 	}
 	
-	public String upMight(){
-		if(mightTimes >= 8){
-			mightTimes++;
-			return Integer.toString(might.stat[8]);
-		}
-		else{
-			mightTimes++;
-			return Integer.toString(might.stat[mightTimes]);
-		}
-	}
 	
-	public String downMight(){
-		if(mightTimes == 0){
-			return Integer.toString(might.stat[mightTimes]);
-		}
-		else{
-			if(mightTimes > 8){
-				mightTimes--;
-				return Integer.toString(might.stat[8]);
+	public int upStat(String statName){
+		if(statName.equals("might")){
+			if(mightTimes >= 8){
+				mightTimes++;
+				return might.stat[8];
 			}
 			else{
-				mightTimes--;
-
-				return Integer.toString(might.stat[mightTimes]);
+				mightTimes++;
+				return getMight();
 			}
 		}
-	}
-	
-	public String upSpeed(){
-		if(speedTimes >= 8){
-			speedTimes++;
-			return Integer.toString(speed.stat[8]);
-		}
-		else{
-			speedTimes++;
-			return Integer.toString(speed.stat[speedTimes]);
-		}
-	}
-	
-	public String downSpeed(){
-		if(speedTimes == 0){
-			return Integer.toString(speed.stat[speedTimes]);
-		}
-		else{
-			if(speedTimes > 8){
-				speedTimes--;
-				return Integer.toString(speed.stat[8]);
+		else if(statName.equals("speed")){
+			if(speedTimes >= 8){
+				speedTimes++;
+				return speed.stat[8];
 			}
 			else{
-				speedTimes--;
-
-				return Integer.toString(speed.stat[speedTimes]);
+				speedTimes++;
+				return getSpeed();
 			}
 		}
-	}
-	
-	public String upKnowlage(){
-		if(knowlageTimes >= 8){
-			knowlageTimes++;
-			return Integer.toString(knowlage.stat[8]);
-		}
-		else{
-			knowlageTimes++;
-			return Integer.toString(knowlage.stat[knowlageTimes]);
-		}
-	}
-	
-	public String downKnowlage(){
-		if(knowlageTimes == 0){
-			return Integer.toString(knowlage.stat[knowlageTimes]);
-		}
-		else{
-			if(knowlageTimes > 8){
-				knowlageTimes--;
-				return Integer.toString(knowlage.stat[8]);
+		else if(statName.equals("knowlage")){
+			if(knowlageTimes >= 8){
+				knowlageTimes++;
+				return knowlage.stat[8];
 			}
 			else{
-				knowlageTimes--;
-
-				return Integer.toString(knowlage.stat[knowlageTimes]);
+				knowlageTimes++;
+				return getKnowlage();
 			}
 		}
-	}
-	
-	public String upSanity(){
-		if(sanityTimes >= 8){
-			sanityTimes++;
-			return Integer.toString(sanity.stat[8]);
-		}
 		else{
-			sanityTimes++;
-			return Integer.toString(sanity.stat[sanityTimes]);
-		}
-	}
-	
-	public String downSanity(){
-		if(sanityTimes == 0){
-			return Integer.toString(sanity.stat[sanityTimes]);
-		}
-		else{
-			if(sanityTimes > 8){
-				sanityTimes--;
-				return Integer.toString(sanity.stat[8]);
+			if(sanityTimes >= 8){
+				sanityTimes++;
+				return sanity.stat[8];
 			}
 			else{
-				sanityTimes--;
-
-				return Integer.toString(sanity.stat[sanityTimes]);
+				sanityTimes++;
+				return getSanity();
 			}
+		}
+		
+	}
+	
+	public int downStat(String statName){
+		if(statName.equals("might")){
+			if(mightTimes == 0){
+				return getMight();
+			}
+			else{
+				if(mightTimes > 8){
+					mightTimes--;
+					return might.stat[8];
+				}
+				else{
+					mightTimes--;
+
+					return getMight();
+				}
+			}
+		}
+		else if(statName.equals("speed")){
+			if(speedTimes == 0){
+				return getSpeed();
+			}
+			else{
+				if(speedTimes > 8){
+					speedTimes--;
+					return speed.stat[8];
+				}
+				else{
+					speedTimes--;
+
+					return getSpeed();
+				}
+			}
+		}
+		else if(statName.equals("knowlage")){
+			if(knowlageTimes == 0){
+				return getKnowlage();
+			}
+			else{
+				if(knowlageTimes > 8){
+					knowlageTimes--;
+					return knowlage.stat[8];
+				}
+				else{
+					knowlageTimes--;
+
+					return getKnowlage();
+				}
+			}
+		}
+		else{
+			if(sanityTimes == 0){
+				return getSanity();
+			}
+			else{
+				if(sanityTimes > 8){
+					sanityTimes--;
+					return sanity.stat[8];
+				}
+				else{
+					sanityTimes--;
+
+					return getSanity();
+				}
+			}
+		}
+		
+	}
+	public int prevStat(String statName){
+		if(statName.equals("might")){
+			if(mightTimes < 1) return 0;
+			else if(mightTimes > 8) return might.stat[8];
+			else return might.stat[mightTimes-1];
+		}
+		else if(statName.equals("speed")){
+			if(speedTimes < 1) return 0;
+			else if(speedTimes > 8) return speed.stat[8];
+			else return speed.stat[speedTimes-1];
+		}
+		else if(statName.equals("knowlage")){
+			if(knowlageTimes < 1) return 0;
+			else if(knowlageTimes > 8) return knowlage.stat[8];
+			else return knowlage.stat[knowlageTimes-1];
+		}
+		else{
+			if(sanityTimes < 1) return 0;
+			else if(sanityTimes > 8) return sanity.stat[8];
+			else return sanity.stat[sanityTimes-1];
+		}
+	}
+	public int nextStat(String statName){
+		if(statName.equals("might")){
+			if(mightTimes > 7) return might.stat[8];
+			else if(mightTimes == 0) return 0;
+			else return might.stat[mightTimes+1];
+		}
+		else if(statName.equals("speed")){
+			if(speedTimes > 7) return speed.stat[8];
+			else if(speedTimes == 0) return 0;
+			else return speed.stat[speedTimes+1];
+		}
+		else if(statName.equals("knowlage")){
+			if(knowlageTimes > 7) return knowlage.stat[8];
+			else if(knowlageTimes == 0) return 0;
+			else return knowlage.stat[knowlageTimes+1];
+		}
+		else{
+			if(sanityTimes > 7) return sanity.stat[8];
+			else if(sanityTimes == 0) return 0;
+			else return sanity.stat[sanityTimes+1];
 		}
 	}
 	
-	public int upOmen(){
-		omens++;
-		return omens;
+	
+	public int getMight(){
+		return might.stat[mightTimes];
 	}
 	
-	public int downOmen(){
-		omens--;
-		return omens;
+	public int getSpeed(){
+		return speed.stat[speedTimes];
 	}
 	
-	public String getMightTxt(){
-		return Integer.toString(might.stat[mightTimes]);
+	public int getKnowlage(){
+		return knowlage.stat[knowlageTimes];
 	}
 	
-	public String getSpeedTxt(){
-		return Integer.toString(speed.stat[speedTimes]);
-	}
-	
-	public String getKnowlageTxt(){
-		return Integer.toString(knowlage.stat[knowlageTimes]);
-	}
-	
-	public String getSanityTxt(){
-		return Integer.toString(sanity.stat[sanityTimes]);
+	public int getSanity(){
+		return sanity.stat[sanityTimes];
 	}
 	
 	public void pickUpItem(Items i){
@@ -356,4 +269,127 @@ public class Player {
 		}
 	}
 	
+	public Player(int player){
+		if(player == 1){
+			mightTimesInit = mightTimes = Stats.PLAYER1MIGHT.start;
+			speedTimesInit = speedTimes = Stats.PLAYER1SPEED.start;
+			knowlageTimesInit = knowlageTimes = Stats.PLAYER1KNOWLAGE.start;
+			sanityTimesInit = sanityTimes = Stats.PLAYER1SANITY.start;
+			might = Stats.PLAYER1MIGHT;
+			speed = Stats.PLAYER1SPEED;
+			knowlage = Stats.PLAYER1KNOWLAGE;
+			sanity = Stats.PLAYER1SANITY;
+		}
+		else  if(player == 2){
+			mightTimesInit = mightTimes = Stats.PLAYER2MIGHT.start;
+			speedTimesInit = speedTimes = Stats.PLAYER2SPEED.start;
+			knowlageTimesInit = knowlageTimes = Stats.PLAYER2KNOWLAGE.start;
+			sanityTimesInit = sanityTimes = Stats.PLAYER2SANITY.start;
+			might = Stats.PLAYER2MIGHT;
+			speed = Stats.PLAYER2SPEED;
+			knowlage = Stats.PLAYER2KNOWLAGE;
+			sanity = Stats.PLAYER2SANITY;
+		}
+		else if(player == 3){
+			mightTimesInit = mightTimes = Stats.PLAYER3MIGHT.start;
+			speedTimesInit = speedTimes = Stats.PLAYER3SPEED.start;
+			knowlageTimesInit = knowlageTimes = Stats.PLAYER3KNOWLAGE.start;
+			sanityTimesInit = sanityTimes = Stats.PLAYER3SANITY.start;
+			might = Stats.PLAYER3MIGHT;
+			speed = Stats.PLAYER3SPEED;
+			knowlage = Stats.PLAYER2KNOWLAGE;
+			sanity = Stats.PLAYER2SANITY;
+		}
+		else if(player == 4){
+			mightTimesInit = mightTimes = Stats.PLAYER4MIGHT.start;
+			speedTimesInit = speedTimes = Stats.PLAYER4SPEED.start;
+			knowlageTimesInit = knowlageTimes = Stats.PLAYER4KNOWLAGE.start;
+			sanityTimesInit = sanityTimes = Stats.PLAYER4SANITY.start;
+			might = Stats.PLAYER4MIGHT;
+			speed = Stats.PLAYER4SPEED;
+			knowlage = Stats.PLAYER4KNOWLAGE;
+			sanity = Stats.PLAYER4SANITY;
+		}
+		else if(player == 5){
+			mightTimesInit = mightTimes = Stats.PLAYER5MIGHT.start;
+			speedTimesInit = speedTimes = Stats.PLAYER5SPEED.start;
+			knowlageTimesInit = knowlageTimes = Stats.PLAYER5KNOWLAGE.start;
+			sanityTimesInit = sanityTimes = Stats.PLAYER5SANITY.start;
+			might = Stats.PLAYER5MIGHT;
+			speed = Stats.PLAYER5SPEED;
+			knowlage = Stats.PLAYER5KNOWLAGE;
+			sanity = Stats.PLAYER5SANITY;
+		}
+		else if(player == 6){
+			mightTimesInit = mightTimes = Stats.PLAYER6MIGHT.start;
+			speedTimesInit = speedTimes = Stats.PLAYER6SPEED.start;
+			knowlageTimesInit = knowlageTimes = Stats.PLAYER6KNOWLAGE.start;
+			sanityTimesInit = sanityTimes = Stats.PLAYER6SANITY.start;
+			might = Stats.PLAYER6MIGHT;
+			speed = Stats.PLAYER6SPEED;
+			knowlage = Stats.PLAYER6KNOWLAGE;
+			sanity = Stats.PLAYER6SANITY;
+		}
+		else if(player == 7){
+			mightTimesInit = mightTimes = Stats.PLAYER7MIGHT.start;
+			speedTimesInit = speedTimes = Stats.PLAYER7SPEED.start;
+			knowlageTimesInit = knowlageTimes = Stats.PLAYER7KNOWLAGE.start;
+			sanityTimesInit = sanityTimes = Stats.PLAYER7SANITY.start;
+			might = Stats.PLAYER7MIGHT;
+			speed = Stats.PLAYER7SPEED;
+			knowlage = Stats.PLAYER7KNOWLAGE;
+			sanity = Stats.PLAYER7SANITY;
+		}
+		else if(player == 8){
+			mightTimesInit = mightTimes = Stats.PLAYER8MIGHT.start;
+			speedTimesInit = speedTimes = Stats.PLAYER8SPEED.start;
+			knowlageTimesInit = knowlageTimes = Stats.PLAYER8KNOWLAGE.start;
+			sanityTimesInit = sanityTimes = Stats.PLAYER8SANITY.start;
+			might = Stats.PLAYER8MIGHT;
+			speed = Stats.PLAYER8SPEED;
+			knowlage = Stats.PLAYER8KNOWLAGE;
+			sanity = Stats.PLAYER8SANITY;
+		}
+		else if(player == 9){
+			mightTimesInit = mightTimes = Stats.PLAYER9MIGHT.start;
+			speedTimesInit = speedTimes = Stats.PLAYER9SPEED.start;
+			knowlageTimesInit = knowlageTimes = Stats.PLAYER9KNOWLAGE.start;
+			sanityTimesInit = sanityTimes = Stats.PLAYER9SANITY.start;
+			might = Stats.PLAYER9MIGHT;
+			speed = Stats.PLAYER9SPEED;
+			knowlage = Stats.PLAYER9KNOWLAGE;
+			sanity = Stats.PLAYER9SANITY;
+		}
+		else if(player == 10){
+			mightTimesInit = mightTimes = Stats.PLAYER10MIGHT.start;
+			speedTimesInit = speedTimes = Stats.PLAYER10SPEED.start;
+			knowlageTimesInit = knowlageTimes = Stats.PLAYER10KNOWLAGE.start;
+			sanityTimesInit = sanityTimes = Stats.PLAYER10SANITY.start;
+			might = Stats.PLAYER10MIGHT;
+			speed = Stats.PLAYER10SPEED;
+			knowlage = Stats.PLAYER10KNOWLAGE;
+			sanity = Stats.PLAYER10SANITY;
+		}
+		else if(player == 11){
+			mightTimesInit = mightTimes = Stats.PLAYER11MIGHT.start;
+			speedTimesInit = speedTimes = Stats.PLAYER11SPEED.start;
+			knowlageTimesInit = knowlageTimes = Stats.PLAYER11KNOWLAGE.start;
+			sanityTimesInit = sanityTimes = Stats.PLAYER11SANITY.start;
+			might = Stats.PLAYER11MIGHT;
+			speed = Stats.PLAYER11SPEED;
+			knowlage = Stats.PLAYER11KNOWLAGE;
+			sanity = Stats.PLAYER11SANITY;
+		}
+		else{
+			mightTimesInit = mightTimes = Stats.PLAYER12MIGHT.start;
+			speedTimesInit = speedTimes = Stats.PLAYER12SPEED.start;
+			knowlageTimesInit = knowlageTimes = Stats.PLAYER12KNOWLAGE.start;
+			sanityTimesInit = sanityTimes = Stats.PLAYER12SANITY.start;
+			might = Stats.PLAYER12MIGHT;
+			speed = Stats.PLAYER12SPEED;
+			knowlage = Stats.PLAYER12KNOWLAGE;
+			sanity = Stats.PLAYER12SANITY;
+		}
+
+	}
 }

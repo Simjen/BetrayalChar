@@ -43,5 +43,7 @@
     <string name="resetSanity">Re Sanity</string>
     <string name="resetKnowlage">Re Knowlage</string>
     <string name="drop">Drop</string>
+    <string name="title_activity_player0">Player0</string>
+    <string name="title_activity_main_player">MainPlayer</string>
 
 </resources>

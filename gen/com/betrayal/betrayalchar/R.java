@@ -9,6 +9,39 @@ package com.betrayal.betrayalchar;
 
 public final class R {
     public static final class attr {
+        /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int exampleColor=0x7f010002;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int exampleDimension=0x7f010001;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int exampleDrawable=0x7f010003;
+        /** <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int exampleString=0x7f010000;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -27,9 +60,8 @@ public final class R {
         public static final int ic_launcher=0x7f020003;
     }
     public static final class id {
-        public static final int action_settings=0x7f08001c;
-        public static final int article_fragment=0x7f08001b;
-        public static final int attack=0x7f080012;
+        public static final int action_settings=0x7f080017;
+        public static final int attack=0x7f08000f;
         public static final int chooser=0x7f080000;
         public static final int dice1=0x7f080004;
         public static final int dice2=0x7f080003;
@@ -40,48 +72,44 @@ public final class R {
         public static final int dice7=0x7f080006;
         public static final int dice8=0x7f080009;
         public static final int drop=0x7f080015;
-        public static final int headlines_fragment=0x7f08001a;
-        public static final int knowlage_1=0x7f080010;
-        public static final int layout_player=0x7f080013;
+        public static final int layout_player=0x7f080010;
         public static final int main_layout=0x7f080001;
-        public static final int might_1=0x7f08000e;
-        public static final int mightbtn=0x7f08000d;
-        public static final int pickUp=0x7f08001d;
+        public static final int pickUp=0x7f080018;
         public static final int pickup=0x7f080014;
-        public static final int pupup_anchor=0x7f08000c;
+        public static final int pupup_anchor=0x7f08000a;
         public static final int reset_knowlage=0x7f080016;
-        public static final int reset_might=0x7f080018;
-        public static final int reset_sanity=0x7f080019;
-        public static final int reset_speed=0x7f080017;
-        public static final int roll_layout=0x7f08000a;
-        public static final int roll_layout_number=0x7f08000b;
-        public static final int sanity_1=0x7f080011;
-        public static final int speed_1=0x7f08000f;
+        public static final int reset_might=0x7f080012;
+        public static final int reset_sanity=0x7f080013;
+        public static final int reset_speed=0x7f080011;
+        public static final int single_spinner_knowlage=0x7f08000d;
+        public static final int single_spinner_might=0x7f08000b;
+        public static final int single_spinner_sanity=0x7f08000e;
+        public static final int single_spinner_speed=0x7f08000c;
     }
     public static final class layout {
-        public static final int activity_display_message=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int activity_player1=0x7f030002;
-        public static final int news_articles=0x7f030003;
-        public static final int simple_list_item_layout=0x7f030004;
+        public static final int activity_main=0x7f030000;
+        public static final int activity_player1=0x7f030001;
+        public static final int sample_scroling_counter_view=0x7f030002;
+        public static final int simple_list_item_layout=0x7f030003;
     }
     public static final class menu {
         public static final int display_message=0x7f070000;
         public static final int main=0x7f070001;
-        public static final int player1=0x7f070002;
-        public static final int player10=0x7f070003;
-        public static final int player11=0x7f070004;
-        public static final int player12=0x7f070005;
-        public static final int player2=0x7f070006;
-        public static final int player3=0x7f070007;
-        public static final int player4=0x7f070008;
-        public static final int player5=0x7f070009;
-        public static final int player6=0x7f07000a;
-        public static final int player7=0x7f07000b;
-        public static final int player8=0x7f07000c;
-        public static final int player9=0x7f07000d;
-        public static final int popup=0x7f07000e;
-        public static final int popup2=0x7f07000f;
+        public static final int main_player=0x7f070002;
+        public static final int player1=0x7f070003;
+        public static final int player10=0x7f070004;
+        public static final int player11=0x7f070005;
+        public static final int player12=0x7f070006;
+        public static final int player2=0x7f070007;
+        public static final int player3=0x7f070008;
+        public static final int player4=0x7f070009;
+        public static final int player5=0x7f07000a;
+        public static final int player6=0x7f07000b;
+        public static final int player7=0x7f07000c;
+        public static final int player8=0x7f07000d;
+        public static final int player9=0x7f07000e;
+        public static final int popup=0x7f07000f;
+        public static final int popup2=0x7f070010;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
@@ -114,6 +142,8 @@ public final class R {
         public static final int speed=0x7f050016;
         public static final int speed_roll=0x7f05001b;
         public static final int title_activity_display_message=0x7f050004;
+        public static final int title_activity_main_player=0x7f05002b;
+        public static final int title_activity_player0=0x7f05002a;
         public static final int title_activity_player1=0x7f050006;
         public static final int title_activity_player10=0x7f050012;
         public static final int title_activity_player11=0x7f050013;
@@ -155,4 +185,82 @@ public final class R {
          */
         public static final int AppTheme=0x7f060001;
     }
+    public static final class styleable {
+        /** Attributes that can be used with a ScrollingCounterView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #ScrollingCounterView_exampleColor com.betrayal.betrayalchar:exampleColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #ScrollingCounterView_exampleDimension com.betrayal.betrayalchar:exampleDimension}</code></td><td></td></tr>
+           <tr><td><code>{@link #ScrollingCounterView_exampleDrawable com.betrayal.betrayalchar:exampleDrawable}</code></td><td></td></tr>
+           <tr><td><code>{@link #ScrollingCounterView_exampleString com.betrayal.betrayalchar:exampleString}</code></td><td></td></tr>
+           </table>
+           @see #ScrollingCounterView_exampleColor
+           @see #ScrollingCounterView_exampleDimension
+           @see #ScrollingCounterView_exampleDrawable
+           @see #ScrollingCounterView_exampleString
+         */
+        public static final int[] ScrollingCounterView = {
+            0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.betrayal.betrayalchar.R.attr#exampleColor}
+          attribute's value can be found in the {@link #ScrollingCounterView} array.
+
+
+          <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:exampleColor
+        */
+        public static final int ScrollingCounterView_exampleColor = 2;
+        /**
+          <p>This symbol is the offset where the {@link com.betrayal.betrayalchar.R.attr#exampleDimension}
+          attribute's value can be found in the {@link #ScrollingCounterView} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:exampleDimension
+        */
+        public static final int ScrollingCounterView_exampleDimension = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.betrayal.betrayalchar.R.attr#exampleDrawable}
+          attribute's value can be found in the {@link #ScrollingCounterView} array.
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          @attr name android:exampleDrawable
+        */
+        public static final int ScrollingCounterView_exampleDrawable = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.betrayal.betrayalchar.R.attr#exampleString}
+          attribute's value can be found in the {@link #ScrollingCounterView} array.
+
+
+          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:exampleString
+        */
+        public static final int ScrollingCounterView_exampleString = 0;
+    };
 }

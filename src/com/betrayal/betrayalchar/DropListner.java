@@ -8,9 +8,9 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class DropListner implements OnMenuItemClickListener {
 	
-	Player0 p;
-	public DropListner(Player0 p){
-		this.p = p;
+	MainPlayer p;
+	public DropListner(MainPlayer mainPlayer){
+		this.p = mainPlayer;
 	}
 	
 	@Override

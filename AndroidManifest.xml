@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.betrayal.betrayalchar"
-    android:versionCode="4"
-    android:versionName="1.4" >
+    android:versionCode="5"
+    android:versionName="1.5" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="18" />
 
     <application
         android:allowBackup="true"
@@ -22,64 +22,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.betrayal.betrayalchar.DisplayMessageActivity"
-            android:label="@string/title_activity_display_message" >
-        </activity>
-        <activity
-            android:name="com.betrayal.betrayalchar.Player1"
-            android:label="@string/title_activity_player1" >
-        </activity>
-        <activity
-            android:name="com.betrayal.betrayalchar.Player2"
-            android:label="@string/title_activity_player2" >
-        </activity>
-        <activity
-            android:name="com.betrayal.betrayalchar.Player3"
-            android:label="@string/title_activity_player3" >
-        </activity>
-        <activity
-            android:name="com.betrayal.betrayalchar.Player4"
-            android:label="@string/title_activity_player4" >
-        </activity>
-        <activity
-            android:name="com.betrayal.betrayalchar.Player5"
-            android:label="@string/title_activity_player5" >
-        </activity>
-        <activity
-            android:name="com.betrayal.betrayalchar.Player6"
-            android:label="@string/title_activity_player6" >
-        </activity>
-        <activity
-            android:name="com.betrayal.betrayalchar.Player7"
-            android:label="@string/title_activity_player7" >
-        </activity>
-        <activity
-            android:name="com.betrayal.betrayalchar.Player8"
-            android:label="@string/title_activity_player8" >
-        </activity>
-        <activity
-            android:name="com.betrayal.betrayalchar.Player9"
-            android:label="@string/title_activity_player9" >
-        </activity>
-        <activity
-            android:name="com.betrayal.betrayalchar.Player10"
-            android:label="@string/title_activity_player10" >
-        </activity>
-        <activity
-            android:name="com.betrayal.betrayalchar.Player11"
-            android:label="@string/title_activity_player11" >
-        </activity>
-        <activity
-            android:name="com.betrayal.betrayalchar.Player12"
-            android:label="@string/title_activity_player12" >
-        </activity>
 
         <service
             android:name="com.betrayal.betrayalchar.Item"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="false" >
         </service>
+
+        <activity
+            android:name="com.betrayal.betrayalchar.MainPlayer"
+            android:label="@string/title_activity_main_player" >
+        </activity>
     </application>
 
 </manifest>

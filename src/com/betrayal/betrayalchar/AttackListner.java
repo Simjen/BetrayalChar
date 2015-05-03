@@ -8,9 +8,9 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class AttackListner implements OnMenuItemClickListener {
 	
-	Player0 p;
-	public AttackListner(Player0 p){
-		this.p = p;
+	MainPlayer p;
+	public AttackListner(MainPlayer mainPlayer){
+		this.p = mainPlayer;
 	}
 	@Override
 	public boolean onMenuItemClick(MenuItem item) {
