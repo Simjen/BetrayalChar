@@ -121,13 +121,13 @@ public class ScrollingCounterView extends View {
 		mCurrentDigit = newVal;
 
 		// Digit above - greater
-		mDigitAbove = mainPlayer.player.nextStat(statName);
+		mDigitAbove = digit + 1;
 
 		if(mDigitAbove > 8)
 			mDigitAbove = 8;
 
 		// digit below - lower
-		mDigitBelow = mainPlayer.player.prevStat(statName);
+		mDigitBelow = digit -1;
 
 		if(mDigitBelow < 0)
 			mDigitBelow = 0;
@@ -171,32 +171,32 @@ public class ScrollingCounterView extends View {
 			
 			// If we have scrolled an entire number, change numbers while 
 			// keeping the scroll
-//			if(Math.abs(totalDelta) > mHeight )
-//			{
-//				// need to either increase or decrease value
-//				float postDelta = Math.abs(totalDelta) - mHeight;
-//				
-//				if(totalDelta > 0)
-//				{
-//					// go DOWN a number
-//					setCurrentDigit(mDigitBelow);
-//					mTouchStartY -= mHeight;
-//					
-//					mDigitY -= postDelta;
-//					mDigitBelowY -= postDelta;
-//					mDigitAboveY -= postDelta;
-//				}
-//				else
-//				{
-//					// go UP a number
-//					setCurrentDigit(mDigitAbove);
-//					mTouchStartY += mHeight;
-//					
-//					mDigitY += postDelta;
-//					mDigitBelowY += postDelta;
-//					mDigitAboveY += postDelta;
-//				}
-//			}
+			if(Math.abs(totalDelta) > mHeight )
+			{
+				// need to either increase or decrease value
+				float postDelta = Math.abs(totalDelta) - mHeight;
+
+				if(totalDelta > 0)
+				{
+					// go DOWN a number
+					setCurrentDigit(mDigitBelow);
+					mTouchStartY -= mHeight;
+
+					mDigitY -= postDelta;
+					mDigitBelowY -= postDelta;
+					mDigitAboveY -= postDelta;
+				}
+				else
+				{
+					// go UP a number
+					setCurrentDigit(mDigitAbove);
+					mTouchStartY += mHeight;
+
+					mDigitY += postDelta;
+					mDigitBelowY += postDelta;
+					mDigitAboveY += postDelta;
+				}
+			}
 			
 			invalidate();
 			
@@ -217,11 +217,11 @@ public class ScrollingCounterView extends View {
 				// _increases_ the value
 				if(deltaY < 0)
 				{
-					newValue = mainPlayer.player.upStat(statName);
+					newValue ++;
 				}
 				else
 				{
-					newValue = mainPlayer.player.downStat(statName);
+					newValue --;
 				}
 			}
 			
