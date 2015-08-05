@@ -3,7 +3,7 @@ package com.betrayal.betrayalchar;
 /**
  * Created by Baljenurface on 05-05-2015.
  */
-public class Stat {
+public class Stat implements StatI {
     private int statIndex;
     private int[] statArray;
     private int statStart;
@@ -14,22 +14,27 @@ public class Stat {
         statArray = stat;
     }
 
+    @Override
     public void Increase(){
           statIndex ++;
     }
+    @Override
     public void Increase(int inc){
         statIndex += inc;
     }
 
+    @Override
     public void Decrease(int dec){
         statIndex -= dec;
     }
 
+    @Override
     public void Decrease(){
 
         statIndex --;
     }
 
+    @Override
     public int getStatValue(){
         if (statIndex > 8)
         return statArray[8];
@@ -38,16 +43,27 @@ public class Stat {
         else return statArray[statIndex];
     }
 
+    @Override
     public void resetStat(){
         statIndex = statStart;
     }
-    public int nextStat(){
-        return 0;
+    @Override
+    public Stat nextStat(){
+        return new Stat(statIndex + 1, statArray);
     }
 
-    public int prevStat(){
-        return 0;
+    @Override
+    public Stat prevStat(){
+        return new Stat(statIndex - 1, statArray);
     }
 
+    public int getStatIndex(){ return statIndex;}
+
+    public void setStatIndex(int index){ statIndex = index;}
+
+    @Override
+    public String toString() {
+        return Integer.toString(getStatValue());
+    }
 }
 

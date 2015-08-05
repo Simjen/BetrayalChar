@@ -18,10 +18,10 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 public class MainPlayer extends Activity {
 
 	public Player player;
-	public ScrollingCounterView sanityView;
-	public ScrollingCounterView knowlageView;
-	public ScrollingCounterView speedView;
-	public ScrollingCounterView mightView;
+	public StatView sanityView;
+	public StatView knowlageView;
+	public StatView speedView;
+	public StatView mightView;
 	public LinearLayout mainView;
 	public boolean rollVisible = false;
 	public ArrayList<Items> inventory = new ArrayList<Items>();
@@ -35,21 +35,21 @@ public class MainPlayer extends Activity {
 		int number = getIntent().getIntExtra("PLAYERNUMBER", 0);
 		String name = MainActivity.names[number];
 		setTitle(name);
-		player = new Player(number);
+		player = new Player(number+1);
 		res = getResources();
-		mightView = (ScrollingCounterView) findViewById(R.id.single_spinner_might);
-		speedView = (ScrollingCounterView) findViewById(R.id.single_spinner_speed);
-		knowlageView = (ScrollingCounterView) findViewById(R.id.single_spinner_knowlage);
-		sanityView = (ScrollingCounterView) findViewById(R.id.single_spinner_sanity);
-		mightView.setStat("might");
-		speedView.setStat("speed");
-		sanityView.setStat("sanity");
-		knowlageView.setStat("knowlage");
+		mightView = (StatView) findViewById(R.id.single_spinner_might);
+		speedView = (StatView) findViewById(R.id.single_spinner_speed);
+		knowlageView = (StatView) findViewById(R.id.single_spinner_knowlage);
+		sanityView = (StatView) findViewById(R.id.single_spinner_sanity);
+		mightView.setmCurrentStat(player.mightStat);
+		speedView.setmCurrentStat(player.speedStat);
+		sanityView.setmCurrentStat(player.sanityStat);
+		knowlageView.setmCurrentStat(player.knowlageStat);
 		
-		mightView.setCurrentDigit(player.getMight());
-		speedView.setCurrentDigit(player.getSpeed());
-		knowlageView.setCurrentDigit(player.getKnowlage());
-		sanityView.setCurrentDigit(player.getSanity());
+		mightView.setCurrentDigit(player.mightStat);
+		speedView.setCurrentDigit(player.speedStat);
+		knowlageView.setCurrentDigit(player.knowlageStat);
+		sanityView.setCurrentDigit(player.sanityStat);
 	}
 
 
@@ -67,25 +67,26 @@ public class MainPlayer extends Activity {
 		return true;
 	}
 
+
 	public void resetMight(View v){
-		player.mightTimes = player.mightTimesInit;
-		mightView.setCurrentDigit(player.getMight());
+		player.mightStat.resetStat();
+		mightView.setCurrentDigit(player.mightStat);
 
 	}
 
 	public void resetSpeed(View v){
-		player.speedTimes = player.speedTimesInit;
-		speedView.setCurrentDigit(player.getSpeed());
+		player.speedStat.resetStat();
+		speedView.setCurrentDigit(player.speedStat);
 	}
 
 	public void resetSanity(View v){
-		player.sanityTimes = player.sanityTimesInit;
-		sanityView.setCurrentDigit(player.getSanity());
+		player.sanityStat.resetStat();
+		sanityView.setCurrentDigit(player.sanityStat);
 	}
 
 	public void resetKnowlage(View v){
-		player.knowlageTimes = player.knowlageTimesInit;
-		knowlageView.setCurrentDigit(player.getKnowlage());
+		player.knowlageStat.resetStat();
+		knowlageView.setCurrentDigit(player.knowlageStat);
 	}
 
 	public void mightAttack(Items i){
@@ -148,9 +149,10 @@ public class MainPlayer extends Activity {
 	private void setPopup(int menuRes, View v, OnMenuItemClickListener listner, boolean isAttack){
 		PopupMenu popup = new PopupMenu(this, v);
 		if(isAttack){
+			popup.getMenu().add("0 Attack");
 			for( int i = 0; i < inventory.size(); i++){
 				if(!inventory.get(i).useable){
-					popup.getMenu().add(Integer.toString(i) + " " + inventory.get(i).itemName);
+					popup.getMenu().add(Integer.toString(i+1) + " " + inventory.get(i).itemName);
 				}
 			}
 			popup.setOnMenuItemClickListener(listner);
@@ -180,29 +182,31 @@ public class MainPlayer extends Activity {
 	}
 	
 	public void setDice(ArrayList<Integer> diceRoll){
-		ImageButton dice = new ImageButton(this);
+		ImageButton dice;
 		for(int i = 0; i < diceRoll.size(); i++){
-			if(diceRoll.get(i).intValue() == 0){
+			if(diceRoll.get(i) == 0){
 				dice = (ImageButton) findDice(i);
 				dice.setImageDrawable(res.getDrawable(R.drawable.dice0));
-				dice.setVisibility(0);
+				dice.setVisibility(View.VISIBLE);
 			}
-			else if(diceRoll.get(i).intValue() == 1){
+			else if(diceRoll.get(i) == 1){
 				dice = (ImageButton) findDice(i);
 				dice.setImageDrawable(res.getDrawable(R.drawable.dice1));
-				dice.setVisibility(0);
+				dice.setVisibility(View.VISIBLE);
 			}
 			else{
 				dice = (ImageButton) findDice(i);
 				dice.setImageDrawable(res.getDrawable(R.drawable.dice2));
-				dice.setVisibility(0);
+				dice.setVisibility(View.VISIBLE);
 			}
 		}
 	}
 
 	public void unsetDice(){
 		for(int i = 0; i < 8; i++){
-			((ImageButton)findDice(i)).setVisibility(4);
+			View dice = findDice(i);
+			dice.setVisibility(View.INVISIBLE);
+			dice.invalidate();
 		}
 	}
 

@@ -62,26 +62,27 @@ public enum Items {
 			if(weaponLoss.equals("might")){			
 				for(int i = 0; i<useRoll[1]; i++){
 					mainPlayer.player.mightStat.Decrease();
-					mainPlayer.mightView.setCurrentDigit(mainPlayer.player.getMight());
+					mainPlayer.mightView.setCurrentDigit(mainPlayer.player.mightStat);
 				}
 			}
 			else if(weaponLoss.equals("speed")){
 				for(int i = 0; i<useRoll[1]; i++){
 					mainPlayer.player.speedStat.Decrease();
-					mainPlayer.speedView.setCurrentDigit(mainPlayer.player.getSpeed());
+					mainPlayer.speedView.setCurrentDigit(mainPlayer.player.speedStat);
 				}
 			}
 			else if(weaponLoss.equals("sanity")){
 				
 				for(int i = 0; i<useRoll[1]; i++){
 					mainPlayer.player.sanityStat.Decrease();
-					mainPlayer.sanityView.setCurrentDigit(mainPlayer.player.getSanity());
+					mainPlayer.sanityView.setCurrentDigit(mainPlayer.player.sanityStat
+					);
 				}
 			}
 			else if(weaponLoss.equals("knowlage")){
 				for(int i = 0; i<useRoll[1]; i++){
 					mainPlayer.player.knowlageStat.Decrease();
-					mainPlayer.knowlageView.setCurrentDigit(mainPlayer.player.getKnowlage());
+					mainPlayer.knowlageView.setCurrentDigit(mainPlayer.player.knowlageStat);
 				}
 			}
 			

@@ -11,10 +11,13 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.io.Console;
+
 /**
- * TODO: document your custom view class.
+ *
+ * The mCurrentStat wiev is for taking care of mCurrentStat things and showing the stats
  */
-public class ScrollingCounterView extends View {
+public class StatView extends View{
 	private float mTouchStartY;
 	private float mTouchLastY;
 	private float mDigitY;
@@ -32,25 +35,29 @@ public class ScrollingCounterView extends View {
 	private String mDigitBelowString;
 	private int mWidth;
 	private MainPlayer mainPlayer;
-	private String statName = "";
+    private Stat mPlayerStat;
+	private Stat mCurrentStat;
+    private Stat mStatBelow;
+    private Stat mStatAbove;
 
-	public ScrollingCounterView(Context context) {
+	public StatView(Context context) {
 		super(context);
 		initialize();
 	}
 
-	public ScrollingCounterView(Context context, AttributeSet attrs) {
+	public StatView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initialize();
 	}
 
-	public ScrollingCounterView(Context context, AttributeSet attrs, int defStyle) {
+	public StatView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		initialize();
 	}
 	
-	public void setStat(String s){
-		statName = s;
+	public void setmCurrentStat(Stat s){
+		mPlayerStat = s;
+        mCurrentStat = s.nextStat().prevStat();
 	}
 
 	private void initialize()
@@ -113,24 +120,23 @@ public class ScrollingCounterView extends View {
 		return result;
 	}
 
-	public void setCurrentDigit(int digit)
+
+	public void setCurrentDigit(Stat stat)
 	{
 		// Basic range limiting
-		int newVal = digit;
 
-		mCurrentDigit = newVal;
+		//animate change
+        mCurrentStat = stat;
+        mCurrentDigit = stat.getStatValue();
 
 		// Digit above - greater
-		mDigitAbove = digit + 1;
+        mStatAbove = stat.nextStat();
+		mDigitAbove = mStatAbove.getStatValue();
 
-		if(mDigitAbove > 8)
-			mDigitAbove = 8;
 
 		// digit below - lower
-		mDigitBelow = digit -1;
-
-		if(mDigitBelow < 0)
-			mDigitBelow = 0;
+        mStatBelow = stat.prevStat();
+		mDigitBelow = mStatBelow.getStatValue();
 
 		mDigitString = String.valueOf(mCurrentDigit);
 		mDigitAboveString = String.valueOf(mDigitAbove);
@@ -141,13 +147,11 @@ public class ScrollingCounterView extends View {
 	}
 
 
-
-	@Override
+    @Override
 	public boolean onTouchEvent(MotionEvent event)
 	{
 		// Pull out the Action value from the event for processing
 		int action = event.getAction();
-		
 		if(action == MotionEvent.ACTION_DOWN)
 		{
 			mTouchStartY = event.getY();
@@ -161,7 +165,7 @@ public class ScrollingCounterView extends View {
 			
 			float delta = mTouchLastY - currentY;
 			mTouchLastY = currentY;
-			
+
 			mDigitY -= delta;
 			mDigitAboveY -= delta;
 			mDigitBelowY -= delta;
@@ -179,7 +183,8 @@ public class ScrollingCounterView extends View {
 				if(totalDelta > 0)
 				{
 					// go DOWN a number
-					setCurrentDigit(mDigitBelow);
+
+					setCurrentDigit(mStatBelow);
 					mTouchStartY -= mHeight;
 
 					mDigitY -= postDelta;
@@ -189,7 +194,8 @@ public class ScrollingCounterView extends View {
 				else
 				{
 					// go UP a number
-					setCurrentDigit(mDigitAbove);
+
+					setCurrentDigit(mStatAbove);
 					mTouchStartY += mHeight;
 
 					mDigitY += postDelta;
@@ -209,23 +215,24 @@ public class ScrollingCounterView extends View {
 			// delta: negative means a down 'scroll'
 			float deltaY = mTouchStartY - currentY;
 			
-			int newValue = mCurrentDigit;
-			
+
 			if(Math.abs(deltaY) > (mHeight / 3) )
 			{
 				// higher numbers are 'above' the current, so a scroll down 
 				// _increases_ the value
 				if(deltaY < 0)
 				{
-					newValue ++;
+                    mCurrentStat = mStatAbove;
+					mPlayerStat.setStatIndex(mCurrentStat.getStatIndex());
 				}
 				else
 				{
-					newValue --;
+                    mCurrentStat = mStatBelow;
+					mPlayerStat.setStatIndex(mCurrentStat.getStatIndex());
 				}
 			}
-			
-			setCurrentDigit(newValue);
+			mPlayerStat.setStatIndex(mCurrentStat.getStatIndex());
+			setCurrentDigit(mCurrentStat);
 			
 			return true;
 		}

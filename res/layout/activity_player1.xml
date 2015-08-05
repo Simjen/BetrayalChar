@@ -133,7 +133,7 @@
                     android:layout_height="100dp"
                     android:orientation="horizontal" >
 
-                    <com.betrayal.betrayalchar.ScrollingCounterView
+                    <com.betrayal.betrayalchar.StatView
                         android:id="@+id/single_spinner_might"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent" />
@@ -160,7 +160,7 @@
                     android:layout_height="100dp"
                     android:orientation="horizontal" >
 
-                    <com.betrayal.betrayalchar.ScrollingCounterView
+                    <com.betrayal.betrayalchar.StatView
                         android:id="@+id/single_spinner_speed"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent" />
@@ -187,7 +187,7 @@
                     android:layout_height="100dp"
                     android:orientation="horizontal" >
 
-                    <com.betrayal.betrayalchar.ScrollingCounterView
+                    <com.betrayal.betrayalchar.StatView
                         android:id="@+id/single_spinner_knowlage"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent" />
@@ -214,7 +214,7 @@
                     android:layout_height="100dp"
                     android:orientation="horizontal" >
 
-                    <com.betrayal.betrayalchar.ScrollingCounterView
+                    <com.betrayal.betrayalchar.StatView
                         android:id="@+id/single_spinner_sanity"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent" />

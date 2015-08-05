@@ -192,22 +192,22 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #ScrollingCounterView_exampleColor com.betrayal.betrayalchar:exampleColor}</code></td><td></td></tr>
-           <tr><td><code>{@link #ScrollingCounterView_exampleDimension com.betrayal.betrayalchar:exampleDimension}</code></td><td></td></tr>
-           <tr><td><code>{@link #ScrollingCounterView_exampleDrawable com.betrayal.betrayalchar:exampleDrawable}</code></td><td></td></tr>
-           <tr><td><code>{@link #ScrollingCounterView_exampleString com.betrayal.betrayalchar:exampleString}</code></td><td></td></tr>
+           <tr><td><code>{@link #StatView_exampleColor com.betrayal.betrayalchar:exampleColor}</code></td><td></td></tr>
+           <tr><td><code>{@link #StatView_exampleDimension com.betrayal.betrayalchar:exampleDimension}</code></td><td></td></tr>
+           <tr><td><code>{@link #StatView_exampleDrawable com.betrayal.betrayalchar:exampleDrawable}</code></td><td></td></tr>
+           <tr><td><code>{@link #StatView_exampleString com.betrayal.betrayalchar:exampleString}</code></td><td></td></tr>
            </table>
-           @see #ScrollingCounterView_exampleColor
-           @see #ScrollingCounterView_exampleDimension
-           @see #ScrollingCounterView_exampleDrawable
-           @see #ScrollingCounterView_exampleString
+           @see #StatView_exampleColor
+           @see #StatView_exampleDimension
+           @see #StatView_exampleDrawable
+           @see #StatView_exampleString
          */
-        public static final int[] ScrollingCounterView = {
+        public static final int[] StatView = {
             0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003
         };
         /**
           <p>This symbol is the offset where the {@link com.betrayal.betrayalchar.R.attr#exampleColor}
-          attribute's value can be found in the {@link #ScrollingCounterView} array.
+          attribute's value can be found in the {@link #StatView} array.
 
 
           <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
@@ -219,10 +219,10 @@ theme attribute (in the form
 containing a value of this type.
           @attr name android:exampleColor
         */
-        public static final int ScrollingCounterView_exampleColor = 2;
+        public static final int StatView_exampleColor = 2;
         /**
           <p>This symbol is the offset where the {@link com.betrayal.betrayalchar.R.attr#exampleDimension}
-          attribute's value can be found in the {@link #ScrollingCounterView} array.
+          attribute's value can be found in the {@link #StatView} array.
 
 
           <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
@@ -235,10 +235,10 @@ theme attribute (in the form
 containing a value of this type.
           @attr name android:exampleDimension
         */
-        public static final int ScrollingCounterView_exampleDimension = 1;
+        public static final int StatView_exampleDimension = 1;
         /**
           <p>This symbol is the offset where the {@link com.betrayal.betrayalchar.R.attr#exampleDrawable}
-          attribute's value can be found in the {@link #ScrollingCounterView} array.
+          attribute's value can be found in the {@link #StatView} array.
 
 
           <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
@@ -247,10 +247,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
           @attr name android:exampleDrawable
         */
-        public static final int ScrollingCounterView_exampleDrawable = 3;
+        public static final int StatView_exampleDrawable = 3;
         /**
           <p>This symbol is the offset where the {@link com.betrayal.betrayalchar.R.attr#exampleString}
-          attribute's value can be found in the {@link #ScrollingCounterView} array.
+          attribute's value can be found in the {@link #StatView} array.
 
 
           <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
@@ -261,6 +261,6 @@ theme attribute (in the form
 containing a value of this type.
           @attr name android:exampleString
         */
-        public static final int ScrollingCounterView_exampleString = 0;
+        public static final int StatView_exampleString = 0;
     };
 }

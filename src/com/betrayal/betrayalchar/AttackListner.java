@@ -15,10 +15,15 @@ public class AttackListner implements OnMenuItemClickListener {
 	@Override
 	public boolean onMenuItemClick(MenuItem item) {
 		int i = Integer.parseInt(((String) item.getTitle()).substring(0, 1));
-		p.mightAttack(p.inventory.get(i));
-		
+		if(i == 0){
+			p.mightDefence(p.findViewById(R.id.main_layout));
+		}
+		else {
+			p.mightAttack(p.inventory.get(i - 1));
+		}
 		return true;
 	}
+
 }
 
 
