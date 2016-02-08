@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.res.Resources;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -35,6 +36,7 @@ public class MainPlayer extends Activity {
 		int number = getIntent().getIntExtra("PLAYERNUMBER", 0);
 		String name = MainActivity.names[number];
 		setTitle(name);
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		player = new Player(number+1);
 		res = getResources();
 		mightView = (StatView) findViewById(R.id.single_spinner_might);
@@ -204,7 +206,7 @@ public class MainPlayer extends Activity {
 
 	public void unsetDice(){
 		for(int i = 0; i < 8; i++){
-			View dice = findDice(i);
+			ImageButton dice = (ImageButton) findDice(i);
 			dice.setVisibility(View.INVISIBLE);
 			dice.invalidate();
 		}

@@ -16,7 +16,7 @@ public class DropListner implements OnMenuItemClickListener {
 	@Override
 	public boolean onMenuItemClick(MenuItem item) {
 		int i = Integer.parseInt(((String) item.getTitle()).substring(0, 1));
-		p.inventory.remove(i);
+		p.inventory.remove(i-1);
 		
 		return true;
 	}

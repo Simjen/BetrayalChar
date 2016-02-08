@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 
 public enum Items {
-	//ITEMS (might, speed, knowalge, useable, rollName, weaponloss, itemName, 
+	//ITEMS (might, speed, knowalge, useable, rollName, weaponloss, itemName, attack, statloss)
 	blodDagger(0, 0, 0, 0, false, "", "speed","BlodDagger", 3, 1),
 	sacrificialDagger(0,0,0,0,false, "", "","SacrificialDagger", 3),
 	spear(0,0,0,0,false,"","","Spear",2),
@@ -20,7 +20,7 @@ public enum Items {
 	public String itemName;
 	public int[] useRoll;
 	
-	private Items(int might, int speed, int sanity, int knowlage, boolean useable, String rollName, String weaponLoss, String itemName, int... useRoll) {
+	Items(int might, int speed, int sanity, int knowlage, boolean useable, String rollName, String weaponLoss, String itemName, int... useRoll) {
 		this.might = might;
 		this.speed = speed;
 		this.sanity = sanity;
