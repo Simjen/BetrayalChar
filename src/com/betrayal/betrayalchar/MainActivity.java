@@ -1,5 +1,6 @@
 package com.betrayal.betrayalchar;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -24,11 +25,21 @@ public class MainActivity extends Activity{
 	    public  void runActivity(int p){
 	    	Intent i = new Intent(MainActivity.this, MainPlayer.class);
 			i.putExtra("PLAYERNUMBER", p);
-			startActivity(i);
+			startActivityForResult(i,0);
 		}
 	};
-	
-	@Override
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        for(String s : names){
+            SharedPreferences.Editor edit = getSharedPreferences(s,0).edit();
+            edit.clear();
+            edit.commit();
+        }
+    }
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);

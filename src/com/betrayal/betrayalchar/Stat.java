@@ -1,9 +1,20 @@
 package com.betrayal.betrayalchar;
 
+import java.io.Serializable;
+
 /**
  * Created by Baljenurface on 05-05-2015.
  */
-public class Stat implements StatI {
+public class Stat implements StatI{
+
+    public int[] getStatArray() {
+        return statArray;
+    }
+
+    public int getStatStart() {
+        return statStart;
+    }
+
     private int statIndex;
     private int[] statArray;
     private int statStart;

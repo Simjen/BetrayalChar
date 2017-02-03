@@ -81,8 +81,8 @@ public enum Items {
 			}
 			else if(weaponLoss.equals("knowlage")){
 				for(int i = 0; i<useRoll[1]; i++){
-					mainPlayer.player.knowlageStat.Decrease();
-					mainPlayer.knowlageView.setCurrentDigit(mainPlayer.player.knowlageStat);
+					mainPlayer.player.knowledgeStat.Decrease();
+					mainPlayer.knowlageView.setCurrentDigit(mainPlayer.player.knowledgeStat);
 				}
 			}
 			

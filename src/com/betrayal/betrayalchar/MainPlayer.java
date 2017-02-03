@@ -1,13 +1,19 @@
 package com.betrayal.betrayalchar;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.res.Resources;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,25 +25,35 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 public class MainPlayer extends Activity {
 
 	public Player player;
+	String name;
 	public StatView sanityView;
 	public StatView knowlageView;
 	public StatView speedView;
 	public StatView mightView;
+	private File playerStatFile;
 	public LinearLayout mainView;
 	public boolean rollVisible = false;
-	public ArrayList<Items> inventory = new ArrayList<Items>();
+	public ArrayList<Items> inventory = new ArrayList<>();
 	private Resources res;
 	
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_player1);
 		int number = getIntent().getIntExtra("PLAYERNUMBER", 0);
-		String name = MainActivity.names[number];
+		name = MainActivity.names[number];
 		setTitle(name);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		player = new Player(number+1);
+		// Setup Shared Preferences for each name
+		SharedPreferences prefs = getSharedPreferences(name,0);
+		player.mightStat.setStatIndex(prefs.getInt("mightinit", player.mightStat.getStatIndex()));
+		player.speedStat.setStatIndex(prefs.getInt("speedinit", player.speedStat.getStatIndex()));
+	 	player.knowledgeStat.setStatIndex(prefs.getInt("knowledgeinit", player.knowledgeStat.getStatIndex()));
+		player.sanityStat.setStatIndex(prefs.getInt("sanityinit", player.sanityStat.getStatIndex()));
+
 		res = getResources();
 		mightView = (StatView) findViewById(R.id.single_spinner_might);
 		speedView = (StatView) findViewById(R.id.single_spinner_speed);
@@ -46,27 +62,24 @@ public class MainPlayer extends Activity {
 		mightView.setmCurrentStat(player.mightStat);
 		speedView.setmCurrentStat(player.speedStat);
 		sanityView.setmCurrentStat(player.sanityStat);
-		knowlageView.setmCurrentStat(player.knowlageStat);
-		
+		knowlageView.setmCurrentStat(player.knowledgeStat);
 		mightView.setCurrentDigit(player.mightStat);
 		speedView.setCurrentDigit(player.speedStat);
-		knowlageView.setCurrentDigit(player.knowlageStat);
+		knowlageView.setCurrentDigit(player.knowledgeStat);
 		sanityView.setCurrentDigit(player.sanityStat);
 	}
 
 
-
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
-	protected void onResume(){
-		super.onResume();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.player1, menu);
-		return true;
+	protected void onDestroy() {
+		super.onDestroy();
+		SharedPreferences prefs = getSharedPreferences(name,0);
+		SharedPreferences.Editor edit = prefs.edit();
+		edit.putInt("mightinit", player.mightStat.getStatIndex());
+		edit.putInt("speedinit", player.speedStat.getStatIndex());
+		edit.putInt("knowledgeinit", player.knowledgeStat.getStatIndex());
+		edit.putInt("sanityinit", player.sanityStat.getStatIndex());
+		edit.commit();
 	}
 
 
@@ -87,8 +100,8 @@ public class MainPlayer extends Activity {
 	}
 
 	public void resetKnowlage(View v){
-		player.knowlageStat.resetStat();
-		knowlageView.setCurrentDigit(player.knowlageStat);
+		player.knowledgeStat.resetStat();
+		knowlageView.setCurrentDigit(player.knowledgeStat);
 	}
 
 	public void mightAttack(Items i){
