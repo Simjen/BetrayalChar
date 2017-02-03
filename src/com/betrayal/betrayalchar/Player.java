@@ -11,7 +11,6 @@ public class Player {
 	public Stat sanityStat;
 	public int omens = 0;
 	private static Random rand = new Random();
-	private ArrayList<Items> useableItems = new ArrayList<Items>();
 
 
 	public static ArrayList<Integer> doRoll(int r){
@@ -69,27 +68,7 @@ public class Player {
 	public int getSanity(){
 			return sanityStat.getStatValue();
 	}
-	
-	public void pickUpItem(Items i){
-		mightStat.Increase(i.might);
-		speedStat.Increase(i.speed);
-		sanityStat.Increase(i.sanity);
-		knowledgeStat.Increase(i.knowlage);
 
-		if (i.useable){
-			useableItems.add(i);
-		}
-	}
-	
-	public void dropItem(Items i){
-		mightStat.Decrease(i.might);
-		sanityStat.Decrease(i.sanity);
-		speedStat.Decrease(i.speed);
-		knowledgeStat.Decrease(i.knowlage);
-		if (i.useable){
-			useableItems.remove(i);
-		}
-	}
 	
 	public Player(int player){
 		if(player == 1){

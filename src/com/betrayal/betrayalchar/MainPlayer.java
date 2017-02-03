@@ -1,37 +1,29 @@
 package com.betrayal.betrayalchar;
 
-import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.res.Resources;
-import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 
 public class MainPlayer extends Activity {
 
 	public Player player;
-	String name;
+	private String name;
 	public StatView sanityView;
-	public StatView knowlageView;
+	public StatView knowledgeView;
 	public StatView speedView;
 	public StatView mightView;
-	private File playerStatFile;
-	public LinearLayout mainView;
 	public boolean rollVisible = false;
 	public ArrayList<Items> inventory = new ArrayList<>();
 	private Resources res;
@@ -57,15 +49,15 @@ public class MainPlayer extends Activity {
 		res = getResources();
 		mightView = (StatView) findViewById(R.id.single_spinner_might);
 		speedView = (StatView) findViewById(R.id.single_spinner_speed);
-		knowlageView = (StatView) findViewById(R.id.single_spinner_knowlage);
+		knowledgeView = (StatView) findViewById(R.id.single_spinner_knowlage);
 		sanityView = (StatView) findViewById(R.id.single_spinner_sanity);
 		mightView.setmCurrentStat(player.mightStat);
 		speedView.setmCurrentStat(player.speedStat);
 		sanityView.setmCurrentStat(player.sanityStat);
-		knowlageView.setmCurrentStat(player.knowledgeStat);
+		knowledgeView.setmCurrentStat(player.knowledgeStat);
 		mightView.setCurrentDigit(player.mightStat);
 		speedView.setCurrentDigit(player.speedStat);
-		knowlageView.setCurrentDigit(player.knowledgeStat);
+		knowledgeView.setCurrentDigit(player.knowledgeStat);
 		sanityView.setCurrentDigit(player.sanityStat);
 	}
 
@@ -101,7 +93,7 @@ public class MainPlayer extends Activity {
 
 	public void resetKnowlage(View v){
 		player.knowledgeStat.resetStat();
-		knowlageView.setCurrentDigit(player.knowledgeStat);
+		knowledgeView.setCurrentDigit(player.knowledgeStat);
 	}
 
 	public void mightAttack(Items i){
@@ -251,6 +243,60 @@ public class MainPlayer extends Activity {
 			return findViewById(R.id.dice8);
 		}
 	}
+ /*-------------------------------
+ --------------Listners-----------
+ ---------------------------------
+   */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public class AttackListner implements OnMenuItemClickListener {
 
+		MainPlayer p;
+		public AttackListner(MainPlayer mainPlayer){
+			this.p = mainPlayer;
+		}
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			int i = Integer.parseInt(((String) item.getTitle()).substring(0, 1));
+			if(i == 0){
+				p.mightDefence(p.findViewById(R.id.main_layout));
+			}
+			else {
+				p.mightAttack(p.inventory.get(i - 1));
+			}
+			return true;
+		}
 
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public class DropListner implements OnMenuItemClickListener {
+
+		MainPlayer p;
+		public DropListner(MainPlayer mainPlayer){
+			this.p = mainPlayer;
+		}
+
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			int i = Integer.parseInt(((String) item.getTitle()).substring(0, 1));
+			p.inventory.remove(i-1);
+
+			return true;
+		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public class PickupListner implements OnMenuItemClickListener {
+
+		MainPlayer p;
+		public PickupListner(MainPlayer mainPlayer){
+			this.p = mainPlayer;
+		}
+		@Override
+		public boolean onMenuItemClick(MenuItem item) {
+			int i = Integer.parseInt(((String) item.getTitle()).substring(0, 1));
+			p.inventory.add(Items.getItem(i-1));
+			return true;
+		}
+	}
 }
