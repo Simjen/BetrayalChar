@@ -371,4 +371,24 @@ public class MainPlayer extends Activity {
 			return true;
 		}
 	}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.omen_roll:
+                unsetDice();
+                ArrayList<Integer> diceRoll = player.doHauntRoll();
+                setDice(diceRoll);
+        }
+        return true;
+    }
+
 }

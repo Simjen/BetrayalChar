@@ -49,7 +49,7 @@ public class Player {
 	}
 
 	public ArrayList<Integer> doHauntRoll(){
-		return new ArrayList<Integer>();
+		return doRoll(6);
 	}
 
 	public int getMight(){
