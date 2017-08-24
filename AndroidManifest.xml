@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="26" />
 
     <application
         android:allowBackup="true"
@@ -22,12 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name="com.betrayal.betrayalchar.Item"
-            android:enabled="true"
-            android:exported="false" >
-        </service>
 
         <activity
             android:name="com.betrayal.betrayalchar.MainPlayer"

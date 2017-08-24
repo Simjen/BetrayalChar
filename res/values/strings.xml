@@ -34,11 +34,11 @@
     <string name="roll_text">Your Roll Is: </string>
     <string name="might_def">Might Def</string>
     <string name="pickup">PickUp</string>
-    <string name="attack">0 Attack</string>
-    <string name="axe">3 Axe</string>
-    <string name="spear">4 Spear</string>
-    <string name="bloddagger">1 BlodDagger</string>
-    <string name="sacrificialdagger">2 SacrificialDagger</string>
+    <string name="attack">Attack</string>
+    <string name="axe">Axe</string>
+    <string name="spear">Spear</string>
+    <string name="bloddagger">BlodDagger</string>
+    <string name="sacrificialdagger">SacrificialDagger</string>
     <string name="resetMight">Re Might</string>
     <string name="resetSpeed">Re Speed</string>
     <string name="resetSanity">Re Sanity</string>

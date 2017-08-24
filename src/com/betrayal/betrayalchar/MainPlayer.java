@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.res.Resources;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -102,15 +103,7 @@ public class MainPlayer extends Activity {
 		setDice(diceRoll);
 	}
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public void mightAttackBtn(View v){
-		if(inventory.isEmpty()){
-			mightDefence(findViewById(R.id.main_layout));
-		}
-		else{
-			setPopup(R.menu.popup, v, new AttackListner(this), true);
-		}
-	}
+
 
 	public void mightDefence(View v){
 		unsetDice();
@@ -143,34 +136,48 @@ public class MainPlayer extends Activity {
 		player.doHauntRoll();
 		rollVisible = true;
 	}
-
-	public void pickUp(View v){
-		setPopup(R.menu.popup2, v, new PickupListner(this), false);
-
-	}
-	public void drop(View v){
-		setPopup(R.menu.popup, v, new DropListner(this), true);
-	}
+    private enum Popup{
+	    Attack,
+        Pickup,
+        Drop
+    }
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setPopup(int menuRes, View v, OnMenuItemClickListener listner, boolean isAttack){
-		PopupMenu popup = new PopupMenu(this, v);
-		if(isAttack){
-			popup.getMenu().add("0 Attack");
-			for( int i = 0; i < inventory.size(); i++){
-				if(!inventory.get(i).useable){
-					popup.getMenu().add(Integer.toString(i+1) + " " + inventory.get(i).itemName);
-				}
-			}
-			popup.setOnMenuItemClickListener(listner);
-			popup.show();
-		}
-		else{
-			popup.getMenuInflater().inflate(menuRes, popup.getMenu());
-			popup.setOnMenuItemClickListener(listner);
-			popup.show();
-		}
-	}
+	private void setPopup(View v, OnMenuItemClickListener listner, Popup placement){
+        PopupMenu popup = new PopupMenu(this, v);
+        if(placement == Popup.Pickup){
+            popup.getMenu().add(Menu.NONE,R.id.axe,Menu.NONE,"Axe");;
+            popup.getMenu().add(Menu.NONE,R.id.spear,Menu.NONE,"Spear");
+            popup.getMenu().add(Menu.NONE,R.id.bloodDagger,Menu.NONE,"BloodDagger");
+            popup.getMenu().add(Menu.NONE,R.id.sacrificialDagger,Menu.NONE,"SacrificialDagger");
+        }
+        else {
+            if(placement == Popup.Attack) {
+                popup.getMenu().add(Menu.NONE,R.id.attack,Menu.NONE,"Attack");
+            }
+            for (Items item: inventory) {
+                if (!item.useable) {
+                    switch (item.itemName) {
+                        case "Axe":
+                            popup.getMenu().add(Menu.NONE,R.id.axe,Menu.NONE,"Axe");;
+                            break;
+                        case "Spear":
+                            popup.getMenu().add(Menu.NONE,R.id.spear,Menu.NONE,"Spear");
+                            break;
+                        case "BlodDagger":
+                            popup.getMenu().add(Menu.NONE,R.id.bloodDagger,Menu.NONE,"BloodDagger");
+                            break;
+                        case "SacrificialDagger":
+                            popup.getMenu().add(Menu.NONE,R.id.sacrificialDagger,Menu.NONE,"SacrificialDagger");
+                            break;
+                    }
+                }
+            }
+        }
+        popup.setOnMenuItemClickListener(listner);
+        popup.show();
+    }
+
 
 	public void newRoll(View v){
 		ImageButton ib = (ImageButton) v;
@@ -247,6 +254,16 @@ public class MainPlayer extends Activity {
  --------------Listners-----------
  ---------------------------------
    */
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public void mightAttackBtn(View v){
+		if(inventory.isEmpty()){
+			mightDefence(findViewById(R.id.main_layout));
+		}
+		else{
+			setPopup(v, new AttackListner(this), Popup.Attack);
+		}
+	}
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public class AttackListner implements OnMenuItemClickListener {
 
@@ -255,17 +272,38 @@ public class MainPlayer extends Activity {
 			this.p = mainPlayer;
 		}
 		@Override
-		public boolean onMenuItemClick(MenuItem item) {
-			int i = Integer.parseInt(((String) item.getTitle()).substring(0, 1));
-			if(i == 0){
-				p.mightDefence(p.findViewById(R.id.main_layout));
-			}
-			else {
-				p.mightAttack(p.inventory.get(i - 1));
-			}
+		public boolean onMenuItemClick(MenuItem menuItem) {
+            if(menuItem.getItemId() == R.id.attack) {
+                p.mightDefence(p.findViewById(R.id.main_layout));
+                return true;
+            }
+            Items item;
+            switch(menuItem.getItemId()){
+                case R.id.axe:
+                    item = Items.axe;
+                    break;
+                case R.id.spear:
+                    item = Items.spear;
+                    break;
+                case R.id.sacrificialDagger:
+                    item = Items.sacrificialDagger;
+                    break;
+                default: // R.id.bloodDagger:
+                    item = Items.blodDagger;
+                    break;
+
+            }
+
+            p.mightAttack(item);
+
 			return true;
 		}
 
+	}
+
+
+	public void drop(View v){
+		setPopup(v, new DropListner(this), Popup.Drop);
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -277,14 +315,33 @@ public class MainPlayer extends Activity {
 		}
 
 		@Override
-		public boolean onMenuItemClick(MenuItem item) {
-			int i = Integer.parseInt(((String) item.getTitle()).substring(0, 1));
-			p.inventory.remove(i-1);
+		public boolean onMenuItemClick(MenuItem menuItem) {
+		    Items item;
+            switch (menuItem.getItemId()) {
+                case R.id.axe:
+                    item = Items.axe;
+                    break;
+                case R.id.spear:
+                    item = Items.spear;
+                    break;
+                case R.id.sacrificialDagger:
+                    item = Items.sacrificialDagger;
+                    break;
+                default: // R.id.bloodDagger:
+                    item = Items.blodDagger;
+                    break;
+
+            }
+			p.inventory.remove(item);
 
 			return true;
 		}
 	}
 
+	public void pickUp(View v){
+		setPopup(v, new PickupListner(this), Popup.Pickup);
+
+	}
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public class PickupListner implements OnMenuItemClickListener {
 
@@ -293,9 +350,24 @@ public class MainPlayer extends Activity {
 			this.p = mainPlayer;
 		}
 		@Override
-		public boolean onMenuItemClick(MenuItem item) {
-			int i = Integer.parseInt(((String) item.getTitle()).substring(0, 1));
-			p.inventory.add(Items.getItem(i-1));
+		public boolean onMenuItemClick(MenuItem menuItem) {
+		    Items item;
+			switch (menuItem.getItemId()) {
+                case R.id.axe:
+                    item = Items.axe;
+                    break;
+                case R.id.spear:
+                    item = Items.spear;
+                    break;
+                case R.id.sacrificialDagger:
+                    item = Items.sacrificialDagger;
+                    break;
+                default: // R.id.bloodDagger:
+                    item = Items.blodDagger;
+                    break;
+
+            }
+			p.inventory.add(item);
 			return true;
 		}
 	}
