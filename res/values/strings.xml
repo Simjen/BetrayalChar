@@ -39,10 +39,10 @@
     <string name="spear">Spear</string>
     <string name="bloddagger">BlodDagger</string>
     <string name="sacrificialdagger">SacrificialDagger</string>
-    <string name="resetMight">Re Might</string>
-    <string name="resetSpeed">Re Speed</string>
-    <string name="resetSanity">Re Sanity</string>
-    <string name="resetKnowledge">Re Knowledge</string>
+    <string name="resetMight">Reset Might</string>
+    <string name="resetSpeed">Reset Speed</string>
+    <string name="resetSanity">Reset Sanity</string>
+    <string name="resetKnowledge">Reset Knowledge</string>
     <string name="drop">Drop</string>
     <string name="title_activity_player0">Player0</string>
     <string name="title_activity_main_player">MainPlayer</string>

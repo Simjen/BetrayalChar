@@ -2,7 +2,10 @@ package com.betrayal.betrayalchar;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.Callable;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,165 +20,228 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 
 public class MainPlayer extends Activity {
 
-	public Player player;
-	private String name;
-	public StatView sanityView;
-	public StatView knowledgeView;
-	public StatView speedView;
-	public StatView mightView;
-	public boolean rollVisible = false;
-	public ArrayList<Items> inventory = new ArrayList<>();
-	private Resources res;
-	
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    public Player player;
+    private String name;
+    public StatView sanityView;
+    public StatView knowledgeView;
+    public StatView speedView;
+    public StatView mightView;
+    public boolean rollVisible = false;
+    public ArrayList<Items> inventory = new ArrayList<>();
+    private Resources res;
 
-		setContentView(R.layout.activity_player1);
-		int number = getIntent().getIntExtra("PLAYERNUMBER", 0);
-		name = MainActivity.names[number];
-		setTitle(name);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-		player = new Player(number+1);
-		// Setup Shared Preferences for each name
-		SharedPreferences prefs = getSharedPreferences(name,0);
-		player.mightStat.setStatIndex(prefs.getInt("mightinit", player.mightStat.getStatIndex()));
-		player.speedStat.setStatIndex(prefs.getInt("speedinit", player.speedStat.getStatIndex()));
-	 	player.knowledgeStat.setStatIndex(prefs.getInt("knowledgeinit", player.knowledgeStat.getStatIndex()));
-		player.sanityStat.setStatIndex(prefs.getInt("sanityinit", player.sanityStat.getStatIndex()));
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		res = getResources();
-		mightView = findViewById(R.id.single_spinner_might);
-		speedView = findViewById(R.id.single_spinner_speed);
-		knowledgeView = findViewById(R.id.single_spinner_knowledge);
-		sanityView = findViewById(R.id.single_spinner_sanity);
-		mightView.setmCurrentStat(player.mightStat);
-		speedView.setmCurrentStat(player.speedStat);
-		sanityView.setmCurrentStat(player.sanityStat);
-		knowledgeView.setmCurrentStat(player.knowledgeStat);
-		mightView.setCurrentDigit(player.mightStat);
-		speedView.setCurrentDigit(player.speedStat);
-		knowledgeView.setCurrentDigit(player.knowledgeStat);
-		sanityView.setCurrentDigit(player.sanityStat);
+        setContentView(R.layout.activity_player1);
+        int number = getIntent().getIntExtra("PLAYERNUMBER", 0);
+        name = MainActivity.names[number];
+        setTitle(name);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        player = new Player(number+1);
+        // Setup Shared Preferences for each name
+        SharedPreferences prefs = getSharedPreferences(name,0);
+        player.mightStat.setStatIndex(prefs.getInt("mightinit", player.mightStat.getStatIndex()));
+        player.speedStat.setStatIndex(prefs.getInt("speedinit", player.speedStat.getStatIndex()));
+        player.knowledgeStat.setStatIndex(prefs.getInt("knowledgeinit", player.knowledgeStat.getStatIndex()));
+        player.sanityStat.setStatIndex(prefs.getInt("sanityinit", player.sanityStat.getStatIndex()));
 
-		registerForContextMenu(mightView);
-		registerForContextMenu(speedView);
-		registerForContextMenu(knowledgeView);
-		registerForContextMenu(sanityView);
-	}
+        res = getResources();
+        mightView = findViewById(R.id.single_spinner_might);
+        speedView = findViewById(R.id.single_spinner_speed);
+        knowledgeView = findViewById(R.id.single_spinner_knowledge);
+        sanityView = findViewById(R.id.single_spinner_sanity);
+        mightView.setmCurrentStat(player.mightStat);
+        speedView.setmCurrentStat(player.speedStat);
+        sanityView.setmCurrentStat(player.sanityStat);
+        knowledgeView.setmCurrentStat(player.knowledgeStat);
+        mightView.setCurrentDigit(player.mightStat);
+        speedView.setCurrentDigit(player.speedStat);
+        knowledgeView.setCurrentDigit(player.knowledgeStat);
+        sanityView.setCurrentDigit(player.sanityStat);
 
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-		super.onCreateContextMenu(menu, v, menuInfo);
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.stat_context,menu);
-	}
+        registerForContextMenu(mightView);
+        registerForContextMenu(speedView);
+        registerForContextMenu(knowledgeView);
+        registerForContextMenu(sanityView);
+    }
 
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		StatView.StatContextInfo info = (StatView.StatContextInfo) item.getMenuInfo();
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.stat_context,menu);
+    }
 
-		switch (item.getItemId()){
-			case (R.id.reset):
-					switch(info.id){
-						case R.id.single_spinner_might:
-							resetMight(mightView);
-						case R.id.single_spinner_knowledge:
-							resetKnowledge(knowledgeView);
-						case R.id.single_spinner_sanity:
-							resetSanity(sanityView);
-						case R.id.single_spinner_speed:
-							resetSpeed(speedView);
-					}
-				return true;
-			default:
-				return super.onContextItemSelected(item);
-		}
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        StatView.StatContextInfo info = (StatView.StatContextInfo) item.getMenuInfo();
 
-	}
+        switch (item.getItemId()){
+            case (R.id.reset):
+                switch(info.id){
+                    case R.id.single_spinner_might:
+                        resetMight(mightView);
+                    case R.id.single_spinner_knowledge:
+                        resetKnowledge(knowledgeView);
+                    case R.id.single_spinner_sanity:
+                        resetSanity(sanityView);
+                    case R.id.single_spinner_speed:
+                        resetSpeed(speedView);
+                }
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		SharedPreferences prefs = getSharedPreferences(name,0);
-		SharedPreferences.Editor edit = prefs.edit();
-		edit.putInt("mightinit", player.mightStat.getStatIndex());
-		edit.putInt("speedinit", player.speedStat.getStatIndex());
-		edit.putInt("knowledgeinit", player.knowledgeStat.getStatIndex());
-		edit.putInt("sanityinit", player.sanityStat.getStatIndex());
-		edit.commit();
-	}
+    }
 
-
-	public void resetMight(View v){
-		player.mightStat.resetStat();
-		mightView.setCurrentDigit(player.mightStat);
-
-	}
-
-	public void resetSpeed(View v){
-		player.speedStat.resetStat();
-		speedView.setCurrentDigit(player.speedStat);
-	}
-
-	public void resetSanity(View v){
-		player.sanityStat.resetStat();
-		sanityView.setCurrentDigit(player.sanityStat);
-	}
-
-	public void resetKnowledge(View v){
-		player.knowledgeStat.resetStat();
-		knowledgeView.setCurrentDigit(player.knowledgeStat);
-	}
-
-	public void mightAttack(Items i){
-		unsetDice();
-		ArrayList<Integer> diceRoll = i.useItem(this);
-		setDice(diceRoll);
-	}
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreferences prefs = getSharedPreferences(name,0);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putInt("mightinit", player.mightStat.getStatIndex());
+        edit.putInt("speedinit", player.speedStat.getStatIndex());
+        edit.putInt("knowledgeinit", player.knowledgeStat.getStatIndex());
+        edit.putInt("sanityinit", player.sanityStat.getStatIndex());
+        edit.commit();
+    }
 
 
+    public void resetMight(View v){
+        player.mightStat.resetStat();
+        mightView.setCurrentDigit(player.mightStat);
 
-	public void mightDefence(View v){
-		unsetDice();
-		ArrayList<Integer> diceRoll = player.doMightRoll();
-		setDice(diceRoll);
-	}
+    }
 
-	public void speedRoll(View v){
-		unsetDice();
-		ArrayList<Integer> diceRoll = player.doSpeedRoll();
-		setDice(diceRoll);
-	}
+    public void resetSpeed(View v){
+        player.speedStat.resetStat();
+        speedView.setCurrentDigit(player.speedStat);
+    }
 
-	public void knowledgeRoll(View v){
-		unsetDice();
-		ArrayList<Integer> diceRoll = player.doKnowledgeRoll();
-		setDice(diceRoll);
+    public void resetSanity(View v){
+        player.sanityStat.resetStat();
+        sanityView.setCurrentDigit(player.sanityStat);
+    }
 
-	}
+    public void resetKnowledge(View v){
+        player.knowledgeStat.resetStat();
+        knowledgeView.setCurrentDigit(player.knowledgeStat);
+    }
 
-	public void sanityRoll(View v){
-		unsetDice();
-		ArrayList<Integer> diceRoll = player.doSanityRoll();
-		setDice(diceRoll);
+    public void mightAttack(Items i){
+        unsetDice();
+        ArrayList<Integer> diceRoll = i.useItem(this);
+        setDice(diceRoll);
+    }
 
-	}
 
-	public void hauntRoll(View v){
 
-		player.doHauntRoll();
-		rollVisible = true;
-	}
+    public void mightDefence(View v){
+        unsetDice();
+        ArrayList<Integer> diceRoll = player.doMightRoll();
+        setDice(diceRoll);
+    }
+
+    public void speedRoll(View v){
+        unsetDice();
+        ArrayList<Integer> diceRoll = player.doSpeedRoll();
+        setDice(diceRoll);
+    }
+
+    public void knowledgeRoll(View v){
+        unsetDice();
+        ArrayList<Integer> diceRoll = player.doKnowledgeRoll();
+        setDice(diceRoll);
+
+    }
+
+    public void sanityRoll(View v){
+        unsetDice();
+        ArrayList<Integer> diceRoll = player.doSanityRoll();
+        setDice(diceRoll);
+
+    }
+
+    public void hauntRoll(View v){
+
+        player.doHauntRoll();
+        rollVisible = true;
+    }
+
+    public void resetDropdown(View view) {
+        PopupMenu popup = new PopupMenu(this, view);
+        popup.getMenuInflater().inflate(R.menu.reset_popup,popup.getMenu());
+        popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainPlayer.this);
+                builder.setTitle("Confirm Reset");
+                switch (menuItem.getItemId()){
+                    case R.id.reset_might:
+                        builder.setMessage("Are you shure you want to reset your might")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        resetMight(mightView);
+                                    }
+                                });
+                        break;
+                    case R.id.reset_speed:
+                        builder.setMessage("Are you shure you want to reset your speed")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        resetSpeed(speedView);
+                                    }
+                                });
+                        break;
+                    case R.id.reset_knowledge:
+                        builder.setMessage("Are you shure you want to reset your knowledge")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        resetKnowledge(knowledgeView);
+                                    }
+                                });
+                        break;
+                    case R.id.reset_sanity:
+                        builder.setMessage("Are you shure you want to reset your sanity")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        resetSanity(sanityView);
+                                    }
+                                });
+                        break;
+                    default:
+                        return false;
+                }
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                return true;
+            }
+        });
+        popup.show();
+    }
+
     private enum Popup{
-	    Attack,
+        Attack,
         Pickup,
         Drop
     }
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	private void setPopup(View v, OnMenuItemClickListener listner, Popup placement){
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void setPopup(View v, OnMenuItemClickListener listner, Popup placement){
         PopupMenu popup = new PopupMenu(this, v);
         if(placement == Popup.Pickup){
             popup.getMenu().add(Menu.NONE, R.id.axe, Menu.NONE,"Axe");;
@@ -211,148 +277,148 @@ public class MainPlayer extends Activity {
     }
 
 
-	public void newRoll(View v){
-		ImageButton ib = (ImageButton) v;
-		Random r = new Random();
-		int i = r.nextInt(3);
-		if(i == 0){
-			ib.setImageDrawable(res.getDrawable(R.drawable.dice0));
-		}
-		else if(i == 1){
-			ib.setImageDrawable(res.getDrawable(R.drawable.dice1));
-		}
-		else{
-			ib.setImageDrawable(res.getDrawable(R.drawable.dice2));
-		}
+    public void newRoll(View v){
+        ImageButton ib = (ImageButton) v;
+        Random r = new Random();
+        int i = r.nextInt(3);
+        if(i == 0){
+            ib.setImageDrawable(res.getDrawable(R.drawable.dice0));
+        }
+        else if(i == 1){
+            ib.setImageDrawable(res.getDrawable(R.drawable.dice1));
+        }
+        else{
+            ib.setImageDrawable(res.getDrawable(R.drawable.dice2));
+        }
 
-	}
-	
-	public void setDice(ArrayList<Integer> diceRoll){
-		ImageButton dice;
-		for(int i = 0; i < diceRoll.size(); i++){
-			if(diceRoll.get(i) == 0){
-				dice = (ImageButton) findDice(i);
-				dice.setImageDrawable(res.getDrawable(R.drawable.dice0));
-				dice.setVisibility(View.VISIBLE);
-			}
-			else if(diceRoll.get(i) == 1){
-				dice = (ImageButton) findDice(i);
-				dice.setImageDrawable(res.getDrawable(R.drawable.dice1));
-				dice.setVisibility(View.VISIBLE);
-			}
-			else{
-				dice = (ImageButton) findDice(i);
-				dice.setImageDrawable(res.getDrawable(R.drawable.dice2));
-				dice.setVisibility(View.VISIBLE);
-			}
-		}
-	}
+    }
 
-	public void unsetDice(){
-		for(int i = 0; i < 8; i++){
-			ImageButton dice = (ImageButton) findDice(i);
-			dice.setVisibility(View.INVISIBLE);
-			dice.invalidate();
-		}
-	}
+    public void setDice(ArrayList<Integer> diceRoll){
+        ImageButton dice;
+        for(int i = 0; i < diceRoll.size(); i++){
+            if(diceRoll.get(i) == 0){
+                dice = (ImageButton) findDice(i);
+                dice.setImageDrawable(res.getDrawable(R.drawable.dice0));
+                dice.setVisibility(View.VISIBLE);
+            }
+            else if(diceRoll.get(i) == 1){
+                dice = (ImageButton) findDice(i);
+                dice.setImageDrawable(res.getDrawable(R.drawable.dice1));
+                dice.setVisibility(View.VISIBLE);
+            }
+            else{
+                dice = (ImageButton) findDice(i);
+                dice.setImageDrawable(res.getDrawable(R.drawable.dice2));
+                dice.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 
-	public View findDice(int i){
-		if(i == 0){
-			return findViewById(R.id.dice1);
-		}
-		else if(i == 1){
-			return findViewById(R.id.dice2);
-		}
-		else if(i == 2){
-			return findViewById(R.id.dice3);
-		}
-		else if(i == 3){
-			return findViewById(R.id.dice4);
-		}
-		else if(i == 4){
-			return findViewById(R.id.dice5);
-		}
-		else if(i == 5){
-			return findViewById(R.id.dice6);
-		}
-		else if(i == 6){
-			return findViewById(R.id.dice7);
-		}
-		else {
-			return findViewById(R.id.dice8);
-		}
-	}
+    public void unsetDice(){
+        for(int i = 0; i < 8; i++){
+            ImageButton dice = (ImageButton) findDice(i);
+            dice.setVisibility(View.INVISIBLE);
+            dice.invalidate();
+        }
+    }
+
+    public View findDice(int i){
+        if(i == 0){
+            return findViewById(R.id.dice1);
+        }
+        else if(i == 1){
+            return findViewById(R.id.dice2);
+        }
+        else if(i == 2){
+            return findViewById(R.id.dice3);
+        }
+        else if(i == 3){
+            return findViewById(R.id.dice4);
+        }
+        else if(i == 4){
+            return findViewById(R.id.dice5);
+        }
+        else if(i == 5){
+            return findViewById(R.id.dice6);
+        }
+        else if(i == 6){
+            return findViewById(R.id.dice7);
+        }
+        else {
+            return findViewById(R.id.dice8);
+        }
+    }
  	/*-------------------------------
  	--------------Listners-----------
 	---------------------------------
    */
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public void mightAttackBtn(View v){
-		if(inventory.isEmpty()){
-			mightDefence(findViewById(R.id.main_layout));
-		}
-		else{
-			setPopup(v, new AttackListner(this), Popup.Attack);
-		}
-	}
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public class AttackListner implements OnMenuItemClickListener {
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public void mightAttackBtn(View v){
+        if(inventory.isEmpty()){
+            mightDefence(findViewById(R.id.main_layout));
+        }
+        else{
+            setPopup(v, new AttackListner(this), Popup.Attack);
+        }
+    }
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public class AttackListner implements OnMenuItemClickListener {
 
-		MainPlayer p;
-		public AttackListner(MainPlayer mainPlayer){
-			this.p = mainPlayer;
-		}
-		@Override
-		public boolean onMenuItemClick(MenuItem menuItem) {
+        MainPlayer p;
+        public AttackListner(MainPlayer mainPlayer){
+            this.p = mainPlayer;
+        }
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
             if(menuItem.getItemId() == R.id.attack) {
                 p.mightDefence(p.findViewById(R.id.main_layout));
                 return true;
             }
             p.mightAttack(Items.getItem(menuItem.getItemId()));
 
-			return true;
-		}
+            return true;
+        }
 
-	}
+    }
 
 
-	public void drop(View v){
-		setPopup(v, new DropListner(this), Popup.Drop);
-	}
+    public void drop(View v){
+        setPopup(v, new DropListner(this), Popup.Drop);
+    }
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public class DropListner implements OnMenuItemClickListener {
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public class DropListner implements OnMenuItemClickListener {
 
-		MainPlayer p;
-		public DropListner(MainPlayer mainPlayer){
-			this.p = mainPlayer;
-		}
+        MainPlayer p;
+        public DropListner(MainPlayer mainPlayer){
+            this.p = mainPlayer;
+        }
 
-		@Override
-		public boolean onMenuItemClick(MenuItem menuItem) {
-			p.inventory.remove(Items.getItem(menuItem.getItemId()));
-			return true;
-		}
-	}
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            p.inventory.remove(Items.getItem(menuItem.getItemId()));
+            return true;
+        }
+    }
 
-	public void pickUp(View v){
-		setPopup(v, new PickupListner(this), Popup.Pickup);
+    public void pickUp(View v){
+        setPopup(v, new PickupListner(this), Popup.Pickup);
 
-	}
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-	public class PickupListner implements OnMenuItemClickListener {
+    }
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public class PickupListner implements OnMenuItemClickListener {
 
-		MainPlayer p;
-		public PickupListner(MainPlayer mainPlayer){
-			this.p = mainPlayer;
-		}
-		@Override
-		public boolean onMenuItemClick(MenuItem menuItem) {
-			p.inventory.add(Items.getItem(menuItem.getItemId()));
-			return true;
-		}
-	}
+        MainPlayer p;
+        public PickupListner(MainPlayer mainPlayer){
+            this.p = mainPlayer;
+        }
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            p.inventory.add(Items.getItem(menuItem.getItemId()));
+            return true;
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

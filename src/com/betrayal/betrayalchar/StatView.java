@@ -94,11 +94,15 @@ public class StatView extends View {
 		super.onDraw(canvas);
 
 		mBGGrad.draw(canvas);
+		if(mDigitString != null) {
+			canvas.drawText(mDigitString, mDigitX, mDigitY, mDigitPaint);
 
-		canvas.drawText(mDigitString, mDigitX, mDigitY, mDigitPaint);
-
-		canvas.drawText(mDigitAboveString, mDigitX, mDigitAboveY, mDigitPaint);
-		canvas.drawText(mDigitBelowString, mDigitX, mDigitBelowY, mDigitPaint);
+			canvas.drawText(mDigitAboveString, mDigitX, mDigitAboveY, mDigitPaint);
+			canvas.drawText(mDigitBelowString, mDigitX, mDigitBelowY, mDigitPaint);
+		}
+		else{
+			canvas.drawText("0",mDigitX,mDigitY,mDigitPaint);
+		}
 	}
 
 

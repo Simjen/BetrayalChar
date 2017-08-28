@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/reset_might"
+        android:title="@string/resetMight"/>
+    <item android:id="@+id/reset_speed"
+        android:title="@string/resetSpeed"/>
+    <item android:id="@+id/reset_knowledge"
+        android:title="@string/resetKnowledge"/>
+    <item android:id="@+id/reset_sanity"
+        android:title="@string/resetSanity"/>
+</menu>
