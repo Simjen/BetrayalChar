@@ -8,28 +8,31 @@ public enum Items {
 	blodDagger(0, 0, 0, 0, false, "", "speed","BlodDagger", 3, 1),
 	sacrificialDagger(0,0,0,0,false, "", "","SacrificialDagger", 3),
 	spear(0,0,0,0,false,"","","Spear",2),
-	axe(0,0,0,0,false,"","","Axe",1);
+	axe(0,0,0,0,false,"","","Axe",1),
+	NONE;
 
 	public boolean useable;
 	public int might;
 	public int speed;
 	public int sanity;
-	public int knowlage;
+	public int knowledge;
 	public String rollName;
 	public String weaponLoss;
 	public String itemName;
 	public int[] useRoll;
 	
-	Items(int might, int speed, int sanity, int knowlage, boolean useable, String rollName, String weaponLoss, String itemName, int... useRoll) {
+	Items(int might, int speed, int sanity, int knowledge, boolean useable, String rollName, String weaponLoss, String itemName, int... useRoll) {
 		this.might = might;
 		this.speed = speed;
 		this.sanity = sanity;
-		this.knowlage = knowlage;
+		this.knowledge = knowledge;
 		this.useable = useable;
 		this.useRoll = useRoll;
 		this.rollName = rollName;
 		this.weaponLoss = weaponLoss;
 		this.itemName = itemName;
+	}
+	Items(){
 	}
 
 	public ArrayList<Integer> useItem(MainPlayer mainPlayer){
@@ -46,8 +49,8 @@ public enum Items {
 				roll.addAll(mainPlayer.player.doSanityRoll());
 			}
 
-			else if(rollName.equals("knowlage")){
-				roll.addAll(mainPlayer.player.doKnowlageRoll());
+			else if(rollName.equals("knowledge")){
+				roll.addAll(mainPlayer.player.doKnowledgeRoll());
 			}
 			else{
 
@@ -79,7 +82,7 @@ public enum Items {
 					);
 				}
 			}
-			else if(weaponLoss.equals("knowlage")){
+			else if(weaponLoss.equals("knowledge")){
 				for(int i = 0; i<useRoll[1]; i++){
 					mainPlayer.player.knowledgeStat.Decrease();
 					mainPlayer.knowledgeView.setCurrentDigit(mainPlayer.player.knowledgeStat);
@@ -89,24 +92,19 @@ public enum Items {
 		}
 		return roll;
 	}
-	public static Items getItem(int i){
-		if(i == 0){
-			return blodDagger;
+	public static Items getItem(int itemId){
+		switch (itemId) {
+			case R.id.axe:
+				return Items.axe;
+			case R.id.spear:
+				return spear;
+			case R.id.sacrificialDagger:
+				return sacrificialDagger;
+			case R.id.bloodDagger:
+				return blodDagger;
+			default:
+				return NONE;
 		}
-		else if(i == 1){
-			return sacrificialDagger;
-		}
-		else if(i == 2){
-			return axe;
-		}
-		else{
-			return spear;
-		}
-		/**
-		 * else if(i==X){
-		 * return Items
-		 * }
-		 */
 	}
 }
 

@@ -1,5 +1,6 @@
 package com.betrayal.betrayalchar;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -7,7 +8,9 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
+import android.view.ContextMenu;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -17,7 +20,7 @@ import java.io.Console;
  *
  * The mCurrentStat wiev is for taking care of mCurrentStat things and showing the stats
  */
-public class StatView extends View{
+public class StatView extends View {
 	private float mTouchStartY;
 	private float mTouchLastY;
 	private float mDigitY;
@@ -34,11 +37,28 @@ public class StatView extends View{
 	private String mDigitAboveString;
 	private String mDigitBelowString;
 	private int mWidth;
-	private MainPlayer mainPlayer;
     private Stat mPlayerStat;
 	private Stat mCurrentStat;
     private Stat mStatBelow;
     private Stat mStatAbove;
+
+
+	@Override
+	public boolean isContextClickable() {
+		return true;
+	}
+
+	public class StatContextInfo implements ContextMenu.ContextMenuInfo{
+    	public int id;
+    	public StatContextInfo(View StatContext){
+			this.id = StatContext.getId();
+    	}
+	}
+
+	@Override
+	protected ContextMenu.ContextMenuInfo getContextMenuInfo() {
+		return new StatContextInfo(this);
+	}
 
 	public StatView(Context context) {
 		super(context);
@@ -62,7 +82,6 @@ public class StatView extends View{
 
 	private void initialize()
 	{
-		mainPlayer = (MainPlayer) getContext();
 		mBGGrad = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[] {0xFF000000, 0xFFAAAAAA, 0xFF000000});
 
 		mDigitPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -150,13 +169,13 @@ public class StatView extends View{
     @Override
 	public boolean onTouchEvent(MotionEvent event)
 	{
+
 		// Pull out the Action value from the event for processing
 		int action = event.getAction();
 		if(action == MotionEvent.ACTION_DOWN)
 		{
 			mTouchStartY = event.getY();
 			mTouchLastY = mTouchStartY;
-			
 			return true;
 		}
 		else if(action == MotionEvent.ACTION_MOVE)
@@ -205,7 +224,6 @@ public class StatView extends View{
 			}
 			
 			invalidate();
-			
 			return true;
 		}
 		else if(action == MotionEvent.ACTION_UP)
@@ -233,10 +251,10 @@ public class StatView extends View{
 			}
 			mPlayerStat.setStatIndex(mCurrentStat.getStatIndex());
 			setCurrentDigit(mCurrentStat);
-			
+
 			return true;
 		}
-		return false;
+		return super.onTouchEvent(event);
 	}
 
 }

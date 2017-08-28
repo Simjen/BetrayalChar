@@ -5,5 +5,15 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/omen_roll"/>
+    <item
+        android:id="@+id/show_card"
+        android:title="@string/show_card">
+        <menu xmlns:android="http://schemas.android.com/apk/res/android">
+            <item android:title="@string/show_card" android:id="@+id/card_1"
+                />
+
+        </menu>
+    </item>
+
 
 </menu>

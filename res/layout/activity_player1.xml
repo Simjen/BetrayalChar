@@ -28,7 +28,6 @@
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:contentDescription="@string/bloddagger"
                     android:onClick="newRoll"
                     android:src="@drawable/dice0"
                     android:visibility="invisible" />
@@ -121,6 +120,7 @@
                 android:orientation="vertical" >
 
                 <TextView
+                    android:id="@+id/might_context"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -129,6 +129,7 @@
                     android:textColor="@android:color/white" />
 
                 <LinearLayout
+
                     android:layout_width="fill_parent"
                     android:layout_height="100dp"
                     android:orientation="horizontal" >
@@ -148,6 +149,7 @@
                 android:orientation="vertical" >
 
                 <TextView
+                    android:id="@+id/speed_context"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -156,6 +158,7 @@
                     android:textColor="@android:color/white" />
 
                 <LinearLayout
+
                     android:layout_width="fill_parent"
                     android:layout_height="100dp"
                     android:orientation="horizontal" >
@@ -166,7 +169,7 @@
                         android:layout_height="fill_parent" />
                 </LinearLayout>
             </LinearLayout>
-            <!-- KNOWLAGE VIEW -->
+            <!-- KNOWLEDGE VIEW -->
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -175,20 +178,22 @@
                 android:orientation="vertical" >
 
                 <TextView
+                    android:id="@+id/knowledge_context"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="@string/knowlage"
+                    android:text="@string/knowledge"
                     android:textColor="@android:color/white" />
 
                 <LinearLayout
+
                     android:layout_width="fill_parent"
                     android:layout_height="100dp"
                     android:orientation="horizontal" >
 
                     <com.betrayal.betrayalchar.StatView
-                        android:id="@+id/single_spinner_knowlage"
+                        android:id="@+id/single_spinner_knowledge"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent" />
                 </LinearLayout>
@@ -202,6 +207,7 @@
                 android:orientation="vertical" >
 
                 <TextView
+                    android:id="@+id/sanity_context"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -210,6 +216,7 @@
                     android:textColor="@android:color/white" />
 
                 <LinearLayout
+
                     android:layout_width="fill_parent"
                     android:layout_height="100dp"
                     android:orientation="horizontal" >
@@ -235,29 +242,29 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
 
-                <Button
+                <ImageButton
                     android:id="@+id/attack"
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:onClick="mightAttackBtn"
-                    android:text="@string/might_att"
+                    android:src="@drawable/attack"
                     android:textColor="@android:color/white" />
 
-                <Button
+                <ImageButton
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:onClick="mightDefence"
-                    android:text="@string/might_def"
+                    android:src="@drawable/defense"
                     android:textColor="@android:color/white" />
 
-                <Button
+                <ImageButton
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="2"
                     android:onClick="speedRoll"
-                    android:text="@string/speed_roll"
+                    android:src="@drawable/speed"
                     android:textColor="@android:color/white" />
             </LinearLayout>
             <!-- KNOWAGEROLL/SANITYROLL -->
@@ -267,20 +274,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
 
-                <Button
+                <ImageButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="knowlageRoll"
-                    android:text="@string/knowlage_roll"
+                    android:onClick="knowledgeRoll"
+                    android:src="@drawable/knowledge"
                     android:textColor="@android:color/white" />
 
-                <Button
+                <ImageButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="sanityRoll"
-                    android:text="@string/sanity_roll"
+                    android:src="@drawable/sanity"
                     android:textColor="@android:color/white" />
             </LinearLayout>
         </LinearLayout>
@@ -357,13 +364,13 @@
                     android:textColor="@android:color/white" />
 
                 <Button
-                    android:id="@+id/reset_knowlage"
+                    android:id="@+id/reset_knowledge"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_weight="3"
-                    android:onClick="resetKnowlage"
-                    android:text="@string/resetKnowlage"
+                    android:onClick="resetKnowledge"
+                    android:text="@string/resetKnowledge"
                     android:textColor="@android:color/white" />
             </LinearLayout>
         </LinearLayout>

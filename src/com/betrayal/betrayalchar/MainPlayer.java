@@ -9,10 +9,8 @@ import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.res.Resources;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.WindowManager;
+import android.view.*;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
@@ -48,10 +46,10 @@ public class MainPlayer extends Activity {
 		player.sanityStat.setStatIndex(prefs.getInt("sanityinit", player.sanityStat.getStatIndex()));
 
 		res = getResources();
-		mightView = (StatView) findViewById(R.id.single_spinner_might);
-		speedView = (StatView) findViewById(R.id.single_spinner_speed);
-		knowledgeView = (StatView) findViewById(R.id.single_spinner_knowlage);
-		sanityView = (StatView) findViewById(R.id.single_spinner_sanity);
+		mightView = findViewById(R.id.single_spinner_might);
+		speedView = findViewById(R.id.single_spinner_speed);
+		knowledgeView = findViewById(R.id.single_spinner_knowledge);
+		sanityView = findViewById(R.id.single_spinner_sanity);
 		mightView.setmCurrentStat(player.mightStat);
 		speedView.setmCurrentStat(player.speedStat);
 		sanityView.setmCurrentStat(player.sanityStat);
@@ -60,8 +58,42 @@ public class MainPlayer extends Activity {
 		speedView.setCurrentDigit(player.speedStat);
 		knowledgeView.setCurrentDigit(player.knowledgeStat);
 		sanityView.setCurrentDigit(player.sanityStat);
+
+		registerForContextMenu(mightView);
+		registerForContextMenu(speedView);
+		registerForContextMenu(knowledgeView);
+		registerForContextMenu(sanityView);
 	}
 
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.stat_context,menu);
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		StatView.StatContextInfo info = (StatView.StatContextInfo) item.getMenuInfo();
+
+		switch (item.getItemId()){
+			case (R.id.reset):
+					switch(info.id){
+						case R.id.single_spinner_might:
+							resetMight(mightView);
+						case R.id.single_spinner_knowledge:
+							resetKnowledge(knowledgeView);
+						case R.id.single_spinner_sanity:
+							resetSanity(sanityView);
+						case R.id.single_spinner_speed:
+							resetSpeed(speedView);
+					}
+				return true;
+			default:
+				return super.onContextItemSelected(item);
+		}
+
+	}
 
 	@Override
 	protected void onDestroy() {
@@ -92,7 +124,7 @@ public class MainPlayer extends Activity {
 		sanityView.setCurrentDigit(player.sanityStat);
 	}
 
-	public void resetKnowlage(View v){
+	public void resetKnowledge(View v){
 		player.knowledgeStat.resetStat();
 		knowledgeView.setCurrentDigit(player.knowledgeStat);
 	}
@@ -117,9 +149,9 @@ public class MainPlayer extends Activity {
 		setDice(diceRoll);
 	}
 
-	public void knowlageRoll(View v){
+	public void knowledgeRoll(View v){
 		unsetDice();
-		ArrayList<Integer> diceRoll = player.doKnowlageRoll();
+		ArrayList<Integer> diceRoll = player.doKnowledgeRoll();
 		setDice(diceRoll);
 
 	}
@@ -146,10 +178,10 @@ public class MainPlayer extends Activity {
 	private void setPopup(View v, OnMenuItemClickListener listner, Popup placement){
         PopupMenu popup = new PopupMenu(this, v);
         if(placement == Popup.Pickup){
-            popup.getMenu().add(Menu.NONE,R.id.axe,Menu.NONE,"Axe");;
-            popup.getMenu().add(Menu.NONE,R.id.spear,Menu.NONE,"Spear");
-            popup.getMenu().add(Menu.NONE,R.id.bloodDagger,Menu.NONE,"BloodDagger");
-            popup.getMenu().add(Menu.NONE,R.id.sacrificialDagger,Menu.NONE,"SacrificialDagger");
+            popup.getMenu().add(Menu.NONE, R.id.axe, Menu.NONE,"Axe");;
+            popup.getMenu().add(Menu.NONE, R.id.spear, Menu.NONE,"Spear");
+            popup.getMenu().add(Menu.NONE, R.id.bloodDagger, Menu.NONE,"BloodDagger");
+            popup.getMenu().add(Menu.NONE, R.id.sacrificialDagger, Menu.NONE,"SacrificialDagger");
         }
         else {
             if(placement == Popup.Attack) {
@@ -250,9 +282,9 @@ public class MainPlayer extends Activity {
 			return findViewById(R.id.dice8);
 		}
 	}
- /*-------------------------------
- --------------Listners-----------
- ---------------------------------
+ 	/*-------------------------------
+ 	--------------Listners-----------
+	---------------------------------
    */
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -277,24 +309,7 @@ public class MainPlayer extends Activity {
                 p.mightDefence(p.findViewById(R.id.main_layout));
                 return true;
             }
-            Items item;
-            switch(menuItem.getItemId()){
-                case R.id.axe:
-                    item = Items.axe;
-                    break;
-                case R.id.spear:
-                    item = Items.spear;
-                    break;
-                case R.id.sacrificialDagger:
-                    item = Items.sacrificialDagger;
-                    break;
-                default: // R.id.bloodDagger:
-                    item = Items.blodDagger;
-                    break;
-
-            }
-
-            p.mightAttack(item);
+            p.mightAttack(Items.getItem(menuItem.getItemId()));
 
 			return true;
 		}
@@ -316,24 +331,7 @@ public class MainPlayer extends Activity {
 
 		@Override
 		public boolean onMenuItemClick(MenuItem menuItem) {
-		    Items item;
-            switch (menuItem.getItemId()) {
-                case R.id.axe:
-                    item = Items.axe;
-                    break;
-                case R.id.spear:
-                    item = Items.spear;
-                    break;
-                case R.id.sacrificialDagger:
-                    item = Items.sacrificialDagger;
-                    break;
-                default: // R.id.bloodDagger:
-                    item = Items.blodDagger;
-                    break;
-
-            }
-			p.inventory.remove(item);
-
+			p.inventory.remove(Items.getItem(menuItem.getItemId()));
 			return true;
 		}
 	}
@@ -351,23 +349,7 @@ public class MainPlayer extends Activity {
 		}
 		@Override
 		public boolean onMenuItemClick(MenuItem menuItem) {
-		    Items item;
-			switch (menuItem.getItemId()) {
-                case R.id.axe:
-                    item = Items.axe;
-                    break;
-                case R.id.spear:
-                    item = Items.spear;
-                    break;
-                case R.id.sacrificialDagger:
-                    item = Items.sacrificialDagger;
-                    break;
-                default: // R.id.bloodDagger:
-                    item = Items.blodDagger;
-                    break;
-
-            }
-			p.inventory.add(item);
+			p.inventory.add(Items.getItem(menuItem.getItemId()));
 			return true;
 		}
 	}
@@ -387,6 +369,13 @@ public class MainPlayer extends Activity {
                 unsetDice();
                 ArrayList<Integer> diceRoll = player.doHauntRoll();
                 setDice(diceRoll);
+                break;
+            case R.id.card_1:
+                CardDialogFragment fragment = new CardDialogFragment();
+                fragment.setImage(R.drawable.betrayal);
+                fragment.show(getFragmentManager(), "Show Card");
+                break;
+
         }
         return true;
     }
