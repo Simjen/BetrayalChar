@@ -2,33 +2,42 @@ package com.betrayal.betrayalchar;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.Callable;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.res.Resources;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.*;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 
 public class MainPlayer extends Activity {
 
+    private static final String[] names = new String[]{
+            "Brandon","Darrin","Father","Heather","Jenny","Madame","Missy",
+            "Ox","Peter","Professor","Vivian","Zoe"};
     public Player player;
     private String name;
     public StatView sanityView;
     public StatView knowledgeView;
     public StatView speedView;
     public StatView mightView;
-    public boolean rollVisible = false;
     public ArrayList<Items> inventory = new ArrayList<>();
     private Resources res;
+    private View scrollView;
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle drawerToggle;
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -36,36 +45,76 @@ public class MainPlayer extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_player1);
-        int number = getIntent().getIntExtra("PLAYERNUMBER", 0);
-        name = MainActivity.names[number];
-        setTitle(name);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        player = new Player(number+1);
-        // Setup Shared Preferences for each name
-        SharedPreferences prefs = getSharedPreferences(name,0);
-        player.mightStat.setStatIndex(prefs.getInt("mightinit", player.mightStat.getStatIndex()));
-        player.speedStat.setStatIndex(prefs.getInt("speedinit", player.speedStat.getStatIndex()));
-        player.knowledgeStat.setStatIndex(prefs.getInt("knowledgeinit", player.knowledgeStat.getStatIndex()));
-        player.sanityStat.setStatIndex(prefs.getInt("sanityinit", player.sanityStat.getStatIndex()));
-
         res = getResources();
+        drawer = findViewById(R.id.drawer);
+        ListView navigationView = findViewById(R.id.navigation_drawer);
+        navigationView.setAdapter(new ArrayAdapter<>(this,R.layout.simple_list_item_layout, names));
+        navigationView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                initializePlayer(i);
+                drawer.closeDrawers();
+            }
+        });
+        drawerToggle = new ActionBarDrawerToggle(this, drawer, R.string.app_name, R.string.app_name);
+        drawer.addDrawerListener(drawerToggle);
+
+        //noinspection ConstantConditions
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+
         mightView = findViewById(R.id.single_spinner_might);
         speedView = findViewById(R.id.single_spinner_speed);
         knowledgeView = findViewById(R.id.single_spinner_knowledge);
         sanityView = findViewById(R.id.single_spinner_sanity);
-        mightView.setmCurrentStat(player.mightStat);
-        speedView.setmCurrentStat(player.speedStat);
-        sanityView.setmCurrentStat(player.sanityStat);
-        knowledgeView.setmCurrentStat(player.knowledgeStat);
-        mightView.setCurrentDigit(player.mightStat);
-        speedView.setCurrentDigit(player.speedStat);
-        knowledgeView.setCurrentDigit(player.knowledgeStat);
-        sanityView.setCurrentDigit(player.sanityStat);
+        scrollView = findViewById(R.id.scrollView);
 
         registerForContextMenu(mightView);
         registerForContextMenu(speedView);
         registerForContextMenu(knowledgeView);
         registerForContextMenu(sanityView);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+
+    private void initializePlayer(int number) {
+        if(player != null){
+            //we switch from one player to another
+            saveSharedPrefs();
+        }
+        name = MainActivity.names[number];
+        setTitle(name);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        SharedPreferences prefs = getSharedPreferences(name,0);
+        player = new Player(number+1);
+        // Setup Shared Preferences for each name
+        player.mightStat.setStatIndex(prefs.getInt("mightinit", player.mightStat.getStatIndex()));
+        player.speedStat.setStatIndex(prefs.getInt("speedinit", player.speedStat.getStatIndex()));
+        player.knowledgeStat.setStatIndex(prefs.getInt("knowledgeinit", player.knowledgeStat.getStatIndex()));
+        player.sanityStat.setStatIndex(prefs.getInt("sanityinit", player.sanityStat.getStatIndex()));
+
+        speedView.setCurrentStat(player.speedStat);
+        sanityView.setCurrentStat(player.sanityStat);
+        knowledgeView.setCurrentStat(player.knowledgeStat);
+        mightView.setCurrentDigit(player.mightStat);
+        speedView.setCurrentDigit(player.speedStat);
+        knowledgeView.setCurrentDigit(player.knowledgeStat);
+        sanityView.setCurrentDigit(player.sanityStat);
+        mightView.setCurrentStat(player.mightStat);
+        scrollView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -99,15 +148,25 @@ public class MainPlayer extends Activity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        saveSharedPrefs();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        saveSharedPrefs();
+    }
+
+    private void saveSharedPrefs() {
         SharedPreferences prefs = getSharedPreferences(name,0);
         SharedPreferences.Editor edit = prefs.edit();
         edit.putInt("mightinit", player.mightStat.getStatIndex());
         edit.putInt("speedinit", player.speedStat.getStatIndex());
         edit.putInt("knowledgeinit", player.knowledgeStat.getStatIndex());
         edit.putInt("sanityinit", player.sanityStat.getStatIndex());
-        edit.commit();
+        edit.apply();
     }
 
 
@@ -166,12 +225,6 @@ public class MainPlayer extends Activity {
 
     }
 
-    public void hauntRoll(View v){
-
-        player.doHauntRoll();
-        rollVisible = true;
-    }
-
     public void resetDropdown(View view) {
         PopupMenu popup = new PopupMenu(this, view);
         popup.getMenuInflater().inflate(R.menu.reset_popup,popup.getMenu());
@@ -182,7 +235,7 @@ public class MainPlayer extends Activity {
                 builder.setTitle("Confirm Reset");
                 switch (menuItem.getItemId()){
                     case R.id.reset_might:
-                        builder.setMessage("Are you shure you want to reset your might")
+                        builder.setMessage("Are you sure you want to reset your might")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -191,7 +244,7 @@ public class MainPlayer extends Activity {
                                 });
                         break;
                     case R.id.reset_speed:
-                        builder.setMessage("Are you shure you want to reset your speed")
+                        builder.setMessage("Are you sure you want to reset your speed")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -200,7 +253,7 @@ public class MainPlayer extends Activity {
                                 });
                         break;
                     case R.id.reset_knowledge:
-                        builder.setMessage("Are you shure you want to reset your knowledge")
+                        builder.setMessage("Are you sure you want to reset your knowledge")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -209,7 +262,7 @@ public class MainPlayer extends Activity {
                                 });
                         break;
                     case R.id.reset_sanity:
-                        builder.setMessage("Are you shure you want to reset your sanity")
+                        builder.setMessage("Are you sure you want to reset your sanity")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -241,10 +294,10 @@ public class MainPlayer extends Activity {
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void setPopup(View v, OnMenuItemClickListener listner, Popup placement){
+    private void setPopup(View v, OnMenuItemClickListener listener, Popup placement){
         PopupMenu popup = new PopupMenu(this, v);
         if(placement == Popup.Pickup){
-            popup.getMenu().add(Menu.NONE, R.id.axe, Menu.NONE,"Axe");;
+            popup.getMenu().add(Menu.NONE, R.id.axe, Menu.NONE,"Axe");
             popup.getMenu().add(Menu.NONE, R.id.spear, Menu.NONE,"Spear");
             popup.getMenu().add(Menu.NONE, R.id.bloodDagger, Menu.NONE,"BloodDagger");
             popup.getMenu().add(Menu.NONE, R.id.sacrificialDagger, Menu.NONE,"SacrificialDagger");
@@ -257,12 +310,12 @@ public class MainPlayer extends Activity {
                 if (!item.useable) {
                     switch (item.itemName) {
                         case "Axe":
-                            popup.getMenu().add(Menu.NONE,R.id.axe,Menu.NONE,"Axe");;
+                            popup.getMenu().add(Menu.NONE,R.id.axe,Menu.NONE,"Axe");
                             break;
                         case "Spear":
                             popup.getMenu().add(Menu.NONE,R.id.spear,Menu.NONE,"Spear");
                             break;
-                        case "BlodDagger":
+                        case "BloodDagger":
                             popup.getMenu().add(Menu.NONE,R.id.bloodDagger,Menu.NONE,"BloodDagger");
                             break;
                         case "SacrificialDagger":
@@ -272,7 +325,7 @@ public class MainPlayer extends Activity {
                 }
             }
         }
-        popup.setOnMenuItemClickListener(listner);
+        popup.setOnMenuItemClickListener(listener);
         popup.show();
     }
 
@@ -348,10 +401,8 @@ public class MainPlayer extends Activity {
             return findViewById(R.id.dice8);
         }
     }
- 	/*-------------------------------
- 	--------------Listners-----------
-	---------------------------------
-   */
+
+    //region Listeners
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void mightAttackBtn(View v){
@@ -359,14 +410,14 @@ public class MainPlayer extends Activity {
             mightDefence(findViewById(R.id.main_layout));
         }
         else{
-            setPopup(v, new AttackListner(this), Popup.Attack);
+            setPopup(v, new AttackListener(this), Popup.Attack);
         }
     }
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public class AttackListner implements OnMenuItemClickListener {
+    public class AttackListener implements OnMenuItemClickListener {
 
         MainPlayer p;
-        public AttackListner(MainPlayer mainPlayer){
+        AttackListener(MainPlayer mainPlayer){
             this.p = mainPlayer;
         }
         @Override
@@ -384,14 +435,14 @@ public class MainPlayer extends Activity {
 
 
     public void drop(View v){
-        setPopup(v, new DropListner(this), Popup.Drop);
+        setPopup(v, new DropListener(this), Popup.Drop);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public class DropListner implements OnMenuItemClickListener {
+    public class DropListener implements OnMenuItemClickListener {
 
         MainPlayer p;
-        public DropListner(MainPlayer mainPlayer){
+        DropListener(MainPlayer mainPlayer){
             this.p = mainPlayer;
         }
 
@@ -403,14 +454,14 @@ public class MainPlayer extends Activity {
     }
 
     public void pickUp(View v){
-        setPopup(v, new PickupListner(this), Popup.Pickup);
+        setPopup(v, new PickupListener(this), Popup.Pickup);
 
     }
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public class PickupListner implements OnMenuItemClickListener {
+    public class PickupListener implements OnMenuItemClickListener {
 
         MainPlayer p;
-        public PickupListner(MainPlayer mainPlayer){
+        PickupListener(MainPlayer mainPlayer){
             this.p = mainPlayer;
         }
         @Override
@@ -430,20 +481,24 @@ public class MainPlayer extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
         switch (item.getItemId()) {
             case R.id.omen_roll:
                 unsetDice();
                 ArrayList<Integer> diceRoll = player.doHauntRoll();
                 setDice(diceRoll);
-                break;
+                return true;
             case R.id.card_1:
                 CardDialogFragment fragment = new CardDialogFragment();
                 fragment.setImage(R.drawable.betrayal);
                 fragment.show(getFragmentManager(), "Show Card");
-                break;
+                return true;
 
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
-
+    //endregion
 }

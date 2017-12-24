@@ -37,7 +37,7 @@
     <string name="attack">Attack</string>
     <string name="axe">Axe</string>
     <string name="spear">Spear</string>
-    <string name="bloddagger">BlodDagger</string>
+    <string name="blooddagger">BloodDagger</string>
     <string name="sacrificialdagger">SacrificialDagger</string>
     <string name="resetMight">Reset Might</string>
     <string name="resetSpeed">Reset Speed</string>

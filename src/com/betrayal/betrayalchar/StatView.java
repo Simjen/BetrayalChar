@@ -50,7 +50,7 @@ public class StatView extends View {
 
 	public class StatContextInfo implements ContextMenu.ContextMenuInfo{
     	public int id;
-    	public StatContextInfo(View StatContext){
+    	StatContextInfo(View StatContext){
 			this.id = StatContext.getId();
     	}
 	}
@@ -75,7 +75,7 @@ public class StatView extends View {
 		initialize();
 	}
 	
-	public void setmCurrentStat(Stat s){
+	public void setCurrentStat(Stat s){
 		mPlayerStat = s;
         mCurrentStat = s.nextStat().prevStat();
 	}
@@ -138,9 +138,7 @@ public class StatView extends View {
 
 		int textHeight = Math.abs(bounds.height());
 
-		float result = mHeight - ((mHeight - textHeight) / 2);
-
-		return result;
+		return (float) (mHeight - ((mHeight - textHeight) / 2));
 	}
 
 
@@ -258,7 +256,7 @@ public class StatView extends View {
 
 			return true;
 		}
-		return super.onTouchEvent(event);
+		return true;
 	}
 
 }

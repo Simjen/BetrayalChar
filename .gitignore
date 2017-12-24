@@ -32,3 +32,11 @@ proguard/
 # IDEA files
 .idea/
 
+
+*.iml
+
+gradle/wrapper/
+
+gradlew
+
+gradlew\.bat

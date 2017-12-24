@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public enum Items {
 	//ITEMS (might, speed, knowalge, useable, rollName, weaponloss, itemName, attack, statloss)
-	blodDagger(0, 0, 0, 0, false, "", "speed","BlodDagger", 3, 1),
+	blodDagger(0, 0, 0, 0, false, "", "speed","BloodDagger", 3, 1),
 	sacrificialDagger(0,0,0,0,false, "", "","SacrificialDagger", 3),
 	spear(0,0,0,0,false,"","","Spear",2),
 	axe(0,0,0,0,false,"","","Axe",1),

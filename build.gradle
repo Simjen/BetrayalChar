@@ -6,6 +6,7 @@ buildscript {
      */
     repositories {
         jcenter()
+        google()
     }
 
     /**
@@ -13,7 +14,7 @@ buildscript {
      * of the Gradle plugin for the buildscript.
      */
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.0.1'
 
     }
 }
@@ -31,8 +32,9 @@ apply plugin: 'com.android.application'
  */
 dependencies {
     // Add other library dependencies here (see the next step)
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:support-v4:26.0.0-alpha1'
+    compile 'com.android.support:multidex:1.0.2'
+    compile 'com.android.support:support-v4:27.0.2'
+    compile 'com.android.support:design:27.0.2'
 }
 
 /**
@@ -42,7 +44,7 @@ dependencies {
  */
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
 
     /**
      * This nested sourceSets block points the source code directories to the
@@ -74,4 +76,7 @@ android {
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
+}
+repositories {
+    google()
 }
