@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.view.ContextMenu;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.Console;
 
@@ -234,25 +235,32 @@ public class StatView extends View {
 			
 			// delta: negative means a down 'scroll'
 			float deltaY = mTouchStartY - currentY;
-			
 
+			String statChange = "";
 			if(Math.abs(deltaY) > (mHeight / 3) )
 			{
+
 				// higher numbers are 'above' the current, so a scroll down 
 				// _increases_ the value
 				if(deltaY < 0)
 				{
+					statChange = "Stat has increased";
                     mCurrentStat = mStatAbove;
 					mPlayerStat.setStatIndex(mCurrentStat.getStatIndex());
 				}
 				else
 				{
+					statChange = "Stat has deceased";
                     mCurrentStat = mStatBelow;
 					mPlayerStat.setStatIndex(mCurrentStat.getStatIndex());
 				}
+				Toast toast = Toast.makeText(getContext(),statChange,Toast.LENGTH_SHORT);
+				toast.show();
 			}
+
 			mPlayerStat.setStatIndex(mCurrentStat.getStatIndex());
 			setCurrentDigit(mCurrentStat);
+
 
 			return true;
 		}

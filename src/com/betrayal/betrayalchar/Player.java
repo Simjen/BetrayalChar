@@ -11,6 +11,7 @@ public class Player {
 	public Stat sanityStat;
 	public int omens = 0;
 	private static Random rand = new Random();
+	private int player;
 
 
 	public static ArrayList<Integer> doRoll(int r){
@@ -69,8 +70,13 @@ public class Player {
 			return sanityStat.getStatValue();
 	}
 
-	
+	public int getPlayer() {
+		return player;
+	}
+
 	public Player(int player){
+		this.player = player;
+
 		if(player == 1){
 			mightStat = new Stat(Stats.PLAYER1MIGHT.start,Stats.PLAYER1MIGHT.stat);
 			speedStat = new Stat(Stats.PLAYER1SPEED.start,Stats.PLAYER1SPEED.stat);

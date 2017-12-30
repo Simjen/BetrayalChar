@@ -1,5 +1,5 @@
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/background_dark"
     android:id="@+id/scrollView"
-    android:visibility="invisible">
+    android:visibility="visible">
 
     <LinearLayout
         android:id="@+id/main_layout"
@@ -19,105 +19,14 @@
         android:baselineAligned="true"
         android:orientation="vertical" >
 
-        <!-- UPPER DICE -->
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical" >
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-
-                <ImageButton
-                    android:id="@+id/dice1"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:onClick="newRoll"
-                    android:src="@drawable/dice0"
-                    android:visibility="invisible" />
-
-                <ImageButton
-                    android:id="@+id/dice3"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:onClick="newRoll"
-                    android:src="@drawable/dice0"
-                    android:visibility="invisible" />
-
-                <ImageButton
-                    android:id="@+id/dice5"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:onClick="newRoll"
-                    android:src="@drawable/dice0"
-                    android:visibility="invisible" />
-
-                <ImageButton
-                    android:id="@+id/dice7"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:onClick="newRoll"
-                    android:src="@drawable/dice0"
-                    android:visibility="invisible" />
-            </LinearLayout>
-            <!-- LOWER DICE -->
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-
-                <ImageButton
-                    android:id="@+id/dice2"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:onClick="newRoll"
-                    android:src="@drawable/dice0"
-                    android:visibility="invisible" />
-
-                <ImageButton
-                    android:id="@+id/dice4"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:onClick="newRoll"
-                    android:src="@drawable/dice0"
-                    android:visibility="invisible" />
-
-                <ImageButton
-                    android:id="@+id/dice6"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:onClick="newRoll"
-                    android:src="@drawable/dice0"
-                    android:visibility="invisible" />
-
-                <ImageButton
-                    android:id="@+id/dice8"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:onClick="newRoll"
-                    android:src="@drawable/dice0"
-                    android:visibility="invisible" />
-            </LinearLayout>
-        </LinearLayout>
-
         <LinearLayout
             android:id="@+id/pupup_anchor"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:baselineAligned="true"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp">
 
             <!-- MIGHT VIEW -->
 
@@ -263,24 +172,12 @@
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:onClick="mightDefence"
-                    android:src="@drawable/defense"
-                    android:textColor="@android:color/white" />
-
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="1"
                     android:onClick="speedRoll"
                     android:src="@drawable/speed"
                     android:textColor="@android:color/white" />
-            </LinearLayout>
+
             <!-- KNOWAGEROLL/SANITYROLL -->
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
 
                 <ImageButton
                     android:layout_width="0dp"
@@ -297,41 +194,34 @@
                     android:onClick="sanityRoll"
                     android:src="@drawable/sanity"
                     android:textColor="@android:color/white" />
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@drawable/reset"
-                    android:onClick="resetDropdown"
-                    />
+
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layout_player"
+        <!-- RESET BUTTONS -->
+
+
+        <!-- PICKUP/DROP -->
+
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical" >
-
-            <!-- RESET BUTTONS -->
-
-
-            <!-- PICKUP/DROP -->
-
+            android:layout_gravity="center_horizontal">
             <RelativeLayout
-                android:layout_width="fill_parent"
+
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">
+                >
                 <RelativeLayout
+                    android:id="@+id/items"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true">
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp">
                 <Button
                     android:id="@+id/pickup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:drawableLeft="@drawable/up"
                     android:drawableRight="@drawable/attack"
                     android:onClick="pickUp"
@@ -342,15 +232,41 @@
                     android:id="@+id/drop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:drawableLeft="@drawable/down"
                     android:drawableRight="@drawable/attack"
                     android:onClick="drop"
                     android:textColor="@android:color/white" />
                 </RelativeLayout>
+                <LinearLayout
+                    android:layout_below="@id/items"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/haunt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/raven"
+                    android:onClick="hauntRoll"/>
+                <ImageButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/reset"
+                    android:onClick="resetDropdown"/>
+                </LinearLayout>
 
             </RelativeLayout>
-        </LinearLayout>
+
+        </RelativeLayout>
+        <fragment
+            class="com.betrayal.betrayalchar.DeviceListFragment"
+            android:id="@+id/frag_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        tools:layout="@layout/device_list" />
+
+
     </LinearLayout>
 
 </ScrollView>

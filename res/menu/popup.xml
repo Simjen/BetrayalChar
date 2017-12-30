@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:title="@string/attack" android:visible="true" android:id="@+id/attack"/>
-    <item android:title="@string/bloddagger" android:visible="true" android:id="@+id/bloodDagger"/>
+    <item android:title="@string/blooddagger" android:visible="true" android:id="@+id/bloodDagger"/>
     <item android:title="@string/sacrificialdagger" android:visible="true" android:id="@+id/sacrificialDagger"/>
     <item android:title="@string/axe" android:visible="true" android:id="@+id/axe"/>
     <item android:title="@string/spear" android:visible="true" android:id="@+id/spear"/>
