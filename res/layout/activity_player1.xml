@@ -203,73 +203,44 @@
 
         <!-- PICKUP/DROP -->
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
-            <RelativeLayout
 
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
-                <RelativeLayout
-                    android:id="@+id/items"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="20dp">
-                <Button
-                    android:id="@+id/pickup"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/up"
-                    android:drawableRight="@drawable/attack"
-                    android:onClick="pickUp"
-                    android:textColor="@android:color/white" />
 
-                <Button
-                    android:layout_toRightOf="@id/pickup"
-                    android:id="@+id/drop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/down"
-                    android:drawableRight="@drawable/attack"
-                    android:onClick="drop"
-                    android:textColor="@android:color/white" />
-                </RelativeLayout>
-                <LinearLayout
-                    android:layout_below="@id/items"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <ImageButton
-                    android:id="@+id/haunt"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:src="@drawable/raven"
-                    android:onClick="hauntRoll"/>
-                <ImageButton
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@drawable/reset"
-                    android:onClick="resetDropdown"/>
-                </LinearLayout>
-
-            </RelativeLayout>
-
-        </RelativeLayout>
-        <fragment
-            class="com.betrayal.betrayalchar.DeviceListFragment"
-            android:id="@+id/frag_list"
+        <LinearLayout
+            android:id="@+id/items"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-        tools:layout="@layout/device_list" />
+            android:layout_marginBottom="20dp">
+
+            <ImageButton
+                android:id="@+id/pickup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/backpack"
+                android:onClick="backpack"
+                android:textColor="@android:color/white"
+                android:layout_weight="1"/>
+
+
+            <ImageButton
+                android:id="@+id/haunt"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="hauntRoll"
+                android:src="@drawable/raven" />
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:onClick="resetDropdown"
+                android:src="@drawable/reset" />
+        </LinearLayout>
 
 
     </LinearLayout>
 
-</ScrollView>
+    </ScrollView>
 
     <ListView
         android:layout_width="match_parent"

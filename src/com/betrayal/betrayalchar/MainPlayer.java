@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,7 +23,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
@@ -197,7 +201,6 @@ public class MainPlayer extends Activity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         StatView.StatContextInfo info = (StatView.StatContextInfo) item.getMenuInfo();
-
         switch (item.getItemId()){
             case (R.id.reset):
                 switch(info.id){
@@ -358,6 +361,59 @@ public class MainPlayer extends Activity {
             }
         });
         popup.show();
+    }
+
+    public void backpack(View view) {
+        LinearLayout mainLayout = (LinearLayout) View.inflate(this, R.layout.inventory, null);
+        final GridLayout items = (GridLayout) View.inflate(this, R.layout.inventory_items, null);
+        for(Items i : inventory) {
+            addItem(items, i);
+        }
+        mainLayout.addView(items);
+        ImageView imageView = (ImageView) View.inflate(this,R.layout.inventory_item, null);
+        imageView.setImageResource(R.drawable.empty_square);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setPopup(view, new OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        Items item = Items.getItem(menuItem.getItemId());
+                        inventory.add(item);
+                        addItem(items, item);
+                        items.invalidate();
+                        return true;
+                    }
+                }, Popup.Pickup);
+            }
+        });
+        mainLayout.addView(imageView);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(mainLayout);
+        builder.setTitle(R.string.inventory);
+        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.create().show();
+
+    }
+
+    private void addItem(final GridLayout items, final Items i) {
+        ImageView imageView = (ImageView) View.inflate(this, R.layout.inventory_item, null);
+        imageView.setImageResource(i.getDrawable());
+        imageView.setId(i.getID());
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                inventory.remove(Items.getItem(view.getId()));
+                view.setVisibility(View.GONE);
+                items.invalidate();
+            }
+        });
+        items.addView(imageView);
     }
 
     private enum Popup{
@@ -587,10 +643,6 @@ public class MainPlayer extends Activity {
                 Intent tomes = new Intent(this,HauntTomes.class);
                 startActivity(tomes);
             case R.id.direct_discover:
-
-                final DeviceListFragment deviceFragement = (DeviceListFragment) getFragmentManager()
-                        .findFragmentById(R.id.frag_list);
-                deviceFragement.onInitiateDiscovery();
                 mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
                     @Override
                     public void onSuccess() {

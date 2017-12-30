@@ -50,4 +50,6 @@
     <string name="show_card">Show Card</string>
     <string name="reset">Reset</string>
     <string name="haunt_tomes">Haunt Tomes</string>
+    <string name="inventory">Inventory</string>
+    <string name="close">Close</string>
 </resources>

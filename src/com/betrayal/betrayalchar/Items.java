@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 public enum Items {
 	//ITEMS (might, speed, knowalge, useable, rollName, weaponloss, itemName, attack, statloss)
-	blodDagger(0, 0, 0, 0, false, "", "speed","BloodDagger", 3, 1),
-	sacrificialDagger(0,0,0,0,false, "", "","SacrificialDagger", 3),
-	spear(0,0,0,0,false,"","","Spear",2),
-	axe(0,0,0,0,false,"","","Axe",1),
+	blodDagger(0, 0, 0, 0, false, R.drawable.blood_dagger, R.id.bloodDagger, "", "speed","BloodDagger", 3, 1),
+	sacrificialDagger(0,0,0,0,false, R.drawable.sacrificial_dagger, R.id.sacrificialDagger, "", "","SacrificialDagger", 3),
+	spear(0,0,0,0,false, R.drawable.spear, R.id.spear, "","","Spear",2),
+	axe(0,0,0,0,false, R.drawable.axe, R.id.axe, "","","Axe",1),
 	NONE;
 
 	public boolean useable;
@@ -20,8 +20,10 @@ public enum Items {
 	public String weaponLoss;
 	public String itemName;
 	public int[] useRoll;
-	
-	Items(int might, int speed, int sanity, int knowledge, boolean useable, String rollName, String weaponLoss, String itemName, int... useRoll) {
+	private int drawable;
+	private int ID;
+
+	Items(int might, int speed, int sanity, int knowledge, boolean useable, int imageResource, int id, String rollName, String weaponLoss, String itemName, int... useRoll) {
 		this.might = might;
 		this.speed = speed;
 		this.sanity = sanity;
@@ -31,6 +33,8 @@ public enum Items {
 		this.rollName = rollName;
 		this.weaponLoss = weaponLoss;
 		this.itemName = itemName;
+		drawable = imageResource;
+		ID = id;
 	}
 	Items(){
 	}
@@ -105,6 +109,14 @@ public enum Items {
 			default:
 				return NONE;
 		}
+	}
+
+	public int getDrawable() {
+		return drawable;
+	}
+
+	public int getID() {
+		return ID;
 	}
 }
 
