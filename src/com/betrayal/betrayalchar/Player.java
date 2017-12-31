@@ -1,10 +1,13 @@
 package com.betrayal.betrayalchar;
 
+import android.app.Activity;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Player {
 
+	private Inventory inventory;
 	public Stat mightStat;
 	public Stat speedStat;
 	public Stat knowledgeStat;
@@ -74,9 +77,12 @@ public class Player {
 		return player;
 	}
 
+	public Inventory getInventory() {
+		return inventory;
+	}
+
 	public Player(int player){
 		this.player = player;
-
 		if(player == 1){
 			mightStat = new Stat(Stats.PLAYER1MIGHT.start,Stats.PLAYER1MIGHT.stat);
 			speedStat = new Stat(Stats.PLAYER1SPEED.start,Stats.PLAYER1SPEED.stat);
@@ -151,5 +157,9 @@ public class Player {
 			sanityStat = new Stat(Stats.PLAYER12SANITY.start, Stats.PLAYER12SANITY.stat);
 		}
 
+	}
+
+	public void setInventory(Inventory inventory) {
+		this.inventory = inventory;
 	}
 }

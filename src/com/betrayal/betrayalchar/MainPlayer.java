@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,14 +22,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 public class MainPlayer extends Activity {
 
@@ -45,7 +43,6 @@ public class MainPlayer extends Activity {
     public StatView knowledgeView;
     public StatView speedView;
     public StatView mightView;
-    public ArrayList<Items> inventory = new ArrayList<>();
     private Resources res;
     private View scrollView;
     private DrawerLayout drawer;
@@ -115,7 +112,7 @@ public class MainPlayer extends Activity {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                initializePlayer(i +1);
+                initializePlayer(i);
                 drawer.closeDrawers();
             }
         });
@@ -172,6 +169,15 @@ public class MainPlayer extends Activity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         SharedPreferences prefs = getSharedPreferences(name,0);
         // Setup Shared Preferences for each name
+
+        String inventory = prefs.getString("Inventory", "");
+        if(inventory.isEmpty())
+        {
+            player.setInventory(new Inventory(this));
+        } else {
+            Gson gson = new Gson();
+            player.setInventory(gson.fromJson(inventory, Inventory.class));
+        }
         player.mightStat.setStatIndex(prefs.getInt("mightinit", player.mightStat.getStatIndex()));
         player.speedStat.setStatIndex(prefs.getInt("speedinit", player.speedStat.getStatIndex()));
         player.knowledgeStat.setStatIndex(prefs.getInt("knowledgeinit", player.knowledgeStat.getStatIndex()));
@@ -238,6 +244,8 @@ public class MainPlayer extends Activity {
     private void saveSharedPrefs() {
         SharedPreferences prefs = getSharedPreferences(name,0);
         SharedPreferences.Editor edit = prefs.edit();
+        Gson gson = new Gson();
+        edit.putString("Inventory", gson.toJson(player.getInventory()));
         edit.putInt("mightinit", player.mightStat.getStatIndex());
         edit.putInt("speedinit", player.speedStat.getStatIndex());
         edit.putInt("knowledgeinit", player.knowledgeStat.getStatIndex());
@@ -248,27 +256,43 @@ public class MainPlayer extends Activity {
 
     //region StatStuff
     public void resetMight(View v){
-        player.mightStat.resetStat();
-        mightView.setCurrentDigit(player.mightStat);
+        if (player != null) {
+            player.mightStat.resetStat();
+            mightView.setCurrentDigit(player.mightStat);
+        } else {
+            noPlayerToast();
+        }
 
     }
 
     public void resetSpeed(View v){
-        player.speedStat.resetStat();
-        speedView.setCurrentDigit(player.speedStat);
+        if (player != null) {
+            player.speedStat.resetStat();
+            speedView.setCurrentDigit(player.speedStat);
+        } else {
+            noPlayerToast();
+        }
     }
 
     public void resetSanity(View v){
-        player.sanityStat.resetStat();
-        sanityView.setCurrentDigit(player.sanityStat);
+        if (player != null) {
+            player.sanityStat.resetStat();
+            sanityView.setCurrentDigit(player.sanityStat);
+        } else {
+            noPlayerToast();
+        }
     }
 
     public void resetKnowledge(View v){
-        player.knowledgeStat.resetStat();
-        knowledgeView.setCurrentDigit(player.knowledgeStat);
+        if (player != null) {
+            player.knowledgeStat.resetStat();
+            knowledgeView.setCurrentDigit(player.knowledgeStat);
+        } else {
+            noPlayerToast();
+        }
     }
 
-    public void mightAttack(Items i){;
+    public void mightAttack(Items i){
         ArrayList<Integer> diceRoll = i.useItem(this);
         setDice(diceRoll);
     }
@@ -276,29 +300,50 @@ public class MainPlayer extends Activity {
 
 
     public void mightDefence(View v){
-        ArrayList<Integer> diceRoll = player.doMightRoll();
-        setDice(diceRoll);
+        if (player != null) {
+            ArrayList<Integer> diceRoll = player.doMightRoll();
+            setDice(diceRoll);
+        } else {
+            noPlayerToast();
+        }
     }
 
     public void speedRoll(View v){
-        ArrayList<Integer> diceRoll = player.doSpeedRoll();
-        setDice(diceRoll);
+        if (player != null) {
+            ArrayList<Integer> diceRoll = player.doSpeedRoll();
+            setDice(diceRoll);
+        } else {
+            noPlayerToast();
+        }
     }
 
     public void knowledgeRoll(View v){
-        ArrayList<Integer> diceRoll = player.doKnowledgeRoll();
-        setDice(diceRoll);
+        if (player != null) {
+            ArrayList<Integer> diceRoll = player.doKnowledgeRoll();
+            setDice(diceRoll);
+        } else {
+            noPlayerToast();
+        }
 
     }
 
     public void sanityRoll(View v){
-        ArrayList<Integer> diceRoll = player.doSanityRoll();
-        setDice(diceRoll);
+        if (player != null) {
+            ArrayList<Integer> diceRoll = player.doSanityRoll();
+            setDice(diceRoll);
+        } else {
+            noPlayerToast();
+        }
 
     }
     public void hauntRoll(View v){
-        ArrayList<Integer> diceRoll = player.doHauntRoll();
-        setDice(diceRoll);
+        if(player != null) {
+            ArrayList<Integer> diceRoll = player.doHauntRoll();
+            setDice(diceRoll);
+        } else {
+            noPlayerToast();
+        }
+
     }
 
     public void resetDropdown(View view) {
@@ -364,57 +409,17 @@ public class MainPlayer extends Activity {
     }
 
     public void backpack(View view) {
-        LinearLayout mainLayout = (LinearLayout) View.inflate(this, R.layout.inventory, null);
-        final GridLayout items = (GridLayout) View.inflate(this, R.layout.inventory_items, null);
-        for(Items i : inventory) {
-            addItem(items, i);
+        if(player != null) {
+            player.getInventory().showInventoryView();
+        } else {
+            noPlayerToast();
         }
-        mainLayout.addView(items);
-        ImageView imageView = (ImageView) View.inflate(this,R.layout.inventory_item, null);
-        imageView.setImageResource(R.drawable.empty_square);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setPopup(view, new OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        Items item = Items.getItem(menuItem.getItemId());
-                        inventory.add(item);
-                        addItem(items, item);
-                        items.invalidate();
-                        return true;
-                    }
-                }, Popup.Pickup);
-            }
-        });
-        mainLayout.addView(imageView);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setView(mainLayout);
-        builder.setTitle(R.string.inventory);
-        builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
-        builder.create().show();
-
     }
 
-    private void addItem(final GridLayout items, final Items i) {
-        ImageView imageView = (ImageView) View.inflate(this, R.layout.inventory_item, null);
-        imageView.setImageResource(i.getDrawable());
-        imageView.setId(i.getID());
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                inventory.remove(Items.getItem(view.getId()));
-                view.setVisibility(View.GONE);
-                items.invalidate();
-            }
-        });
-        items.addView(imageView);
+    public void noPlayerToast() {
+        Toast.makeText(this, R.string.no_player,Toast.LENGTH_SHORT).show();
     }
+
 
     private enum Popup{
         Attack,
@@ -425,35 +430,16 @@ public class MainPlayer extends Activity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setPopup(View v, OnMenuItemClickListener listener, Popup placement){
         PopupMenu popup = new PopupMenu(this, v);
-        if(placement == Popup.Pickup){
-            popup.getMenu().add(Menu.NONE, R.id.axe, Menu.NONE,"Axe");
-            popup.getMenu().add(Menu.NONE, R.id.spear, Menu.NONE,"Spear");
-            popup.getMenu().add(Menu.NONE, R.id.bloodDagger, Menu.NONE,"BloodDagger");
-            popup.getMenu().add(Menu.NONE, R.id.sacrificialDagger, Menu.NONE,"SacrificialDagger");
+
+        if (placement == Popup.Attack) {
+            popup.getMenu().add(Menu.NONE, R.id.attack, Menu.NONE, R.string.attack);
         }
-        else {
-            if(placement == Popup.Attack) {
-                popup.getMenu().add(Menu.NONE,R.id.attack,Menu.NONE,"Attack");
-            }
-            for (Items item: inventory) {
-                if (!item.useable) {
-                    switch (item.itemName) {
-                        case "Axe":
-                            popup.getMenu().add(Menu.NONE,R.id.axe,Menu.NONE,"Axe");
-                            break;
-                        case "Spear":
-                            popup.getMenu().add(Menu.NONE,R.id.spear,Menu.NONE,"Spear");
-                            break;
-                        case "BloodDagger":
-                            popup.getMenu().add(Menu.NONE,R.id.bloodDagger,Menu.NONE,"BloodDagger");
-                            break;
-                        case "SacrificialDagger":
-                            popup.getMenu().add(Menu.NONE,R.id.sacrificialDagger,Menu.NONE,"SacrificialDagger");
-                            break;
-                    }
-                }
+        for (Items item : player.getInventory()) {
+            if (!item.usable) {
+                popup.getMenu().add(Menu.NONE, item.getID(), Menu.NONE, item.getItemNameID());
             }
         }
+
         popup.setOnMenuItemClickListener(listener);
         popup.show();
     }
@@ -547,7 +533,7 @@ public class MainPlayer extends Activity {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void mightAttackBtn(View v){
-        if(inventory.isEmpty()){
+        if(player.getInventory().isEmpty()){
             mightDefence(findViewById(R.id.main_layout));
         }
         else{
@@ -573,45 +559,6 @@ public class MainPlayer extends Activity {
         }
 
     }
-
-
-    public void drop(View v){
-        setPopup(v, new DropListener(this), Popup.Drop);
-    }
-
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public class DropListener implements OnMenuItemClickListener {
-
-        MainPlayer p;
-        DropListener(MainPlayer mainPlayer){
-            this.p = mainPlayer;
-        }
-
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            p.inventory.remove(Items.getItem(menuItem.getItemId()));
-            return true;
-        }
-    }
-
-    public void pickUp(View v){
-        setPopup(v, new PickupListener(this), Popup.Pickup);
-
-    }
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public class PickupListener implements OnMenuItemClickListener {
-
-        MainPlayer p;
-        PickupListener(MainPlayer mainPlayer){
-            this.p = mainPlayer;
-        }
-        @Override
-        public boolean onMenuItemClick(MenuItem menuItem) {
-            p.inventory.add(Items.getItem(menuItem.getItemId()));
-            return true;
-        }
-    }
-
     //endregion
 
     //region OptionsMenu
@@ -631,8 +578,12 @@ public class MainPlayer extends Activity {
 
         switch (item.getItemId()) {
             case R.id.omen_roll:
-                ArrayList<Integer> diceRoll = player.doHauntRoll();
-                setDice(diceRoll);
+                if (player != null) {
+                    ArrayList<Integer> diceRoll = player.doHauntRoll();
+                    setDice(diceRoll);
+                } else {
+                    noPlayerToast();
+                }
                 return true;
             case R.id.card_1:
                 CardDialogFragment fragment = new CardDialogFragment();
@@ -640,7 +591,7 @@ public class MainPlayer extends Activity {
                 fragment.show(getFragmentManager(), "Show Card");
                 break;
             case R.id.haunt_tomes:
-                Intent tomes = new Intent(this,HauntTomes.class);
+                Intent tomes = new Intent(this, HauntTomes.class);
                 startActivity(tomes);
             case R.id.direct_discover:
                 mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {

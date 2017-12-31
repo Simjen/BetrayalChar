@@ -43,12 +43,13 @@ allprojects{
 
 dependencies {
     // Add other library dependencies here (see the next step)
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:multidex:1.0.2'
+    compile 'com.android.support:support-v4:27.0.2'
     compile 'com.github.tiagohm.MarkdownView:emoji:0.17.0'
     compile 'com.github.tiagohm.MarkdownView:library:0.17.0'
     compile 'com.vladsch.flexmark:flexmark-all:0.27.0'
     compile 'com.android.support:design:27.0.2'
+    compile 'com.google.code.gson:gson:2.8.0'
 }
 
 

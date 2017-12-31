@@ -52,4 +52,8 @@
     <string name="haunt_tomes">Haunt Tomes</string>
     <string name="inventory">Inventory</string>
     <string name="close">Close</string>
+    <string name="no_player">There is no player</string>
+    <string name="title_drop">Are you sure you want to drop the item?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
