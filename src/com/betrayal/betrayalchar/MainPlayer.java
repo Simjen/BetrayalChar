@@ -1,14 +1,20 @@
 package com.betrayal.betrayalchar;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.content.res.Configuration;
@@ -29,6 +35,7 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class MainPlayer extends Activity {
 
@@ -50,6 +57,7 @@ public class MainPlayer extends Activity {
     private MultiPlayerBroadcastReceiver broadcastReceiver;
     private WifiP2pManager mManager;
     private WifiP2pManager.Channel mChannel;
+    private List<Integer> currentPlayers = new ArrayList<>();
     //endregion
 
     //region ActivityOverrides
@@ -82,12 +90,14 @@ public class MainPlayer extends Activity {
         unregisterReceiver(broadcastReceiver);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_player1);
+
 
         //  WIFIP2P
         //  Indicates a change in the Wi-Fi P2P status.
@@ -103,17 +113,40 @@ public class MainPlayer extends Activity {
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
 
-
         res = getResources();
         drawer = findViewById(R.id.drawer);
         ListView navigationView = findViewById(R.id.navigation_drawer);
-        navigationView.setAdapter(new ArrayAdapter<>(this,R.layout.simple_list_item_layout, names));
+        navigationView.setAdapter(new ArrayAdapter<>(this, R.layout.simple_list_item_layout, names));
         navigationView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(player != null){
+                    currentPlayers.remove((Integer)player.getPlayer());
+                    adapterView.getChildAt(player.getPlayer()).setBackgroundColor(Color.WHITE);
+                }
+                currentPlayers.add(i);
+                view.setBackgroundColor(Color.GREEN);
                 initializePlayer(i);
-                drawer.closeDrawers();
+                view.invalidate();
+            }
+        });
+
+        navigationView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(player != null && player.getPlayer() == i){
+                    return false;
+                }
+                if(currentPlayers.contains(i)){
+                    currentPlayers.remove((Integer)i);
+                    view.setBackgroundColor(Color.WHITE);
+                } else {
+                    currentPlayers.add(i);
+                    view.setBackgroundColor(Color.BLUE);
+                }
+                view.invalidate();
+                return true;
             }
         });
         drawerToggle = new ActionBarDrawerToggle(this, drawer, R.string.app_name, R.string.app_name);
@@ -164,7 +197,7 @@ public class MainPlayer extends Activity {
             saveSharedPrefs();
         }
         name = MainActivity.names[number];
-        player = new Player(number);
+        player = new Player(number, this);
         setTitle(name);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         SharedPreferences prefs = getSharedPreferences(name,0);
@@ -173,10 +206,12 @@ public class MainPlayer extends Activity {
         String inventory = prefs.getString("Inventory", "");
         if(inventory.isEmpty())
         {
-            player.setInventory(new Inventory(this));
+            player.setInventory(new HashSet<Items>());
         } else {
             Gson gson = new Gson();
-            player.setInventory(gson.fromJson(inventory, Inventory.class));
+            Type collectionType = new TypeToken<Collection<Items>>(){}.getType();
+            Collection<Items> items = gson.fromJson(inventory, collectionType);
+            player.setInventory(items);
         }
         player.mightStat.setStatIndex(prefs.getInt("mightinit", player.mightStat.getStatIndex()));
         player.speedStat.setStatIndex(prefs.getInt("speedinit", player.speedStat.getStatIndex()));
@@ -245,7 +280,7 @@ public class MainPlayer extends Activity {
         SharedPreferences prefs = getSharedPreferences(name,0);
         SharedPreferences.Editor edit = prefs.edit();
         Gson gson = new Gson();
-        edit.putString("Inventory", gson.toJson(player.getInventory()));
+        edit.putString("Inventory", gson.toJson(player.getInventory().getInventory()));
         edit.putInt("mightinit", player.mightStat.getStatIndex());
         edit.putInt("speedinit", player.speedStat.getStatIndex());
         edit.putInt("knowledgeinit", player.knowledgeStat.getStatIndex());
@@ -254,6 +289,9 @@ public class MainPlayer extends Activity {
     }
 
 
+    public void startNewGame(View v){
+        noPlayerToast();
+    }
     //region StatStuff
     public void resetMight(View v){
         if (player != null) {

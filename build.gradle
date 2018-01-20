@@ -47,6 +47,7 @@ dependencies {
     compile 'com.android.support:support-v4:27.0.2'
     compile 'com.github.tiagohm.MarkdownView:emoji:0.17.0'
     compile 'com.github.tiagohm.MarkdownView:library:0.17.0'
+    compile 'us.feras.mdv:markdownview:1.1.0'
     compile 'com.vladsch.flexmark:flexmark-all:0.27.0'
     compile 'com.android.support:design:27.0.2'
     compile 'com.google.code.gson:gson:2.8.0'

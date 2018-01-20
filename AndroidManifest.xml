@@ -28,7 +28,7 @@
         android:fullBackupContent="@xml/backup_descriptor"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="com.betrayal.betrayalchar.MainPlayer"
+            android:name=".MainPlayer"
             android:configChanges="orientation"
             android:label="@string/app_name" >
             <intent-filter>
@@ -37,6 +37,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".HauntTomes"
+            android:label="HauntTomes"/>
     </application>
 
 </manifest>

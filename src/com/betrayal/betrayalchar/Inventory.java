@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -36,9 +38,11 @@ public class Inventory implements Iterable<Items>, Collection<Items>{
 
     @SuppressLint("ClickableViewAccessibility")
     private void addItemToInventoryView(final Items i, final GridLayout itemsLayout) {
-        final ImageView imageView = (ImageView) View.inflate(activity, R.layout.inventory_item, null);
-        imageView.setImageResource(i.getDrawable());
-        imageView.setId(i.getID());
+        final ItemView itemView = (ItemView) View.inflate(activity, R.layout.inventory_item, null);
+        Drawable drawable = activity.getResources().getDrawable(i.getDrawable());
+        itemView.setImage(drawable);
+        itemView.setId(i.getID());
+        itemView.setText(i.getItemNameID());
         final GestureDetector gestureDetector = new GestureDetector(activity, new GestureDetector.SimpleOnGestureListener(){
             @Override
             public void onLongPress(MotionEvent e) {
@@ -48,8 +52,8 @@ public class Inventory implements Iterable<Items>, Collection<Items>{
                 builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        inventory.remove(Items.getItem(imageView.getId()));
-                        imageView.setVisibility(View.GONE);
+                        inventory.remove(Items.getItem(itemView.getId()));
+                        itemView.setVisibility(View.GONE);
                         itemsLayout.invalidate();
                     }
                 });
@@ -65,17 +69,19 @@ public class Inventory implements Iterable<Items>, Collection<Items>{
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
                 super.onSingleTapConfirmed(e);
-
+                CardDialogFragment cardDialogFragment = new CardDialogFragment();
+                cardDialogFragment.setImage(Items.getItem(itemView.getId()).getDrawable());
+                cardDialogFragment.show(activity.getFragmentManager(),"CardImage");
                 return true;
             }
         });
-        imageView.setOnClickListener(new View.OnClickListener() {
+        itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
-        imageView.setOnTouchListener(new View.OnTouchListener() {
+        itemView.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -83,26 +89,21 @@ public class Inventory implements Iterable<Items>, Collection<Items>{
                 return true;
             }
         });
-        itemsLayout.addView(imageView);
+        itemsLayout.addView(itemView);
         itemsLayout.invalidate();
     }
 
     public void showInventoryView() {
-        LinearLayout mainLayout;
+        LinearLayout mainLayout = (LinearLayout) View.inflate(activity, R.layout.inventory, null);
+        final GridLayout itemsLayout = mainLayout.findViewById(R.id.inventoryGrid);
 
-        final GridLayout itemsLayout = (GridLayout) View.inflate(activity, R.layout.inventory_items,null);
-
-        mainLayout = (LinearLayout) View.inflate(activity, R.layout.inventory, null);
-        mainLayout.addView(itemsLayout);
-        ImageView imageView = (ImageView) View.inflate(activity, R.layout.inventory_item, null);
-        imageView.setImageResource(R.drawable.empty_square);
+        ImageView imageView = mainLayout.findViewById(R.id.addItem);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showAddItemPopup(view, itemsLayout);
             }
         });
-        mainLayout.addView(imageView);
 
         for (Items i : inventory) {
             addItemToInventoryView(i, itemsLayout);
@@ -189,7 +190,7 @@ public class Inventory implements Iterable<Items>, Collection<Items>{
 
     @Override
     public boolean addAll(@NonNull Collection<? extends Items> collection) {
-        return addAll(collection);
+        return inventory.addAll(collection);
     }
 
     @Override
@@ -205,5 +206,9 @@ public class Inventory implements Iterable<Items>, Collection<Items>{
     @Override
     public void clear() {
         inventory.clear();
+    }
+
+    public Set<Items> getInventory() {
+        return inventory;
     }
 }

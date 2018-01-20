@@ -3,6 +3,7 @@ package com.betrayal.betrayalchar;
 import android.app.Activity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 public class Player {
@@ -81,8 +82,9 @@ public class Player {
 		return inventory;
 	}
 
-	public Player(int player){
+	public Player(int player, Activity activity){
 		this.player = player;
+		inventory = new Inventory(activity);
 		if(player == 1){
 			mightStat = new Stat(Stats.PLAYER1MIGHT.start,Stats.PLAYER1MIGHT.stat);
 			speedStat = new Stat(Stats.PLAYER1SPEED.start,Stats.PLAYER1SPEED.stat);
@@ -159,7 +161,7 @@ public class Player {
 
 	}
 
-	public void setInventory(Inventory inventory) {
-		this.inventory = inventory;
+	public void setInventory(Collection<Items> items) {
+		this.inventory.addAll(items);
 	}
 }

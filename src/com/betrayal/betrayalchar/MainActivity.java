@@ -42,12 +42,6 @@ public class MainActivity extends Activity{
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		chooser = (ListView) findViewById(R.id.chooser);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.simple_list_item_layout, names);
-		chooser.setAdapter(adapter);
-		chooser.setOnItemClickListener(itemClickedListner);
-		
 	}
 
 

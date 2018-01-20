@@ -1,5 +1,9 @@
 package com.betrayal.betrayalchar;
 
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
+import android.support.annotation.StringRes;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -99,15 +103,15 @@ public enum Items {
         }
     }
 
-    public int getDrawable() {
+    public @DrawableRes int getDrawable() {
         return drawable;
     }
 
-    public int getID() {
+    public @IdRes int getID() {
         return ID;
     }
 
-    public int getItemNameID() {
+    public @StringRes int getItemNameID() {
         return itemNameID;
     }
 }

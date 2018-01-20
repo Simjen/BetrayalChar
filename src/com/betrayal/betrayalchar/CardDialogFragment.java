@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,7 +23,10 @@ public class CardDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.card_dialog, null);
         ImageView image = view.findViewById(R.id.card_view);
-        image.setImageDrawable(getResources().getDrawable(image_id));
+
+        Drawable drawable = getResources().getDrawable(image_id);
+
+        image.setImageDrawable(drawable);
         return view;
     }
 

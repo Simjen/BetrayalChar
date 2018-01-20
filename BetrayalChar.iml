@@ -121,7 +121,9 @@
     <orderEntry type="library" name="com.google.code.gson:gson:2.8.0@jar" level="project" />
     <orderEntry type="library" name="com.vladsch.flexmark:flexmark-ext-gfm-issues:0.27.0@jar" level="project" />
     <orderEntry type="library" name="com.vladsch.flexmark:flexmark-ext-jekyll-tag:0.27.0@jar" level="project" />
+    <orderEntry type="library" name="us.feras.mdv:markdownview-1.1.0" level="project" />
     <orderEntry type="library" name="com.vladsch.flexmark:flexmark:0.27.0@jar" level="project" />
+    <orderEntry type="library" name="org.markdownj:markdownj-core:0.4@jar" level="project" />
     <orderEntry type="library" name="com.orhanobut:logger-1.15" level="project" />
     <orderEntry type="library" name="com.vladsch.flexmark:flexmark-ext-aside:0.27.0@jar" level="project" />
     <orderEntry type="library" name="com.vladsch.flexmark:flexmark-ext-emoji:0.27.0@jar" level="project" />

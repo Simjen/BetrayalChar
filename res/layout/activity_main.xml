@@ -9,13 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" android:baselineAligned="false">
 
-    <ListView
-        android:id="@+id/chooser"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
-
-
-    </ListView>
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="@string/start_new_game" android:onClick="startNewGame"/>
 
 </LinearLayout>
