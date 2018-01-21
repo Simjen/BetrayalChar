@@ -1,31 +1,27 @@
 package com.betrayal.betrayalchar;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.net.wifi.p2p.WifiP2pDeviceList;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.res.Resources;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.*;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -36,6 +32,13 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 
 public class MainPlayer extends Activity {
 
@@ -52,44 +55,11 @@ public class MainPlayer extends Activity {
     public StatView mightView;
     private Resources res;
     private View scrollView;
-    private DrawerLayout drawer;
     private ActionBarDrawerToggle drawerToggle;
-    private MultiPlayerBroadcastReceiver broadcastReceiver;
-    private WifiP2pManager mManager;
-    private WifiP2pManager.Channel mChannel;
     private List<Integer> currentPlayers = new ArrayList<>();
     //endregion
 
     //region ActivityOverrides
-    @Override
-    protected void onResume() {
-        super.onResume();
-        broadcastReceiver = new MultiPlayerBroadcastReceiver(mManager, mChannel, this, new WifiP2pManager.PeerListListener() {
-            @Override
-            public void onPeersAvailable(WifiP2pDeviceList wifiP2pDeviceList) {
-
-            }
-        });
-        registerReceiver(broadcastReceiver, intentFilter);
-        mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
-            @Override
-            public void onSuccess() {
-                Toast.makeText(MainPlayer.this, "Able to discover Peers", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(int i) {
-                Toast.makeText(MainPlayer.this, "Unable to discover Peers" + i , Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(broadcastReceiver);
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
@@ -114,7 +84,7 @@ public class MainPlayer extends Activity {
 
 
         res = getResources();
-        drawer = findViewById(R.id.drawer);
+        DrawerLayout drawer = findViewById(R.id.drawer);
         ListView navigationView = findViewById(R.id.navigation_drawer);
         navigationView.setAdapter(new ArrayAdapter<>(this, R.layout.simple_list_item_layout, names));
         navigationView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -131,7 +101,6 @@ public class MainPlayer extends Activity {
                 view.invalidate();
             }
         });
-
         navigationView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -166,8 +135,6 @@ public class MainPlayer extends Activity {
         registerForContextMenu(speedView);
         registerForContextMenu(knowledgeView);
         registerForContextMenu(sanityView);
-        mManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
-        mChannel = mManager.initialize(this, getMainLooper(), null);
     }
 
     @Override
@@ -330,8 +297,9 @@ public class MainPlayer extends Activity {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void mightAttack(Items i){
-        ArrayList<Integer> diceRoll = i.useItem(this);
+        List<Integer> diceRoll = (List<Integer>)i.useItem(this);
         setDice(diceRoll);
     }
 
@@ -500,9 +468,9 @@ public class MainPlayer extends Activity {
 
     }
 
-    public void setDice(ArrayList<Integer> diceRoll){
+    public void setDice(List<Integer> diceRoll){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainPlayer.this);
-        final View view = getLayoutInflater().inflate(R.layout.dice,null);
+        @SuppressLint("InflateParams") final View view = getLayoutInflater().inflate(R.layout.dice,null);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -623,37 +591,11 @@ public class MainPlayer extends Activity {
                     noPlayerToast();
                 }
                 return true;
-            case R.id.card_1:
-                CardDialogFragment fragment = new CardDialogFragment();
-                fragment.setImage(R.drawable.betrayal);
-                fragment.show(getFragmentManager(), "Show Card");
-                break;
             case R.id.haunt_tomes:
                 Intent tomes = new Intent(this, HauntTomes.class);
                 startActivity(tomes);
-            case R.id.direct_discover:
-                mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
-                    @Override
-                    public void onSuccess() {
-                        Toast.makeText(MainPlayer.this, "Discovery Initiated",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                    @Override
-                    public void onFailure(int reasonCode) {
-                        Toast.makeText(MainPlayer.this, "Discovery Failed : " + reasonCode,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }
     //endregion
-
-    //region Networking
-    public void onConnect(View v){
-
-    }
-    //endregion
-
 }

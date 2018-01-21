@@ -4,88 +4,35 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.StringRes;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
 public enum Items {
-    //ITEMS (might, speed, knowalge, usable, rollName, weaponloss, itemName, attack, statloss)
-    blodDagger(ItemStat.noStat(), false, R.drawable.blood_dagger, R.id.bloodDagger, "", "speed", R.string.blooddagger, 3, 1),
-    sacrificialDagger(ItemStat.noStat(), false, R.drawable.sacrificial_dagger, R.id.sacrificialDagger, "", "", R.string.sacrificialdagger, 3),
-    spear(ItemStat.noStat(), false, R.drawable.spear, R.id.spear, "", "", R.string.spear, 2),
-    axe(ItemStat.noStat(), false, R.drawable.axe, R.id.axe, "", "", R.string.axe, 1),
+    blodDagger(new WeaponImpl("speed", 3, 1), R.drawable.item_blooddagger, R.id.bloodDagger, R.string.blooddagger, false),
+    sacrificialDagger(new WeaponImpl( 3), R.drawable.item_sacrificialdagger, R.id.sacrificialDagger, R.string.sacrificialdagger, false),
+    spear(new WeaponImpl(2), R.drawable.omen_spear, R.id.spear,  R.string.spear, true),
+    axe(new WeaponImpl(1), R.drawable.item_axe, R.id.axe, R.string.axe, false),
     NONE;
+
     static final List<Items> items = Arrays.asList(blodDagger, sacrificialDagger, spear, axe);
-    private ItemStat stat;
+    private boolean omen;
     public boolean usable;
-    public String rollName;
-    public String weaponLoss;
+    private ItemCard item;
     private int itemNameID;
-    public int[] useRoll;
     private int drawable;
     private int ID;
-
-    Items(ItemStat stat, boolean usable, int imageResource, int id, String rollName, String weaponLoss, int itemNameID, int... useRoll) {
-        this.stat = stat;
-        this.usable = usable;
-        this.itemNameID = itemNameID;
-        this.useRoll = useRoll;
-        this.rollName = rollName;
-        this.weaponLoss = weaponLoss;
-        drawable = imageResource;
-        ID = id;
-    }
 
     Items() {
     }
 
-    public ArrayList<Integer> useItem(MainPlayer mainPlayer) {
-        ArrayList<Integer> roll = new ArrayList<Integer>();
-        if (usable) {
-            if (rollName.equals("might")) {
-                roll.addAll(mainPlayer.player.doMightRoll());
-            } else if (rollName.equals("speed")) {
-                roll.addAll(mainPlayer.player.doSpeedRoll());
-            } else if (rollName.equals("sanity")) {
-                roll.addAll(mainPlayer.player.doSanityRoll());
-            } else if (rollName.equals("knowledge")) {
-                roll.addAll(mainPlayer.player.doKnowledgeRoll());
-            } else {
+    Items(ItemCard item, @DrawableRes int imageResource, @IdRes int id, @StringRes int itemNameID, boolean omen ){
+        this.item = item;
+        this.itemNameID = itemNameID;
+        ID = id;
+        drawable = imageResource;
+        this.omen = omen;
 
-            }
-
-        } else {
-
-            roll.addAll(Player.doRoll(useRoll[0] + mainPlayer.player.getMight()));
-
-
-            if (weaponLoss.equals("might")) {
-                for (int i = 0; i < useRoll[1]; i++) {
-                    mainPlayer.player.mightStat.Decrease();
-                    mainPlayer.mightView.setCurrentDigit(mainPlayer.player.mightStat);
-                }
-            } else if (weaponLoss.equals("speed")) {
-                for (int i = 0; i < useRoll[1]; i++) {
-                    mainPlayer.player.speedStat.Decrease();
-                    mainPlayer.speedView.setCurrentDigit(mainPlayer.player.speedStat);
-                }
-            } else if (weaponLoss.equals("sanity")) {
-
-                for (int i = 0; i < useRoll[1]; i++) {
-                    mainPlayer.player.sanityStat.Decrease();
-                    mainPlayer.sanityView.setCurrentDigit(mainPlayer.player.sanityStat
-                    );
-                }
-            } else if (weaponLoss.equals("knowledge")) {
-                for (int i = 0; i < useRoll[1]; i++) {
-                    mainPlayer.player.knowledgeStat.Decrease();
-                    mainPlayer.knowledgeView.setCurrentDigit(mainPlayer.player.knowledgeStat);
-                }
-            }
-
-        }
-        return roll;
     }
 
     public static Items getItem(int itemId) {
@@ -101,6 +48,22 @@ public enum Items {
             default:
                 return NONE;
         }
+    }
+
+    /**
+     * @param mainPlayer The main Player
+     * @return List of Integers if it is a weapon.
+     */
+    public Object useItem(MainPlayer mainPlayer){
+        return item.useItem(mainPlayer);
+    }
+
+    public boolean isOmen(){
+        return omen;
+    }
+
+    public boolean isWeapon(){
+        return item instanceof Weapon;
     }
 
     public @DrawableRes int getDrawable() {

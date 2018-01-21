@@ -37,7 +37,6 @@ public class ItemView extends LinearLayout {
         textView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         textView.setSingleLine(false);
         textView.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-        addView(textView);
     }
     public ItemView(Context context) {
         super(context);

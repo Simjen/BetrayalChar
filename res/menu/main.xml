@@ -7,21 +7,9 @@
         android:title="@string/omen_roll"
         app:showAsAction="never" />
     <item
-        android:id="@+id/show_card"
-        android:title="@string/show_card">
-        <menu xmlns:android="http://schemas.android.com/apk/res/android">
-            <item android:title="@string/show_card" android:id="@+id/card_1"
-                />
-
-        </menu>
-    </item>
-    <item
         android:id="@+id/haunt_tomes"
         android:title="@string/haunt_tomes"/>
 
-    <item
-        android:id="@+id/direct_discover"
-        android:title="Discover Peers"/>
 
 
 </menu>
