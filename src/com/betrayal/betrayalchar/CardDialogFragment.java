@@ -1,11 +1,8 @@
 package com.betrayal.betrayalchar;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +12,14 @@ import android.widget.ImageView;
 
 public class CardDialogFragment extends DialogFragment {
     private int image_id;
-    public void setImage(int image_id){
+
+    public void setImage(int image_id) {
         this.image_id = image_id;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.card_dialog, null);
         ImageView image = view.findViewById(R.id.card_view);
 

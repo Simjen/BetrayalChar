@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringJoiner;
 
 import br.tiagohm.markdownview.MarkdownView;
 
@@ -27,7 +26,7 @@ public class HauntTomes extends Activity {
         markdownView.loadMarkdown(readSurvivalHaunt(1));
     }
 
-    private String readSurvivalHaunt(int hauntNumber){
+    private String readSurvivalHaunt(int hauntNumber) {
         String survival = "survival";
         return readHaunt(hauntNumber, survival);
     }
@@ -36,8 +35,9 @@ public class HauntTomes extends Activity {
         try {
             StringBuilder builder = new StringBuilder();
             String line;
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getAssets().open(players + File.separator + hauntNumber + ".md")));
-            while ((line = bufferedReader.readLine()) != null){
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+                    getAssets().open(players + File.separator + hauntNumber + ".md")));
+            while ((line = bufferedReader.readLine()) != null) {
                 builder.append(line).append("\n");
             }
             return builder.toString();
@@ -47,7 +47,7 @@ public class HauntTomes extends Activity {
         return "";
     }
 
-    private String readTraitorHaunt(int hauntNumber){
+    private String readTraitorHaunt(int hauntNumber) {
         String traitors = "traitors";
         return readHaunt(hauntNumber, traitors);
     }

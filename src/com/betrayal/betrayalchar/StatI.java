@@ -18,13 +18,11 @@ public interface StatI {
     void resetStat();
 
     /**
-     *
      * @return Next Stat
      */
     Stat nextStat();
 
     /**
-     *
      * @return Previuos Stat
      */
     Stat prevStat();

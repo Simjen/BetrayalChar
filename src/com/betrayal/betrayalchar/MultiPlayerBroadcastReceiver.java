@@ -7,13 +7,10 @@ import android.content.Intent;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
-import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -30,12 +27,13 @@ public class MultiPlayerBroadcastReceiver extends BroadcastReceiver {
     private WifiP2pManager.PeerListListener peerListListener;
 
 
-    public List<WifiP2pDevice> getDevicesList(){
+    public List<WifiP2pDevice> getDevicesList() {
         return devicesList;
     }
 
     public MultiPlayerBroadcastReceiver(WifiP2pManager manager, WifiP2pManager.Channel channel,
-                                        Activity activity, WifiP2pManager.PeerListListener peerListListener) {
+                                        Activity activity,
+                                        WifiP2pManager.PeerListListener peerListListener) {
         this.manager = manager;
         this.activity = activity;
         this.channel = channel;
@@ -111,10 +109,6 @@ public class MultiPlayerBroadcastReceiver extends BroadcastReceiver {
             }
         });
     }
-
-
-
-
 
 
 }

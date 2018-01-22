@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -17,16 +16,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.Spliterator;
-import java.util.function.Consumer;
 
 
-public class Inventory implements Iterable<Items>, Collection<Items>{
+public class Inventory implements Iterable<Items>, Collection<Items> {
 
     private Set<Items> inventory;
     private Activity activity;
@@ -43,38 +39,41 @@ public class Inventory implements Iterable<Items>, Collection<Items>{
         itemView.setImage(drawable);
         itemView.setId(i.getID());
         itemView.setText(i.getItemNameID());
-        final GestureDetector gestureDetector = new GestureDetector(activity, new GestureDetector.SimpleOnGestureListener(){
-            @Override
-            public void onLongPress(MotionEvent e) {
-                super.onLongPress(e);
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setTitle(R.string.title_drop);
-                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+        final GestureDetector gestureDetector =
+                new GestureDetector(activity, new GestureDetector.SimpleOnGestureListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        inventory.remove(Items.getItem(itemView.getId()));
-                        itemView.setVisibility(View.GONE);
-                        itemsLayout.invalidate();
+                    public void onLongPress(MotionEvent e) {
+                        super.onLongPress(e);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                        builder.setTitle(R.string.title_drop);
+                        builder.setPositiveButton(R.string.yes,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        inventory.remove(Items.getItem(itemView.getId()));
+                                        itemView.setVisibility(View.GONE);
+                                        itemsLayout.invalidate();
+                                    }
+                                });
+                        builder.setNegativeButton(R.string.no,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        //No action
+                                    }
+                                });
+                        builder.create().show();
                     }
-                });
-                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //No action
-                    }
-                });
-                builder.create().show();
-            }
 
-            @Override
-            public boolean onSingleTapConfirmed(MotionEvent e) {
-                super.onSingleTapConfirmed(e);
-                CardDialogFragment cardDialogFragment = new CardDialogFragment();
-                cardDialogFragment.setImage(Items.getItem(itemView.getId()).getDrawable());
-                cardDialogFragment.show(activity.getFragmentManager(),"CardImage");
-                return true;
-            }
-        });
+                    @Override
+                    public boolean onSingleTapConfirmed(MotionEvent e) {
+                        super.onSingleTapConfirmed(e);
+                        CardDialogFragment cardDialogFragment = new CardDialogFragment();
+                        cardDialogFragment.setImage(Items.getItem(itemView.getId()).getDrawable());
+                        cardDialogFragment.show(activity.getFragmentManager(), "CardImage");
+                        return true;
+                    }
+                });
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,9 +120,9 @@ public class Inventory implements Iterable<Items>, Collection<Items>{
         builder.create().show();
     }
 
-    private void showAddItemPopup(View v, final GridLayout itemsLayout){
+    private void showAddItemPopup(View v, final GridLayout itemsLayout) {
         PopupMenu popup = new PopupMenu(activity, v);
-        for(Items i : Items.items) {
+        for (Items i : Items.weapons) {
             popup.getMenu().add(Menu.NONE, i.getID(), Menu.NONE, i.getItemNameID());
         }
 
@@ -131,7 +130,7 @@ public class Inventory implements Iterable<Items>, Collection<Items>{
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 Items item = Items.getItem(menuItem.getItemId());
-                if(inventory.add(item)) {
+                if (inventory.add(item)) {
                     addItemToInventoryView(item, itemsLayout);
                 }
                 return true;

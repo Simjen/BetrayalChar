@@ -45,8 +45,8 @@ public class MainPlayer extends Activity {
     //region fields
     private final IntentFilter intentFilter = new IntentFilter();
     private static final String[] names = new String[]{
-            "Brandon","Darrin","Father","Heather","Jenny","Madame","Missy",
-            "Ox","Peter","Professor","Vivian","Zoe"};
+            "Brandon", "Darrin", "Father", "Heather", "Jenny", "Madame", "Missy",
+            "Ox", "Peter", "Professor", "Vivian", "Zoe"};
     public Player player;
     private String name;
     public StatView sanityView;
@@ -86,13 +86,14 @@ public class MainPlayer extends Activity {
         res = getResources();
         DrawerLayout drawer = findViewById(R.id.drawer);
         ListView navigationView = findViewById(R.id.navigation_drawer);
-        navigationView.setAdapter(new ArrayAdapter<>(this, R.layout.simple_list_item_layout, names));
+        navigationView
+                .setAdapter(new ArrayAdapter<>(this, R.layout.simple_list_item_layout, names));
         navigationView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(player != null){
-                    currentPlayers.remove((Integer)player.getPlayer());
+                if (player != null) {
+                    currentPlayers.remove((Integer) player.getPlayer());
                     adapterView.getChildAt(player.getPlayer()).setBackgroundColor(Color.WHITE);
                 }
                 currentPlayers.add(i);
@@ -104,11 +105,11 @@ public class MainPlayer extends Activity {
         navigationView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(player != null && player.getPlayer() == i){
+                if (player != null && player.getPlayer() == i) {
                     return false;
                 }
-                if(currentPlayers.contains(i)){
-                    currentPlayers.remove((Integer)i);
+                if (currentPlayers.contains(i)) {
+                    currentPlayers.remove((Integer) i);
                     view.setBackgroundColor(Color.WHITE);
                 } else {
                     currentPlayers.add(i);
@@ -118,7 +119,8 @@ public class MainPlayer extends Activity {
                 return true;
             }
         });
-        drawerToggle = new ActionBarDrawerToggle(this, drawer, R.string.app_name, R.string.app_name);
+        drawerToggle =
+                new ActionBarDrawerToggle(this, drawer, R.string.app_name, R.string.app_name);
         drawer.addDrawerListener(drawerToggle);
 
         //noinspection ConstantConditions
@@ -153,13 +155,13 @@ public class MainPlayer extends Activity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if(savedInstanceState.containsKey("PLAYER")){
+        if (savedInstanceState.containsKey("PLAYER")) {
             initializePlayer(savedInstanceState.getInt("PLAYER"));
         }
     }
 
     private void initializePlayer(int number) {
-        if(player != null){
+        if (player != null) {
             //we switch from one player to another
             saveSharedPrefs();
         }
@@ -167,23 +169,24 @@ public class MainPlayer extends Activity {
         player = new Player(number, this);
         setTitle(name);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        SharedPreferences prefs = getSharedPreferences(name,0);
+        SharedPreferences prefs = getSharedPreferences(name, 0);
         // Setup Shared Preferences for each name
 
         String inventory = prefs.getString("Inventory", "");
-        if(inventory.isEmpty())
-        {
+        if (inventory.isEmpty()) {
             player.setInventory(new HashSet<Items>());
         } else {
             Gson gson = new Gson();
-            Type collectionType = new TypeToken<Collection<Items>>(){}.getType();
+            Type collectionType = new TypeToken<Collection<Items>>() {}.getType();
             Collection<Items> items = gson.fromJson(inventory, collectionType);
             player.setInventory(items);
         }
         player.mightStat.setStatIndex(prefs.getInt("mightinit", player.mightStat.getStatIndex()));
         player.speedStat.setStatIndex(prefs.getInt("speedinit", player.speedStat.getStatIndex()));
-        player.knowledgeStat.setStatIndex(prefs.getInt("knowledgeinit", player.knowledgeStat.getStatIndex()));
-        player.sanityStat.setStatIndex(prefs.getInt("sanityinit", player.sanityStat.getStatIndex()));
+        player.knowledgeStat
+                .setStatIndex(prefs.getInt("knowledgeinit", player.knowledgeStat.getStatIndex()));
+        player.sanityStat
+                .setStatIndex(prefs.getInt("sanityinit", player.sanityStat.getStatIndex()));
 
         speedView.setCurrentStat(player.speedStat);
         sanityView.setCurrentStat(player.sanityStat);
@@ -200,18 +203,19 @@ public class MainPlayer extends Activity {
 
     //region ContextMenu
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.stat_context,menu);
+        inflater.inflate(R.menu.stat_context, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         StatView.StatContextInfo info = (StatView.StatContextInfo) item.getMenuInfo();
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case (R.id.reset):
-                switch(info.id){
+                switch (info.id) {
                     case R.id.single_spinner_might:
                         resetMight(mightView);
                     case R.id.single_spinner_knowledge:
@@ -232,7 +236,7 @@ public class MainPlayer extends Activity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(player != null) {
+        if (player != null) {
             outState.putInt("PLAYER", player.getPlayer());
             saveSharedPrefs();
         }
@@ -244,7 +248,7 @@ public class MainPlayer extends Activity {
     }
 
     private void saveSharedPrefs() {
-        SharedPreferences prefs = getSharedPreferences(name,0);
+        SharedPreferences prefs = getSharedPreferences(name, 0);
         SharedPreferences.Editor edit = prefs.edit();
         Gson gson = new Gson();
         edit.putString("Inventory", gson.toJson(player.getInventory().getInventory()));
@@ -256,11 +260,12 @@ public class MainPlayer extends Activity {
     }
 
 
-    public void startNewGame(View v){
+    public void startNewGame(View v) {
         noPlayerToast();
     }
+
     //region StatStuff
-    public void resetMight(View v){
+    public void resetMight(View v) {
         if (player != null) {
             player.mightStat.resetStat();
             mightView.setCurrentDigit(player.mightStat);
@@ -270,7 +275,7 @@ public class MainPlayer extends Activity {
 
     }
 
-    public void resetSpeed(View v){
+    public void resetSpeed(View v) {
         if (player != null) {
             player.speedStat.resetStat();
             speedView.setCurrentDigit(player.speedStat);
@@ -279,7 +284,7 @@ public class MainPlayer extends Activity {
         }
     }
 
-    public void resetSanity(View v){
+    public void resetSanity(View v) {
         if (player != null) {
             player.sanityStat.resetStat();
             sanityView.setCurrentDigit(player.sanityStat);
@@ -288,7 +293,7 @@ public class MainPlayer extends Activity {
         }
     }
 
-    public void resetKnowledge(View v){
+    public void resetKnowledge(View v) {
         if (player != null) {
             player.knowledgeStat.resetStat();
             knowledgeView.setCurrentDigit(player.knowledgeStat);
@@ -297,15 +302,13 @@ public class MainPlayer extends Activity {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public void mightAttack(Items i){
-        List<Integer> diceRoll = (List<Integer>)i.useItem(this);
+    public void mightAttack(Items<List<Integer>> i) {
+        List<Integer> diceRoll = i.useItem(this);
         setDice(diceRoll);
     }
 
 
-
-    public void mightDefence(View v){
+    public void mightDefence(View v) {
         if (player != null) {
             ArrayList<Integer> diceRoll = player.doMightRoll();
             setDice(diceRoll);
@@ -314,7 +317,7 @@ public class MainPlayer extends Activity {
         }
     }
 
-    public void speedRoll(View v){
+    public void speedRoll(View v) {
         if (player != null) {
             ArrayList<Integer> diceRoll = player.doSpeedRoll();
             setDice(diceRoll);
@@ -323,7 +326,7 @@ public class MainPlayer extends Activity {
         }
     }
 
-    public void knowledgeRoll(View v){
+    public void knowledgeRoll(View v) {
         if (player != null) {
             ArrayList<Integer> diceRoll = player.doKnowledgeRoll();
             setDice(diceRoll);
@@ -333,7 +336,7 @@ public class MainPlayer extends Activity {
 
     }
 
-    public void sanityRoll(View v){
+    public void sanityRoll(View v) {
         if (player != null) {
             ArrayList<Integer> diceRoll = player.doSanityRoll();
             setDice(diceRoll);
@@ -342,8 +345,9 @@ public class MainPlayer extends Activity {
         }
 
     }
-    public void hauntRoll(View v){
-        if(player != null) {
+
+    public void hauntRoll(View v) {
+        if (player != null) {
             ArrayList<Integer> diceRoll = player.doHauntRoll();
             setDice(diceRoll);
         } else {
@@ -354,13 +358,13 @@ public class MainPlayer extends Activity {
 
     public void resetDropdown(View view) {
         PopupMenu popup = new PopupMenu(this, view);
-        popup.getMenuInflater().inflate(R.menu.reset_popup,popup.getMenu());
+        popup.getMenuInflater().inflate(R.menu.reset_popup, popup.getMenu());
         popup.setOnMenuItemClickListener(new OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainPlayer.this);
                 builder.setTitle("Confirm Reset");
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
                     case R.id.reset_might:
                         builder.setMessage("Are you sure you want to reset your might")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -415,7 +419,7 @@ public class MainPlayer extends Activity {
     }
 
     public void backpack(View view) {
-        if(player != null) {
+        if (player != null) {
             player.getInventory().showInventoryView();
         } else {
             noPlayerToast();
@@ -423,18 +427,18 @@ public class MainPlayer extends Activity {
     }
 
     public void noPlayerToast() {
-        Toast.makeText(this, R.string.no_player,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.no_player, Toast.LENGTH_SHORT).show();
     }
 
 
-    private enum Popup{
+    private enum Popup {
         Attack,
         Pickup,
         Drop
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void setPopup(View v, OnMenuItemClickListener listener, Popup placement){
+    private void setPopup(View v, OnMenuItemClickListener listener, Popup placement) {
         PopupMenu popup = new PopupMenu(this, v);
 
         if (placement == Popup.Attack) {
@@ -452,25 +456,24 @@ public class MainPlayer extends Activity {
     //endregion
 
     //region Dice
-    public void newRoll(View v){
+    public void newRoll(View v) {
         ImageButton ib = (ImageButton) v;
         Random r = new Random();
         int i = r.nextInt(3);
-        if(i == 0){
+        if (i == 0) {
             ib.setImageDrawable(res.getDrawable(R.drawable.dice0));
-        }
-        else if(i == 1){
+        } else if (i == 1) {
             ib.setImageDrawable(res.getDrawable(R.drawable.dice1));
-        }
-        else{
+        } else {
             ib.setImageDrawable(res.getDrawable(R.drawable.dice2));
         }
 
     }
 
-    public void setDice(List<Integer> diceRoll){
+    public void setDice(List<Integer> diceRoll) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainPlayer.this);
-        @SuppressLint("InflateParams") final View view = getLayoutInflater().inflate(R.layout.dice,null);
+        @SuppressLint("InflateParams") final View view =
+                getLayoutInflater().inflate(R.layout.dice, null);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -479,19 +482,17 @@ public class MainPlayer extends Activity {
         }).setTitle("Dice Roll").setView(view);
         AlertDialog dialog = builder.create();
         ImageButton dice;
-        for(int i = 0; i < diceRoll.size(); i++){
-            if(diceRoll.get(i) == 0){
-                dice = (ImageButton) findDice(view,i);
+        for (int i = 0; i < diceRoll.size(); i++) {
+            if (diceRoll.get(i) == 0) {
+                dice = (ImageButton) findDice(view, i);
                 dice.setImageDrawable(res.getDrawable(R.drawable.dice0));
                 dice.setVisibility(View.VISIBLE);
-            }
-            else if(diceRoll.get(i) == 1){
-                dice = (ImageButton) findDice(view,i);
+            } else if (diceRoll.get(i) == 1) {
+                dice = (ImageButton) findDice(view, i);
                 dice.setImageDrawable(res.getDrawable(R.drawable.dice1));
                 dice.setVisibility(View.VISIBLE);
-            }
-            else{
-                dice = (ImageButton) findDice(view,i);
+            } else {
+                dice = (ImageButton) findDice(view, i);
                 dice.setImageDrawable(res.getDrawable(R.drawable.dice2));
                 dice.setVisibility(View.VISIBLE);
             }
@@ -499,37 +500,30 @@ public class MainPlayer extends Activity {
         dialog.show();
     }
 
-    public void unsetDice(View view){
-        for(int i = 0; i < 8; i++){
+    public void unsetDice(View view) {
+        for (int i = 0; i < 8; i++) {
             ImageButton dice = (ImageButton) findDice(view, i);
             dice.setVisibility(View.INVISIBLE);
             dice.invalidate();
         }
     }
 
-    public View findDice(View view, int i){
-        if(i == 0){
+    public View findDice(View view, int i) {
+        if (i == 0) {
             return view.findViewById(R.id.dice1);
-        }
-        else if(i == 1){
+        } else if (i == 1) {
             return view.findViewById(R.id.dice2);
-        }
-        else if(i == 2){
+        } else if (i == 2) {
             return view.findViewById(R.id.dice3);
-        }
-        else if(i == 3){
+        } else if (i == 3) {
             return view.findViewById(R.id.dice4);
-        }
-        else if(i == 4){
+        } else if (i == 4) {
             return view.findViewById(R.id.dice5);
-        }
-        else if(i == 5){
+        } else if (i == 5) {
             return view.findViewById(R.id.dice6);
-        }
-        else if(i == 6){
+        } else if (i == 6) {
             return view.findViewById(R.id.dice7);
-        }
-        else {
+        } else {
             return view.findViewById(R.id.dice8);
         }
     }
@@ -538,28 +532,30 @@ public class MainPlayer extends Activity {
     //region Listeners
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void mightAttackBtn(View v){
-        if(player.getInventory().isEmpty()){
+    public void mightAttackBtn(View v) {
+        if (player.getInventory().isEmpty()) {
             mightDefence(findViewById(R.id.main_layout));
-        }
-        else{
+        } else {
             setPopup(v, new AttackListener(this), Popup.Attack);
         }
     }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public class AttackListener implements OnMenuItemClickListener {
 
         MainPlayer p;
-        AttackListener(MainPlayer mainPlayer){
+
+        AttackListener(MainPlayer mainPlayer) {
             this.p = mainPlayer;
         }
+
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
-            if(menuItem.getItemId() == R.id.attack) {
+            if (menuItem.getItemId() == R.id.attack) {
                 p.mightDefence(p.findViewById(R.id.main_layout));
                 return true;
             }
-            p.mightAttack(Items.getItem(menuItem.getItemId()));
+            p.mightAttack(Items.getWeapon(menuItem.getItemId()));
 
             return true;
         }
@@ -570,10 +566,10 @@ public class MainPlayer extends Activity {
     //region OptionsMenu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds weapons to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
-   }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
