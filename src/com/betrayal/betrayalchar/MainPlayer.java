@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,6 +40,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class MainPlayer extends Activity {
 
@@ -176,10 +178,19 @@ public class MainPlayer extends Activity {
         if (inventory.isEmpty()) {
             player.setInventory(new HashSet<Items>());
         } else {
+            Set<Items> tempInventoryItems = new HashSet<>();
             Gson gson = new Gson();
-            Type collectionType = new TypeToken<Collection<Items>>() {}.getType();
-            Collection<Items> items = gson.fromJson(inventory, collectionType);
-            player.setInventory(items);
+            Type collectionType = new TypeToken<Collection<Integer>>() {}.getType();
+            Collection<Integer> items = gson.fromJson(inventory, collectionType);
+            for (int i : items){
+                try {
+                    tempInventoryItems.add(Items.getItem(i));
+                } catch (Items.ItemNotFoundException e) {
+                    Log.e("Items", "Unable to find item with id " + i );
+                }
+            }
+            player.setInventory(tempInventoryItems);
+
         }
         player.mightStat.setStatIndex(prefs.getInt("mightinit", player.mightStat.getStatIndex()));
         player.speedStat.setStatIndex(prefs.getInt("speedinit", player.speedStat.getStatIndex()));
@@ -251,7 +262,7 @@ public class MainPlayer extends Activity {
         SharedPreferences prefs = getSharedPreferences(name, 0);
         SharedPreferences.Editor edit = prefs.edit();
         Gson gson = new Gson();
-        edit.putString("Inventory", gson.toJson(player.getInventory().getInventory()));
+        edit.putString("Inventory", gson.toJson(player.getInventory().getInventoryIds()));
         edit.putInt("mightinit", player.mightStat.getStatIndex());
         edit.putInt("speedinit", player.speedStat.getStatIndex());
         edit.putInt("knowledgeinit", player.knowledgeStat.getStatIndex());
@@ -444,11 +455,7 @@ public class MainPlayer extends Activity {
         if (placement == Popup.Attack) {
             popup.getMenu().add(Menu.NONE, R.id.attack, Menu.NONE, R.string.attack);
         }
-        for (Items item : player.getInventory()) {
-            if (!item.usable) {
-                popup.getMenu().add(Menu.NONE, item.getID(), Menu.NONE, item.getItemNameID());
-            }
-        }
+        player.getInventory().addItemsToPopup(popup, true);
 
         popup.setOnMenuItemClickListener(listener);
         popup.show();
@@ -555,8 +562,14 @@ public class MainPlayer extends Activity {
                 p.mightDefence(p.findViewById(R.id.main_layout));
                 return true;
             }
-            p.mightAttack(Items.getWeapon(menuItem.getItemId()));
-
+            try {
+                p.mightAttack(Items.getWeapon(menuItem.getItemId()));
+            } catch (Items.ItemNotFoundException e) {
+                Log.i("ITEMS", "Not Able to find Weapon");
+                Toast.makeText(p,"Unable to find the weapon rolling without weapon stats",
+                        Toast.LENGTH_LONG).show();
+                p.mightDefence(p.findViewById(R.id.main_layout));
+            }
             return true;
         }
 

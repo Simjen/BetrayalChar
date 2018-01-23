@@ -5,4 +5,5 @@
     <item android:title="@string/sacrificialdagger" android:visible="true" android:id="@+id/sacrificialDagger"/>
     <item android:title="@string/axe" android:visible="true" android:id="@+id/axe"/>
     <item android:title="@string/spear" android:visible="true" android:id="@+id/spear"/>
+    <item android:title="@string/bite" android:visible="true" android:id="@+id/bite"/>
 </menu>

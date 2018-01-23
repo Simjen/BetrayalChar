@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,9 +17,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 
@@ -50,9 +55,13 @@ public class Inventory implements Iterable<Items>, Collection<Items> {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        inventory.remove(Items.getItem(itemView.getId()));
-                                        itemView.setVisibility(View.GONE);
-                                        itemsLayout.invalidate();
+                                        try {
+                                            inventory.remove(Items.getItem(itemView.getId()));
+                                            itemsLayout.removeView(itemView);
+                                            itemsLayout.invalidate();
+                                        } catch (Items.ItemNotFoundException e1) {
+                                            Log.e("Item not Found", e1.getMessage());
+                                        }
                                     }
                                 });
                         builder.setNegativeButton(R.string.no,
@@ -68,10 +77,16 @@ public class Inventory implements Iterable<Items>, Collection<Items> {
                     @Override
                     public boolean onSingleTapConfirmed(MotionEvent e) {
                         super.onSingleTapConfirmed(e);
-                        CardDialogFragment cardDialogFragment = new CardDialogFragment();
-                        cardDialogFragment.setImage(Items.getItem(itemView.getId()).getDrawable());
-                        cardDialogFragment.show(activity.getFragmentManager(), "CardImage");
-                        return true;
+                        try {
+                            CardDialogFragment cardDialogFragment = new CardDialogFragment();
+                            cardDialogFragment.setImage(Items.getItem(itemView.getId())
+                                        .getDrawable());
+                            cardDialogFragment.show(activity.getFragmentManager(), "CardImage");
+                            return true;
+                        } catch (Items.ItemNotFoundException e1) {
+                            Log.e("Item not Found", e1.getMessage());
+                            return false;
+                        }
                     }
                 });
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +95,7 @@ public class Inventory implements Iterable<Items>, Collection<Items> {
 
             }
         });
+
         itemView.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -122,18 +138,22 @@ public class Inventory implements Iterable<Items>, Collection<Items> {
 
     private void showAddItemPopup(View v, final GridLayout itemsLayout) {
         PopupMenu popup = new PopupMenu(activity, v);
-        for (Items i : Items.weapons) {
-            popup.getMenu().add(Menu.NONE, i.getID(), Menu.NONE, i.getItemNameID());
-        }
+
+        addItemsToPopup(popup, false);
 
         popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                Items item = Items.getItem(menuItem.getItemId());
-                if (inventory.add(item)) {
-                    addItemToInventoryView(item, itemsLayout);
+                try {
+                    Items item = Items.getItem(menuItem.getItemId());
+                    if (inventory.add(item)) {
+                        addItemToInventoryView(item, itemsLayout);
+                    }
+                    return true;
+                } catch (Items.ItemNotFoundException e) {
+                    Log.e("Item not Found", e.getMessage());
+                    return false;
                 }
-                return true;
             }
         });
         popup.show();
@@ -194,12 +214,14 @@ public class Inventory implements Iterable<Items>, Collection<Items> {
 
     @Override
     public boolean removeAll(@NonNull Collection<?> collection) {
-        return removeAll(collection);
+        return inventory.removeAll
+                (collection);
     }
 
     @Override
     public boolean retainAll(@NonNull Collection<?> collection) {
-        return retainAll(collection);
+        return inventory.retainAll
+                (collection);
     }
 
     @Override
@@ -209,5 +231,29 @@ public class Inventory implements Iterable<Items>, Collection<Items> {
 
     public Set<Items> getInventory() {
         return inventory;
+    }
+
+    public List<Integer> getInventoryIds() {
+        List<Integer> ids = new ArrayList<>();
+        for(Items i : inventory){
+            ids.add(i.getID());
+        }
+        return ids;
+    }
+
+    public void addItemsToPopup(PopupMenu popup, boolean onlyWeapons) {
+        Collections.sort(Items.allItems, new Comparator<Items>() {
+            @Override
+            public int compare(Items item, Items otherItem) {
+                return activity.getResources().getString(item.getItemNameID()).compareTo
+                        (activity.getResources().getString(otherItem.getItemNameID()));
+            }
+        });
+        for (Items i : Items.allItems) {
+            if(onlyWeapons && !i.isWeapon()) {
+                continue;
+            }
+            popup.getMenu().add(Menu.NONE, i.getID(), Menu.NONE, i.getItemNameID());
+        }
     }
 }

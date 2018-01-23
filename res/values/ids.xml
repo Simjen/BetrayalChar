@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="book" type="id">1</item>
+    <item name="crystal_ball" type="id">2</item>
+    <item name="dog" type="id">3</item>
+    <item name="girl" type="id">4</item>
+    <item name="holysymbol" type="id">5</item>
+    <item name="madman" type="id">6</item>
+    <item name="mask" type="id">7</item>
+    <item name="medallion" type="id">8</item>
+    <item name="ring" type="id">9</item>
+    <item name="spirit_bord" type="id">10</item>
+    <item name="adrenaline_shot" type="id">11</item>
+    <item name="amulet_of_the_ages" type="id">12</item>
+    <item name="angel_feather" type="id">13</item>
+    <item name="armor" type="id">15</item>
+    <item name="bottle" type="id">16</item>
+    <item name="candle" type="id">17</item>
+    <item name="dark_dice" type="id">18</item>
+    <item name="dynamite" type="id">19</item>
+    <item name="healing_salve" type="id">20</item>
+    <item name="idol" type="id">21</item>
+    <item name="lucky_stone" type="id">22</item>
+    <item name="medical_kit" type="id">23</item>
+    <item name="music_box" type="id">24</item>
+    <item name="pickpocket_gloves" type="id">25</item>
+    <item name="puzzle_box" type="id">26</item>
+    <item name="rabbits_foot" type="id">27</item>
+    <item name="smelling_salts" type="id">28</item>
+    <item name="skull" type="id">29</item>
+    <item name="bell" type="id">30</item>
+    <item name="revolver" type="id">31</item>
+</resources>
