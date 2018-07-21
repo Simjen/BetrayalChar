@@ -18,7 +18,7 @@ public class Items<T> implements Serializable{
             return null;
         }
     };
-    // TODO right now only one weapon is able to be used at a time :O
+    //Weapons can only be use one at a time
     //region Weapons
     public static final Items bloodDagger =
             new Items<>(new WeaponImpl("speed", 3, 1), R.drawable.item_blooddagger,
@@ -145,7 +145,7 @@ public class Items<T> implements Serializable{
             dog, girl, holysymbol, madman, mask, medallion, ring, spiritBord,
             adrenalineShot, amuletOfTheAges, angelFeather, armor, bottle, candle,
             darkDice,dynamite, healingSalve, idol, luckyStone, medicalKit, musicBox,
-            pickpocketGloves, puzzleBox, rabbitsFoot, smellingSalt);
+            pickpocketGloves, puzzleBox, rabbitsFoot, smellingSalt, revolver, skull, bell);
 
     private boolean omen;
     private ItemCard<T> item;

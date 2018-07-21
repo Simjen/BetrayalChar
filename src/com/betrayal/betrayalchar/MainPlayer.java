@@ -88,6 +88,7 @@ public class MainPlayer extends Activity {
         res = getResources();
         DrawerLayout drawer = findViewById(R.id.drawer);
         ListView navigationView = findViewById(R.id.navigation_drawer);
+
         navigationView
                 .setAdapter(new ArrayAdapter<>(this, R.layout.simple_list_item_layout, names));
         navigationView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -270,6 +271,12 @@ public class MainPlayer extends Activity {
         edit.apply();
     }
 
+    private void clearAllSharedPrefs() {
+        for(String name : names){
+            getSharedPreferences(name, 0).edit().clear().apply();
+        }
+    }
+
 
     public void startNewGame(View v) {
         noPlayerToast();
@@ -412,6 +419,9 @@ public class MainPlayer extends Activity {
                                     }
                                 });
                         break;
+                    case R.id.reset_player_data:
+                        clearAllSharedPrefs();
+                        Toast.makeText(MainPlayer.this, "Data cleared", Toast.LENGTH_SHORT).show();
                     default:
                         return false;
                 }
@@ -455,7 +465,12 @@ public class MainPlayer extends Activity {
         if (placement == Popup.Attack) {
             popup.getMenu().add(Menu.NONE, R.id.attack, Menu.NONE, R.string.attack);
         }
-        player.getInventory().addItemsToPopup(popup, true);
+        for (Items i : player.getInventory()) {
+            if(!i.isWeapon()) {
+                continue;
+            }
+            popup.getMenu().add(Menu.NONE, i.getID(), Menu.NONE, i.getItemNameID());
+        }
 
         popup.setOnMenuItemClickListener(listener);
         popup.show();
